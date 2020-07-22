@@ -1,0 +1,9 @@
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\bin\Debug\netstandard2.0\StaffLibrary.deps.json
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\bin\Debug\netstandard2.0\StaffLibrary.dll
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\bin\Debug\netstandard2.0\StaffLibrary.pdb
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\obj\Debug\netstandard2.0\StaffLibrary.csprojAssemblyReference.cache
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\obj\Debug\netstandard2.0\StaffLibrary.AssemblyInfoInputs.cache
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\obj\Debug\netstandard2.0\StaffLibrary.AssemblyInfo.cs
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\obj\Debug\netstandard2.0\StaffLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\obj\Debug\netstandard2.0\StaffLibrary.dll
+C:\Users\Workstation\Desktop\Staff\StaffLibrary\obj\Debug\netstandard2.0\StaffLibrary.pdb

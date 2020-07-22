@@ -1,0 +1,12 @@
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\obj\Debug\netstandard2.0\OperationLibrary.csprojAssemblyReference.cache
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\obj\Debug\netstandard2.0\OperationLibrary.AssemblyInfoInputs.cache
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\obj\Debug\netstandard2.0\OperationLibrary.AssemblyInfo.cs
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\obj\Debug\netstandard2.0\OperationLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\bin\Debug\netstandard2.0\OperationLibrary.deps.json
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\bin\Debug\netstandard2.0\OperationLibrary.dll
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\bin\Debug\netstandard2.0\OperationLibrary.pdb
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\bin\Debug\netstandard2.0\StaffLibrary.dll
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\bin\Debug\netstandard2.0\StaffLibrary.pdb
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\obj\Debug\netstandard2.0\OperationLibrary.csproj.CopyComplete
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\obj\Debug\netstandard2.0\OperationLibrary.dll
+C:\Users\Workstation\Desktop\Staff\OperationLibrary\obj\Debug\netstandard2.0\OperationLibrary.pdb

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "O44HNhEIJm2B4WmcOcy/of2JU2GfPab+7cYBNYAWSh2P5eRE/ManH/PopD9IEqxBm8WtSnohOfvVwM08/k4asg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Workstation\\Desktop\\Staff\\OperationLibrary\\OperationLibrary.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Workstation\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Workstation\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

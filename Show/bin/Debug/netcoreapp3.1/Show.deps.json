@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Show/1.0.0": {
+        "dependencies": {
+          "OperationLibrary": "1.0.0",
+          "StaffLibrary": "1.0.0"
+        },
+        "runtime": {
+          "Show.dll": {}
+        }
+      },
+      "OperationLibrary/1.0.0": {
+        "dependencies": {
+          "StaffLibrary": "1.0.0"
+        },
+        "runtime": {
+          "OperationLibrary.dll": {}
+        }
+      },
+      "StaffLibrary/1.0.0": {
+        "runtime": {
+          "StaffLibrary.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Show/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "OperationLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "StaffLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

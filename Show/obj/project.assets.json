@@ -1,0 +1,108 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "OperationLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "StaffLibrary": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/OperationLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/OperationLibrary.dll": {}
+        }
+      },
+      "StaffLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/StaffLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/StaffLibrary.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "OperationLibrary/1.0.0": {
+      "type": "project",
+      "path": "../OperationLibrary/OperationLibrary.csproj",
+      "msbuildProject": "../OperationLibrary/OperationLibrary.csproj"
+    },
+    "StaffLibrary/1.0.0": {
+      "type": "project",
+      "path": "../StaffLibrary/StaffLibrary.csproj",
+      "msbuildProject": "../StaffLibrary/StaffLibrary.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "OperationLibrary >= 1.0.0",
+      "StaffLibrary >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Workstation\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Workstation\\Desktop\\Staff\\Show\\Show.csproj",
+      "projectName": "Show",
+      "projectPath": "C:\\Users\\Workstation\\Desktop\\Staff\\Show\\Show.csproj",
+      "packagesPath": "C:\\Users\\Workstation\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Workstation\\Desktop\\Staff\\Show\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Workstation\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {
+            "C:\\Users\\Workstation\\Desktop\\Staff\\OperationLibrary\\OperationLibrary.csproj": {
+              "projectPath": "C:\\Users\\Workstation\\Desktop\\Staff\\OperationLibrary\\OperationLibrary.csproj"
+            },
+            "C:\\Users\\Workstation\\Desktop\\Staff\\StaffLibrary\\StaffLibrary.csproj": {
+              "projectPath": "C:\\Users\\Workstation\\Desktop\\Staff\\StaffLibrary\\StaffLibrary.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
