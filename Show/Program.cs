@@ -7,44 +7,51 @@ namespace Show
     
     class Program
     {
-        
+        public int menuOpt;
         public void Teaching()
         {
-            int menuOpt;
+            
             do{
                 
-            Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Exit");
+            Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Retrieve Single Staff\n4.Delete Staff\n5.Edit Staff \n6.Exit");
             menuOpt = Convert.ToInt32(Console.ReadLine());
              TeachingStaffOperation teachingStaffOperation = new TeachingStaffOperation();
             
                             switch(menuOpt)
                             {
-                                case 1: 
+                                case 1: teachingStaffOperation.EnterValues();
                                         teachingStaffOperation.AddStaff();
                                         break;
                                 case 2: 
                                        teachingStaffOperation.RetrieveAllStaff();
                                         break;
-                                case 3 :Console.Clear();
+                                case 3 : teachingStaffOperation.RetrieveSingleStaff();
+                                          break;
+                                case 4: teachingStaffOperation.DeleteStaff();
+                                        break;
+                                case 5: teachingStaffOperation.EditStaff();
+                                        break;
+                                case 6 :Console.Clear();
 
                                         return ;                                         
                                 default : Console.Write("Invalid Option !!");
                                           break;
                             }
             }
-            while(menuOpt!=3);
+            while(menuOpt!=6);
         }
         public void Administration()
         {
             
-            int menuOpt;
+           
             do{
             Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Exit");
             menuOpt = Convert.ToInt32(Console.ReadLine());
             AdministrativeStaffOperation administrativeStaffOperation = new AdministrativeStaffOperation();
                             switch(menuOpt)
                             {
-                                case 1: administrativeStaffOperation.AddStaff();
+                                case 1: administrativeStaffOperation.EnterValues();
+                                        administrativeStaffOperation.AddStaff();
                                         break;
                                 case 2: administrativeStaffOperation.RetrieveAllStaff();
                                         break;
@@ -59,7 +66,7 @@ namespace Show
         }
         public void Support()
         {
-            int menuOpt;
+           
             do{
             
             Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Exit");
@@ -67,10 +74,12 @@ namespace Show
             SupportStaffOperation supportStaffOperation = new SupportStaffOperation();
                             switch(menuOpt)
                             {
-                                case 1: supportStaffOperation.AddStaff();
+                                case 1: supportStaffOperation.EnterValues();
+                                        supportStaffOperation.AddStaff();
                                          break;
                                 case 2:  supportStaffOperation.RetrieveAllStaff();
                                          break;
+                                        
                                 case 3 : Console.Clear();
                                          return;          
                                 default : Console.Write("Invalid Option !!");
@@ -101,7 +110,7 @@ namespace Show
                              pgm.Support();
                              break;
                     case 4: return;
-                             break;
+                             
                     default : Console.WriteLine("Invalid Input !!");
                             break;
                 }
