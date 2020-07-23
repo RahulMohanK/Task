@@ -2,6 +2,8 @@
 using StaffLibrary;
 using OperationLibrary;
 using System.Collections.Generic;
+using System.Reflection;
+
 namespace Show
 {
     
@@ -13,8 +15,8 @@ namespace Show
             
             do{
                 
-            Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Retrieve Single Staff\n4.Delete Staff\n5.Edit Staff \n6.Exit");
-            menuOpt = Convert.ToInt32(Console.ReadLine());
+             Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Retrieve Single Staff\n4.Delete Staff\n5.Edit Staff \n6.Exit");
+             menuOpt = Convert.ToInt32(Console.ReadLine());
              TeachingStaffOperation teachingStaffOperation = new TeachingStaffOperation();
             
                             switch(menuOpt)
@@ -26,13 +28,12 @@ namespace Show
                                        teachingStaffOperation.RetrieveAllStaff();
                                         break;
                                 case 3 : teachingStaffOperation.RetrieveSingleStaff();
-                                          break;
+                                        break;
                                 case 4: teachingStaffOperation.DeleteStaff();
                                         break;
                                 case 5: teachingStaffOperation.EditStaff();
                                         break;
                                 case 6 :Console.Clear();
-
                                         return ;                                         
                                 default : Console.Write("Invalid Option !!");
                                           break;
@@ -45,7 +46,7 @@ namespace Show
             
            
             do{
-            Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Exit");
+            Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Retrieve Single Staff\n4.Delete Staff\n5.Edit Staff \n6.Exit");
             menuOpt = Convert.ToInt32(Console.ReadLine());
             AdministrativeStaffOperation administrativeStaffOperation = new AdministrativeStaffOperation();
                             switch(menuOpt)
@@ -55,21 +56,26 @@ namespace Show
                                         break;
                                 case 2: administrativeStaffOperation.RetrieveAllStaff();
                                         break;
-                                case 3 : Console.Clear();
-                                        return;
-                                         
+                                 case 3 : administrativeStaffOperation.RetrieveSingleStaff();
+                                        break;
+                                case 4: administrativeStaffOperation.DeleteStaff();
+                                        break;
+                                case 5: administrativeStaffOperation.EditStaff();
+                                        break;
+                                case 6 :Console.Clear();
+                                        return ;                                         
                                 default : Console.Write("Invalid Option !!");
                                           break;
                             }
             }
-            while(menuOpt!=3);
+            while(menuOpt!=6);
         }
         public void Support()
         {
            
             do{
             
-            Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Exit");
+            Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Retrieve Single Staff\n4.Delete Staff\n5.Edit Staff \n6.Exit");
             menuOpt = Convert.ToInt32(Console.ReadLine());
             SupportStaffOperation supportStaffOperation = new SupportStaffOperation();
                             switch(menuOpt)
@@ -78,15 +84,20 @@ namespace Show
                                         supportStaffOperation.AddStaff();
                                          break;
                                 case 2:  supportStaffOperation.RetrieveAllStaff();
-                                         break;
-                                        
-                                case 3 : Console.Clear();
-                                         return;          
+                                         break;                                   
+                                case 3 : supportStaffOperation.RetrieveSingleStaff();
+                                        break;
+                                case 4:  supportStaffOperation.DeleteStaff();
+                                        break;
+                                case 5: supportStaffOperation.EditStaff();
+                                        break;
+                                case 6 :Console.Clear();
+                                        return ;                                         
                                 default : Console.Write("Invalid Option !!");
                                           break;
                             }
             }
-            while(menuOpt!=3);
+            while(menuOpt!=6);
         }
         static void Main(string[] args)
         {
@@ -117,6 +128,9 @@ namespace Show
                 
             }
             while(opt!=4);   
+
+               
+
         }
     }
 }
