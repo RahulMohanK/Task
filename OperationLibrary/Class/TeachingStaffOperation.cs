@@ -5,9 +5,10 @@ namespace OperationLibrary
 {
      public class TeachingStaffOperation: StaffOperation
     {
+        public string name ,subject,email,dob,phone,id,designation,department; 
         static List<TeachingStaff> teachingList = new List<TeachingStaff>();
        
-        public override void EnterValues()
+        public  void EnterValues()
         {
             Console.WriteLine("Enter Details :");
             Console.WriteLine("Enter Id:");
@@ -27,7 +28,7 @@ namespace OperationLibrary
             Console.WriteLine("Enter Subject");
             subject = Console.ReadLine();
         }
-        public override void AddStaff()
+        public  void AddStaff()
         {
             TeachingStaff teaching = new TeachingStaff();
             teaching.Id=Convert.ToInt32(id);
@@ -46,7 +47,7 @@ namespace OperationLibrary
             }
         }
 
-        public override void RetrieveAllStaff()
+        public void RetrieveAllStaff()
         {
            
            if(teachingList.Count ==0)
@@ -63,7 +64,7 @@ namespace OperationLibrary
            }
                
         }
-        public override void RetrieveSingleStaff()
+        public  void RetrieveSingleStaff()
         {
             Console.WriteLine("Enter Details to Search :");
             Console.WriteLine("Enter ID :");
@@ -125,7 +126,7 @@ namespace OperationLibrary
                      
                     
         }
-        public override void EditStaff()
+        public  void EditStaff()
         {
             
             Console.WriteLine("Enter Details of Staff to be Deleted :");
@@ -143,7 +144,7 @@ namespace OperationLibrary
             
 
         }
-        public override void DeleteStaff()
+        public void DeleteStaff()
         {
             Console.WriteLine("Enter Details of Staff to be Deleted :");
             Console.WriteLine("Enter ID :");
