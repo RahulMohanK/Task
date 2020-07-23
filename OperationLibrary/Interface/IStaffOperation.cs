@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using StaffLibrary;
 namespace OperationLibrary
 {
-    interface StaffOperation
+    interface IStaffOperation
     {
-        // public string name ,subject,email,dob,phone,id,designation,department; 
          void EnterValues();
          void AddStaff();
          void RetrieveAllStaff();

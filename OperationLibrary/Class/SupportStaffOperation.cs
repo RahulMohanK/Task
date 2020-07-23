@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using StaffLibrary;
 namespace OperationLibrary
 {
-     public class SupportStaffOperation : StaffOperation
+     public class SupportStaffOperation : IStaffOperation
     {
         public string name ,subject,email,dob,phone,id,designation,department; 
         static List<SupportStaff> supportList = new List<SupportStaff>();

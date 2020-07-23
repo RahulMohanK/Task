@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using StaffLibrary;
 namespace OperationLibrary
 {
-     public class AdministrativeStaffOperation : StaffOperation
+     public class AdministrativeStaffOperation : IStaffOperation
     {
         public string name ,subject,email,dob,phone,id,designation,department; 
         static List<AdministrativeStaff> administrativeList = new List<AdministrativeStaff>();
 
-         public  void EnterValues()
+         public void EnterValues()
         {
             Console.WriteLine("Enter Details :");
             Console.WriteLine("Enter Id:");
