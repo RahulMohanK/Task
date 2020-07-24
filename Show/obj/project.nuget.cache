@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "k5aJ+iFwkjhXDxeLKvrv8P6yzYfTVH/yYGOrcaZnLHyWm8LkRDOuWBxwvX+8HxQ7QGMG6jhV8TsWWlDkjKPx0w==",
+  "dgSpecHash": "T4lZ5tGQYD7O0WhC1UURWblVUqYuf0346++UdWgi0rsc7AG733UWrvlPZ+nHi/Q88bF1gv2fAdMSIQmTXUICyA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Workstation\\Desktop\\Staff\\Show\\Show.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Workstation\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512"
+  ],
   "logs": []
 }

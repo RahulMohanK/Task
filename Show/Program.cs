@@ -3,6 +3,7 @@ using StaffLibrary;
 using OperationLibrary;
 using System.Collections.Generic;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Show
 {
@@ -21,7 +22,7 @@ namespace Show
             
                             switch(menuOpt)
                             {
-                                case 1: teachingStaffOperation.EnterValues();
+                                case 1: 
                                         teachingStaffOperation.AddStaff();
                                         break;
                                 case 2: 
@@ -51,7 +52,7 @@ namespace Show
             AdministrativeStaffOperation administrativeStaffOperation = new AdministrativeStaffOperation();
                             switch(menuOpt)
                             {
-                                case 1: administrativeStaffOperation.EnterValues();
+                                case 1: 
                                         administrativeStaffOperation.AddStaff();
                                         break;
                                 case 2: administrativeStaffOperation.RetrieveAllStaff();
@@ -80,7 +81,7 @@ namespace Show
             SupportStaffOperation supportStaffOperation = new SupportStaffOperation();
                             switch(menuOpt)
                             {
-                                case 1: supportStaffOperation.EnterValues();
+                                case 1: 
                                         supportStaffOperation.AddStaff();
                                          break;
                                 case 2:  supportStaffOperation.RetrieveAllStaff();
@@ -94,7 +95,7 @@ namespace Show
                                 case 6 :Console.Clear();
                                         return ;                                         
                                 default : Console.Write("Invalid Option !!");
-                                          break;
+                                        break;
                             }
             }
             while(menuOpt!=6);
@@ -103,31 +104,34 @@ namespace Show
         {
             //  List<TeachingStaff> teachingList = new List<TeachingStaff>();
             
-           int opt;
-            do{
-                Console.Clear();
-                Console.WriteLine("Select the Type of Staff (1 /2 /3 /4) :\n 1. Teaching Staff\n 2. Administrative Staff\n 3. Support Staff\n 4. Exit"); 
-                opt = Convert.ToInt32(Console.ReadLine());
-                 Program pgm = new Program();
-                switch(opt)
-                {
-                    case 1:  
-                            pgm.Teaching();
-                             break;
-                    case 2: 
-                             pgm.Administration();
-                           break;
-                    case 3: 
-                             pgm.Support();
-                             break;
-                    case 4: return;
+        //    int opt;
+        //     do{
+        //         Console.Clear();
+        //         Console.WriteLine("Select the Type of Staff (1 /2 /3 /4) :\n 1. Teaching Staff\n 2. Administrative Staff\n 3. Support Staff\n 4. Exit"); 
+        //         opt = Convert.ToInt32(Console.ReadLine());
+        //          Program pgm = new Program();
+        //         switch(opt)
+        //         {
+        //             case 1:  
+        //                     pgm.Teaching();
+        //                      break;
+        //             case 2: 
+        //                      pgm.Administration();
+        //                      break;
+        //             case 3: 
+        //                      pgm.Support();
+        //                      break;
+        //             case 4: return;
                              
-                    default : Console.WriteLine("Invalid Input !!");
-                            break;
-                }
+        //             default : Console.WriteLine("Invalid Input !!");
+        //                     break;
+        //         }
                 
-            }
-            while(opt!=4);   
+        //     }
+        //    while(opt!=4);  
+
+                StaffOperation s = new StaffOperation();
+                s.Print(); 
 
                
 

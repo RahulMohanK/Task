@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "O44HNhEIJm2B4WmcOcy/of2JU2GfPab+7cYBNYAWSh2P5eRE/ManH/PopD9IEqxBm8WtSnohOfvVwM08/k4asg==",
+  "dgSpecHash": "d7TqZijusTGr50tDw+Jx2gpaF5g2t39fKr2sNPHNilfz9CDZ013WG49dOFJEaIg3xS9FYQuDG2ufl4j6/hVOig==",
   "success": true,
   "projectFilePath": "C:\\Users\\Workstation\\Desktop\\Staff\\OperationLibrary\\OperationLibrary.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Workstation\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\Workstation\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\Workstation\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512",
+    "C:\\Users\\Workstation\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 namespace StaffLibrary
 {
      public class AdministrativeStaff : Staff
@@ -13,6 +14,8 @@ namespace StaffLibrary
     //         this.email = email;
     //         this.designation = designation;
     //    }
+        [Required(ErrorMessage="Designation must not be empty")]
+        [RegularExpression("^[a-zA-Z. ]+$",ErrorMessage="Please Enter Valid Designation")]
        public string Designation
         {
             get{return designation;}

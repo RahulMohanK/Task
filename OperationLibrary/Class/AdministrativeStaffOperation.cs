@@ -1,29 +1,56 @@
 using System;
 using System.Collections.Generic;
 using StaffLibrary;
+using System.ComponentModel.DataAnnotations;
 namespace OperationLibrary
 {
      public class AdministrativeStaffOperation : IStaffOperation
     {
-        public string name ,subject,email,dob,phone,id,designation,department; 
+        public string name ,subject,email,dob,phone,designation,department; 
+        public int id;
+        public bool parseSuccess;
         static List<AdministrativeStaff> administrativeList = new List<AdministrativeStaff>();
 
+         public void validation(AdministrativeStaff admin)
+        {
+            ValidationContext context = new ValidationContext(admin,null,null);
+            List<ValidationResult> validationResults = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(admin,context,validationResults,true);
+            if(!valid)
+            {
+                foreach(ValidationResult validation in validationResults)
+                {
+                    Console.WriteLine(validation.ErrorMessage);
+                }
+            }
+        }
+        public void inputId()
+        {
+            do{
+            parseSuccess = int.TryParse(Console.ReadLine(),out id);
+            if(!parseSuccess)
+            {
+                Console.WriteLine("Enter Valid Id:");
+            }
+            }
+            while(parseSuccess!= true);
+        }
          public void EnterValues()
         {
-            Console.WriteLine("Enter Details :");
+            Console.WriteLine("Enter Administrative Staff Details :");
             Console.WriteLine("Enter Id:");
-            id = Console.ReadLine();
+            inputId();
 
             Console.WriteLine("Enter Name :");
             name = Console.ReadLine();
 
-            Console.WriteLine("Enter Phone No:");
+            Console.WriteLine("Enter Phone No (+ Country Code - Phone No):");
             phone = Console.ReadLine();
 
-            Console.WriteLine("Enter date of birth");
+            Console.WriteLine("Enter date of birth (DD/MM/YYYY):");
             dob = Console.ReadLine();
 
-            Console.WriteLine("Enter Email");
+            Console.WriteLine("Enter Email :");
             email = Console.ReadLine();
 
             Console.WriteLine("Enter Designation");
@@ -31,22 +58,32 @@ namespace OperationLibrary
         }
         public  void AddStaff()
         {
-            
+            EnterValues();
            
             AdministrativeStaff admin = new AdministrativeStaff();
-            admin.Id=Convert.ToInt32(id);
+            admin.Id=id;
             admin.Name=name;
-            admin.Phone=long.Parse(phone);
+            admin.Phone=phone;
             admin.Dob=dob;
             admin.Email = email;
             admin.Designation=designation;
             
             if(admin!=null)
             {
+            ValidationContext context = new ValidationContext(admin,null,null);
+            List<ValidationResult> validationResults = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(admin,context,validationResults,true);
+            if(!valid)
+            {
+                foreach(ValidationResult validation in validationResults)
+                {
+                    Console.WriteLine(validation.ErrorMessage);
+                }
+            }else{
             administrativeList.Add(admin);
             Console.WriteLine("\nValues added are :\n");
             Console.WriteLine("\nId :"+admin.Id+" Name: "+admin.Name+" "+"DOB: "+admin.Dob+" "+"Phone :"+admin.Phone+" "+"Email :"+admin.Email+" Designation: "+admin.Designation);
-            
+            }
             }
         }
          public  void RetrieveAllStaff()
@@ -68,7 +105,7 @@ namespace OperationLibrary
         {
             Console.WriteLine("Enter Details to Search :");
             Console.WriteLine("Enter ID :");
-            id = Console.ReadLine();
+            inputId();
             Console.WriteLine("Enter Name :");
             name = Console.ReadLine();
 
@@ -95,26 +132,31 @@ namespace OperationLibrary
                              case 1: Console.WriteLine("Enter Name :");
                                      name = Console.ReadLine();
                                      admin.Name = name;
+                                     validation(admin);
                                      Console.WriteLine("Edited Name :"+admin.Name);
                                      break;
                             case 2:  Console.WriteLine("Enter Phone No:");
                                      phone = Console.ReadLine();
-                                     admin.Phone = long.Parse(phone);
+                                     admin.Phone = phone;
+                                     validation(admin);
                                      Console.WriteLine("Edited Phone :"+admin.Phone);
                                      break;
                             case 3: Console.WriteLine("Enter date of birth");
                                     dob = Console.ReadLine();
                                     admin.Dob = dob;
+                                    validation(admin);
                                     Console.WriteLine("Edited Date of birth :"+admin.Dob);
                                     break;
                             case 4: Console.WriteLine("Enter Email");
                                     email = Console.ReadLine();
                                     admin.Email = email;
+                                    validation(admin);
                                     Console.WriteLine("Edited Email :"+admin.Email);
                                     break;
                             case 5: Console.WriteLine("Enter Subject");
                                     designation = Console.ReadLine();
                                     admin.Designation = designation;
+                                    validation(admin);
                                     Console.WriteLine("Edited Subject :"+admin.Designation);
                                     break;
                             case 6 : return;
@@ -132,7 +174,7 @@ namespace OperationLibrary
             
             Console.WriteLine("Enter Details of Staff to be Deleted :");
             Console.WriteLine("Enter ID :");
-            id = Console.ReadLine();
+            inputId();
              foreach(var admin in administrativeList)
             {
                  if(admin.Id == Convert.ToInt32(id) )
@@ -149,7 +191,7 @@ namespace OperationLibrary
         {
             Console.WriteLine("Enter Details to Search :");
             Console.WriteLine("Enter ID :");
-            id = Console.ReadLine();
+            inputId();
             Console.WriteLine("Enter Name :");
             name = Console.ReadLine();
 
@@ -163,6 +205,10 @@ namespace OperationLibrary
                 }
             }
            Console.WriteLine("\nStaff Not Found !!");
+        }
+        public void Print()
+        {
+            Console.WriteLine("Teaching staff");
         }
     }
 }

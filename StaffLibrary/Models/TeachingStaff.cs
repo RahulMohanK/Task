@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 namespace StaffLibrary
 {
       public class TeachingStaff : Staff
@@ -12,7 +13,9 @@ namespace StaffLibrary
         //     this.email = email;
         //     this.subject = subject;
         // }
-               public string Subject 
+        [Required(ErrorMessage="Subject must not be empty")]
+        [RegularExpression(@"^[a-zA-Z. ]+$",ErrorMessage="Please Enter Valid Subject")]
+        public string Subject 
         {
             get{return subject;}
             set{subject = value;}
