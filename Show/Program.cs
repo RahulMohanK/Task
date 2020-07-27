@@ -4,6 +4,7 @@ using OperationLibrary;
 using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 
 namespace Show
 {
@@ -152,6 +153,11 @@ namespace Show
 
             StaffOperation s = new StaffOperation();
             s.Print();
+            // string[] list = s.configList("Subject");
+            // foreach (var val in list)
+            //     Console.WriteLine("this is value:" + val);
+            // var a = ConfigurationManager.AppSettings["a"];
+            // Console.WriteLine("This is value:" + a);
 
 
 

@@ -10,8 +10,24 @@ namespace OperationLibrary
         public void AddStaff()
         {
             EnterValues();
+            SubjectOptions = configList("Designation");
             Console.WriteLine("Enter Designation :");
-            designation = Console.ReadLine();
+            do
+            {
+                Console.WriteLine("\nSelect any one option(0 to exit)");
+
+                foreach (var val in SubjectOptions)
+                    Console.WriteLine(++Count + " :" + val);
+
+                int.TryParse(Console.ReadLine(), out Select);
+                if (Select == 0)
+                {
+                    break;
+                }
+                designation = SubjectOptions[Select - 1];
+                break;
+            }
+            while (Select != 0);
             AdministrativeStaff admin = new AdministrativeStaff();
             admin.Id = id;
             admin.Name = name;

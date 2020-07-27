@@ -1,15 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
     <ProjectReference Include="..\StaffLibrary\StaffLibrary.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+    <PackageReference Include="System.Configuration" Version="2.0.5" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
   </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
 </Project>

@@ -8,11 +8,29 @@ namespace OperationLibrary
     public class TeachingStaffOperation : StaffOperation, IStaffOperation
     {
         static List<TeachingStaff> teachingList = new List<TeachingStaff>();
+
         public void AddStaff()
         {
             EnterValues();
+            SubjectOptions = configList("Subject");
             Console.WriteLine("Enter Subject :");
-            subject = Console.ReadLine();
+            do
+            {
+                Console.WriteLine("\nSelect any one option(0 to exit)");
+
+                foreach (var val in SubjectOptions)
+                    Console.WriteLine(++Count + " :" + val);
+
+                int.TryParse(Console.ReadLine(), out Select);
+                if (Select == 0)
+                {
+                    break;
+                }
+                subject = SubjectOptions[Select - 1];
+                break;
+            }
+            while (Select != 0);
+
             TeachingStaff teaching = new TeachingStaff();
             teaching.Id = id;
             teaching.Name = name;

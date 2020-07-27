@@ -42,7 +42,19 @@
               "version": "[2.0.3, )",
               "autoReferenced": true
             },
+            "System.Collections.Specialized": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
             "System.ComponentModel.Annotations": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
+            "System.Configuration": {
+              "target": "Package",
+              "version": "[2.0.5, )"
+            },
+            "System.Configuration.ConfigurationManager": {
               "target": "Package",
               "version": "[4.7.0, )"
             }

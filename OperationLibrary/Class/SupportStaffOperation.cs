@@ -11,8 +11,24 @@ namespace OperationLibrary
         public void AddStaff()
         {
             EnterValues();
+            SubjectOptions = configList("Department");
             Console.WriteLine("Enter Department :");
-            department = Console.ReadLine();
+            do
+            {
+                Console.WriteLine("\nSelect any one option(0 to exit)");
+
+                foreach (var val in SubjectOptions)
+                    Console.WriteLine(++Count + " :" + val);
+
+                int.TryParse(Console.ReadLine(), out Select);
+                if (Select == 0)
+                {
+                    break;
+                }
+                department = SubjectOptions[Select - 1];
+                break;
+            }
+            while (Select != 0);
             SupportStaff support = new SupportStaff();
             support.Id = id;
             support.Name = name;

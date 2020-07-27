@@ -2,7 +2,8 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.Configuration;
+using System.Collections.Specialized;
 namespace OperationLibrary
 {
 
@@ -12,6 +13,17 @@ namespace OperationLibrary
         public bool parseSuccess;
         public int id;
         public bool valid;
+        public static string[] SubjectOptions;
+        public int Select, Count = 0;
+
+
+
+        public string[] configList(string select)
+        {
+            string a = ConfigurationManager.AppSettings[select];
+            string[] list = a.Split('|');
+            return list;
+        }
         public void inputId()
         {
             do
@@ -55,6 +67,8 @@ namespace OperationLibrary
                 }
             }
         }
+
+
         public void Print()
         {
             int chClass, chMethod, i = 0, j = 0, conClass, conMethod;
