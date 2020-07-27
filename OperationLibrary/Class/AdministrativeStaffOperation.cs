@@ -10,6 +10,8 @@ namespace OperationLibrary
         public void AddStaff()
         {
             EnterValues();
+            Console.WriteLine("Enter Designation :");
+            designation = Console.ReadLine();
             AdministrativeStaff admin = new AdministrativeStaff();
             admin.Id = id;
             admin.Name = name;
@@ -211,9 +213,6 @@ namespace OperationLibrary
             }
             Console.WriteLine("\nStaff Not Found !!");
         }
-        public void Print()
-        {
-            Console.WriteLine("Teaching staff");
-        }
+
     }
 }

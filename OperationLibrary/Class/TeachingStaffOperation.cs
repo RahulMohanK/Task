@@ -11,6 +11,8 @@ namespace OperationLibrary
         public void AddStaff()
         {
             EnterValues();
+            Console.WriteLine("Enter Subject :");
+            subject = Console.ReadLine();
             TeachingStaff teaching = new TeachingStaff();
             teaching.Id = id;
             teaching.Name = name;

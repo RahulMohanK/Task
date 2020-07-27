@@ -10,8 +10,9 @@ namespace OperationLibrary
 
         public void AddStaff()
         {
-
             EnterValues();
+            Console.WriteLine("Enter Department :");
+            department = Console.ReadLine();
             SupportStaff support = new SupportStaff();
             support.Id = id;
             support.Name = name;

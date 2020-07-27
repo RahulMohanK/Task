@@ -40,8 +40,7 @@ namespace OperationLibrary
 
             Console.WriteLine("Enter Email :");
             email = Console.ReadLine();
-            Console.WriteLine("Enter Subject :");
-            subject = Console.ReadLine();
+
         }
         public void validation(object obj)
         {
@@ -94,8 +93,10 @@ namespace OperationLibrary
                     {
                         Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
                     }
-                    Console.WriteLine("Enter method option :");
+                    Console.WriteLine("Enter method option (6 to Exit):");
                     int.TryParse(Console.ReadLine(), out chMethod);
+                    if (chMethod == 6)
+                    { break; }
                     object obj = Activator.CreateInstance(dict[chClass]);
                     Console.WriteLine(dict2[chMethod]);
                     MethodInfo mi = dict[chClass].GetMethod(dict2[chMethod]);
