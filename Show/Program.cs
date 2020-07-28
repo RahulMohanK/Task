@@ -11,41 +11,42 @@ namespace Show
 
     class Program
     {
-        public Type Itype;
-        public int chClass,chMethod;
-        public bool parseSuccess;
-
-
-        public void inputchClass(int index)
-        { 
-           
+        static int inputchClass(int index, int chClass)
+        {
+            bool parseSuccess;
             do
             {
                 parseSuccess = int.TryParse(Console.ReadLine(), out chClass);
-               
-                if (!parseSuccess || chClass>index || chClass<0 )
+
+                if (!parseSuccess || chClass > index || chClass < 0)
                 {
                     Console.WriteLine("Enter valid option:");
                 }
             }
-            while (parseSuccess != true || chClass>index || chClass<0);
+            while (parseSuccess != true || chClass > index || chClass < 0);
+            return chClass;
         }
-        public void inputchMethod( int index)
+        static int inputchMethod(int index, int chMethod)
         {
+            bool parseSuccess;
             do
             {
                 parseSuccess = int.TryParse(Console.ReadLine(), out chMethod);
-                if (!parseSuccess|| chMethod>index || chMethod<0)
+                if (!parseSuccess || chMethod > index || chMethod < 0)
                 {
                     Console.WriteLine("Enter valid option:");
                 }
             }
-            while (parseSuccess != true || chMethod>index || chMethod<0);
+            while (parseSuccess != true || chMethod > index || chMethod < 0);
+            return chMethod;
         }
-         public void Print()
+
+        static void Main(string[] args)
         {
             int i = 0, j = 0;
-           
+            Type Itype = null;
+            int chClass = -1, chMethod = -1;
+
             var assembly = Assembly.Load("OperationLibrary");
             Type[] types = assembly.GetTypes();
 
@@ -55,7 +56,7 @@ namespace Show
             {
 
                 var typeinfo = type.GetTypeInfo();
-                
+
                 if (typeinfo.FullName != "OperationLibrary.StaffOperation" && typeinfo.FullName != "OperationLibrary.IStaffOperation")
                 {
                     dict.Add(++i, type);
@@ -73,7 +74,7 @@ namespace Show
                 dict2.Add(++j, type1.Name);
             }
 
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 Console.WriteLine("==========Main Menu==========\nPress 0 To Exit Application");
@@ -82,43 +83,35 @@ namespace Show
                     Console.WriteLine("{0}. {1}", item.Key, (string)item.Value.FullName.Remove(0, 17));
                 }
                 Console.WriteLine("Enter option :");
-                
-                inputchClass(i);
+
+                chClass = inputchClass(i, chClass);
                 if (chClass == 0)
                 { break; }
                 else
                 {
-                    while(true)
+                    while (true)
                     {
-                        
+
                         Console.WriteLine("\n" + dict[chClass].FullName.Remove(0, 17) + "\n");
                         foreach (KeyValuePair<int, string> item in dict2)
                         {
                             Console.WriteLine("{0}. {1}", item.Key, item.Value);
                         }
                         Console.WriteLine("Enter Operation option (0 to Exit):");
-                        inputchMethod(j);
-                        
+                        chMethod = inputchMethod(j, chMethod);
+
                         if (chMethod == 0)
                         { break; }
                         object obj = Activator.CreateInstance(dict[chClass]);
-                        Console.WriteLine("\n"+dict2[chMethod]);
+                        Console.WriteLine("\n" + dict2[chMethod]);
                         MethodInfo mi = dict[chClass].GetMethod(dict2[chMethod]);
                         mi.Invoke(obj, null);
-                        
+
                     }
-                   
-                    
+
+
                 }
             }
-            
-
-
-        }
-        static void Main(string[] args)
-        {       
-            Program pgm = new Program();
-            pgm.Print();
         }
     }
 }

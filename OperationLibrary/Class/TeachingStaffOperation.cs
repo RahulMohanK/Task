@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using StaffLibrary;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 namespace OperationLibrary
 {
 
@@ -11,85 +11,97 @@ namespace OperationLibrary
 
         public void AddStaff()
         {
+            string subject = "";
+            int Count = 0, Select, id = 0;
+
+            DateTime dob = DateTime.Now;
+            bool valid = false;
+            string[] opt = new string[4];
+            string[] Options;
             TeachingStaff teaching = new TeachingStaff();
-            do{
-            EnterValues();
-            Options = configList("Subject");
-            Console.WriteLine("Enter Subject :");
             do
             {
-                Console.WriteLine("\nSelect any one option(0 to exit)");
-
-                foreach (var val in Options)
-                    Console.WriteLine(++Count + " :" + val);
-                Count = 0;
-
-                int.TryParse(Console.ReadLine(), out Select);
-                if (Select == 0)
+                opt = EnterValues();
+                Options = configList("Subject");
+                Console.WriteLine("Enter Subject :");
+                do
                 {
+                    Console.WriteLine("\nSelect any one option(0 to exit)");
+
+                    foreach (var val in Options)
+                        Console.WriteLine(++Count + " :" + val);
+                    Count = 0;
+
+                    int.TryParse(Console.ReadLine(), out Select);
+                    if (Select == 0)
+                    {
+                        break;
+                    }
+                    subject = Options[Select - 1];
                     break;
                 }
-                subject = Options[Select - 1];
-                break;
-            }
-            while (Select != 0);
+                while (Select != 0);
 
-            
-           
-            teaching.Name = name;
-            teaching.Phone = phone;
-            teaching.Dob = dob;
-            teaching.Email = email;
-            teaching.Subject = subject;
-            validation(teaching);
-            if(!valid)
-            {Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
-            inputOption();
-             if(id == 1)
-             {
-                 continue;
-             }
-             else{break;}
+                teaching.Name = opt[0];
+                teaching.Phone = opt[1];
+                if (!String.IsNullOrEmpty(opt[2]))
+                {
+                    teaching.Dob = Convert.ToDateTime(opt[2]);
+                }
+                teaching.Email = opt[3];
+                teaching.Subject = subject;
+                valid = validation(teaching);
+                if (!valid)
+                {
+                    Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
+                    id = inputOption();
+                    if (id == 1)
+                    {
+                        continue;
+                    }
+                    else { break; }
+                }
             }
-            }
-            while(!valid);
+            while (!valid);
 
-            if(valid)
+            if (valid)
             {
                 teachingList.Add(teaching);
-                    Console.WriteLine("\nValues added are :\n");
-                    Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject); 
+                Console.WriteLine("\nValues added are :\n");
+                Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
             }
 
-          
+
         }
 
         public void RetrieveAllStaff()
         {
+            int k = 0;
             if (teachingList.Count == 0)
             {
                 Console.WriteLine("List is empty\n");
             }
             else
             {
-                Console.WriteLine("Details are :\n");
+                Console.WriteLine("\nDetails are :");
                 foreach (var teaching in teachingList)
                 {
-                    Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
+                    Console.WriteLine("\nId: " + (++k) + " Name: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
                 }
             }
 
         }
         public void RetrieveSingleStaff()
         {
+            string name = "";
             Console.WriteLine("Enter Details to Search :");
-          
+
             Console.WriteLine("Enter Name :");
-           
-            inputName();
+
+            name = inputName();
             foreach (var teaching in teachingList)
             {
-                if ( teaching.Name == name)
+                if (teaching.Name == name)
                 {
                     Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
                     return;
@@ -99,7 +111,12 @@ namespace OperationLibrary
         }
         public void EditHelp(TeachingStaff teaching, TeachingStaff teachingEdit)
         {
+
             int option;
+            bool valid = false;
+            string name = "", phone = "", email = "", subject = "", date = "";
+            string[] Options;
+            int Select, Count = 0;
             Console.WriteLine("Edit Details of Staff :" + teaching.Name);
             do
             {
@@ -111,7 +128,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Name :");
                         name = Console.ReadLine();
                         teachingEdit.Name = name;
-                        validation(teachingEdit);
+                        valid = validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine("Name :" + teachingEdit.Name);
@@ -122,7 +139,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Phone No:");
                         phone = Console.ReadLine();
                         teachingEdit.Phone = phone;
-                        validation(teachingEdit);
+                        valid = validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine("Phone :" + teachingEdit.Phone);
@@ -131,10 +148,10 @@ namespace OperationLibrary
                         break;
                     case 3:
                         Console.WriteLine("Enter date of birth");
-                       
-                        inputDob();
-                        teachingEdit.Dob = dob;
-                        validation(teachingEdit);
+
+                        date = inputDob();
+                        teachingEdit.Dob = Convert.ToDateTime(date);
+                        valid = validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine("Date of birth :" + teaching.Dob);
@@ -145,7 +162,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Email");
                         email = Console.ReadLine();
                         teachingEdit.Email = email;
-                        validation(teachingEdit);
+                        valid = validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine(" Email :" + teachingEdit.Email);
@@ -153,10 +170,27 @@ namespace OperationLibrary
 
                         break;
                     case 5:
+                        Options = configList("Subject");
                         Console.WriteLine("Enter Subject");
-                        subject = Console.ReadLine();
+                        do
+                        {
+                            Console.WriteLine("\nSelect any one option(0 to exit)");
+
+                            foreach (var val in Options)
+                                Console.WriteLine(++Count + " :" + val);
+                            Count = 0;
+
+                            int.TryParse(Console.ReadLine(), out Select);
+                            if (Select == 0)
+                            {
+                                break;
+                            }
+                            subject = Options[Select - 1];
+                            break;
+                        }
+                        while (Select != 0);
                         teachingEdit.Subject = subject;
-                        validation(teachingEdit);
+                        valid = validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine("Subject :" + teachingEdit.Subject);
@@ -164,7 +198,7 @@ namespace OperationLibrary
 
                         break;
                     case 6:
-                        validation(teachingEdit);
+                        valid = validation(teachingEdit);
                         if (!valid)
                         {
                             Console.WriteLine("Values Not Edited");
@@ -193,16 +227,21 @@ namespace OperationLibrary
         public void EditStaff()
         {
             bool flag = false;
-            Console.WriteLine("Enter Details of Staff to be Deleted :");
-            Console.WriteLine("Enter Name:");
-           
-            inputName();
+            int id = 0, iterator = 0;
+            RetrieveAllStaff();
+            Console.WriteLine("Enter details of staff to be edited:");
+            Console.WriteLine("Enter Id :");
+            id = inputOption();
+
+
+            //name = inputName();
             foreach (var teaching in teachingList)
             {
-                if (teaching.Name == name)
+                ++iterator;
+                if (id == iterator)
                 {
                     TeachingStaff teachingEdit = new TeachingStaff();
-                   
+
                     teachingEdit.Name = teaching.Name;
                     teachingEdit.Phone = teaching.Phone;
                     teachingEdit.Dob = teaching.Dob;
@@ -222,18 +261,20 @@ namespace OperationLibrary
         }
         public void DeleteStaff()
         {
-            Console.WriteLine("Enter Details of Staff to be Deleted :");
-           
-            Console.WriteLine("Enter Name :");
-           
-            inputName();
 
+            int id = 0, iterator = 0;
+            RetrieveAllStaff();
+            Console.WriteLine("\nEnter Details to Delete :");
+
+            Console.WriteLine("Enter id:");
+            id = inputOption();
             foreach (var teaching in teachingList)
             {
-                if (teaching.Name == name)
+                ++iterator;
+                if (id == iterator)
                 {
                     teachingList.Remove(teaching);
-                    Console.WriteLine("Successfully Deleted :" +"\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
+                    Console.WriteLine("Successfully Deleted :" + "\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
                     return;
                 }
             }

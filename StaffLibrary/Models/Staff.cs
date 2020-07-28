@@ -4,17 +4,17 @@ using System.Globalization;
 
 namespace StaffLibrary
 {
-    
-    public class Staff
+
+    public abstract class Staff
     {
 
-       
+
         private string name;
         private string phone;
         private DateTime dob;
         private string email;
 
-        
+
 
         [Required(ErrorMessage = "Name must not be null")]
         [DataType(DataType.Text)]
@@ -33,7 +33,7 @@ namespace StaffLibrary
             set { phone = value; }
         }
 
-        [DataType(DataType.DateTime,ErrorMessage=" DateFormat Not Correct")]    
+        [DataType(DataType.DateTime, ErrorMessage = " DateFormat Not Correct")]
         public DateTime Dob
         {
             get { return dob; }
