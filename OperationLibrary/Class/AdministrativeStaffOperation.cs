@@ -33,7 +33,6 @@ namespace OperationLibrary
             }
             while (Select != 0);
             
-            // admin.Id = id;
             admin.Name = name;
             admin.Phone = phone;
             admin.Dob = dob;
@@ -57,25 +56,7 @@ namespace OperationLibrary
              Console.WriteLine("\nValues added are :\n");
              Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
         }
-            // if (admin != null)
-            // {
-            //     ValidationContext context = new ValidationContext(admin, null, null);
-            //     List<ValidationResult> validationResults = new List<ValidationResult>();
-            //     bool valid = Validator.TryValidateObject(admin, context, validationResults, true);
-            //     if (!valid)
-            //     {
-            //         foreach (ValidationResult validation in validationResults)
-            //         {
-            //             Console.WriteLine(validation.ErrorMessage);
-            //         }
-            //     }
-            //     else
-            //     {
-            //         administrativeList.Add(admin);
-            //         Console.WriteLine("\nValues added are :\n");
-            //         Console.WriteLine("\nId :" + admin.Id + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
-            //     }
-            // }
+    
         }
         public void RetrieveAllStaff()
         {
@@ -96,10 +77,9 @@ namespace OperationLibrary
         public void RetrieveSingleStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            // Console.WriteLine("Enter ID :");
-            // inputId();
+          
             Console.WriteLine("Enter Name :");
-            //name = Console.ReadLine();
+           
             inputName();
 
             foreach (var admin in administrativeList)
@@ -148,7 +128,7 @@ namespace OperationLibrary
                     case 3:
                         Console.WriteLine("Enter date of birth");
                         inputDob();
-                        //DateTime.TryParse(Console.ReadLine(), out dob);
+                       
                         adminEdit.Dob = dob;
                         validation(adminEdit);
                         if (valid)
@@ -211,15 +191,14 @@ namespace OperationLibrary
             bool flag = false;
             Console.WriteLine("Enter Details of Staff to be Deleted :");
             Console.WriteLine("Enter Name :");
-            //name = Console.ReadLine();
-            //inputId(();
+           
             inputName();
             foreach (var admin in administrativeList)
             {
                 if (admin.Name == name)
                 {
                     AdministrativeStaff adminEdit = new AdministrativeStaff();
-                    // adminEdit.Id = admin.Id;
+                   
                     adminEdit.Name = admin.Name;
                     adminEdit.Phone = admin.Phone;
                     adminEdit.Email = admin.Email;
@@ -238,10 +217,9 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            // Console.WriteLine("Enter ID :");
-            // inputId();
+            
             Console.WriteLine("Enter Name :");
-            //name = Console.ReadLine();
+            
             inputName();
 
             foreach (var admin in administrativeList)

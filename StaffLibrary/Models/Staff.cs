@@ -8,18 +8,13 @@ namespace StaffLibrary
     public class Staff
     {
 
-       // private int id;
+       
         private string name;
         private string phone;
         private DateTime dob;
         private string email;
 
-        // [Required(ErrorMessage = "Id must not be null")]
-        // public int Id
-        // {
-        //     get { return id; }
-        //     set { id = value; }
-        // }
+        
 
         [Required(ErrorMessage = "Name must not be null")]
         [DataType(DataType.Text)]

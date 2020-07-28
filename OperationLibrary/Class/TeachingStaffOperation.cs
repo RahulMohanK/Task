@@ -35,7 +35,7 @@ namespace OperationLibrary
             while (Select != 0);
 
             
-            // teaching.Id = id;
+           
             teaching.Name = name;
             teaching.Phone = phone;
             teaching.Dob = dob;
@@ -61,25 +61,7 @@ namespace OperationLibrary
                     Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject); 
             }
 
-            // if (teaching != null)
-            // {
-            //     ValidationContext context = new ValidationContext(teaching, null, null);
-            //     List<ValidationResult> validationResults = new List<ValidationResult>();
-            //     valid = Validator.TryValidateObject(teaching, context, validationResults, true);
-            //     if (!valid)
-            //     {
-            //         foreach (ValidationResult validation in validationResults)
-            //         {
-            //             Console.WriteLine(validation.ErrorMessage);
-            //         }
-            //     }
-            //     else
-            //     {
-            //         teachingList.Add(teaching);
-            //         Console.WriteLine("\nValues added are :\n");
-            //         Console.WriteLine("Id :" + teaching.Id + " Name: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
-            //     }
-            // }
+          
         }
 
         public void RetrieveAllStaff()
@@ -101,10 +83,9 @@ namespace OperationLibrary
         public void RetrieveSingleStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            // Console.WriteLine("Enter ID :");
-            // inputId();
+          
             Console.WriteLine("Enter Name :");
-            //name = Console.ReadLine();
+           
             inputName();
             foreach (var teaching in teachingList)
             {
@@ -150,7 +131,7 @@ namespace OperationLibrary
                         break;
                     case 3:
                         Console.WriteLine("Enter date of birth");
-                        //DateTime.TryParse(Console.ReadLine(), out dob);
+                       
                         inputDob();
                         teachingEdit.Dob = dob;
                         validation(teachingEdit);
@@ -214,15 +195,14 @@ namespace OperationLibrary
             bool flag = false;
             Console.WriteLine("Enter Details of Staff to be Deleted :");
             Console.WriteLine("Enter Name:");
-            //name = Console.ReadLine();
-            // inputId();
+           
             inputName();
             foreach (var teaching in teachingList)
             {
                 if (teaching.Name == name)
                 {
                     TeachingStaff teachingEdit = new TeachingStaff();
-                    // teachingEdit.Id = teaching.Id;
+                   
                     teachingEdit.Name = teaching.Name;
                     teachingEdit.Phone = teaching.Phone;
                     teachingEdit.Dob = teaching.Dob;
@@ -243,10 +223,9 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             Console.WriteLine("Enter Details of Staff to be Deleted :");
-            // Console.WriteLine("Enter ID :");
-            // inputId();
+           
             Console.WriteLine("Enter Name :");
-            //name = Console.ReadLine();
+           
             inputName();
 
             foreach (var teaching in teachingList)
@@ -261,10 +240,6 @@ namespace OperationLibrary
             Console.WriteLine("\nStaff Not Found !!");
         }
 
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Teaching staff");
-        }
 
     }
 }

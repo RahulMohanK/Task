@@ -32,9 +32,6 @@ namespace OperationLibrary
                 break;
             }
             while (Select != 0);
-            
-           
-            // support.Id = id;
             support.Name = name;
             support.Phone = phone;
             support.Dob = dob;
@@ -61,26 +58,7 @@ namespace OperationLibrary
                     Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
             }
 
-            // if (support != null)
-            // {
-            //     ValidationContext context = new ValidationContext(support, null, null);
-            //     List<ValidationResult> validationResults = new List<ValidationResult>();
-            //     valid = Validator.TryValidateObject(support, context, validationResults, true);
-            //     if (!valid)
-            //     {
-            //         foreach (ValidationResult validation in validationResults)
-            //         {
-            //             Console.WriteLine(validation.ErrorMessage);
-            //         }
-            //     }
-            //     else
-            //     {
-            //         supportList.Add(support);
-            //         Console.WriteLine("\nValues added are :\n");
-
-            //         Console.WriteLine("Id :" + support.Id + " Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
-            //     }
-            // }
+           
         }
         public void RetrieveAllStaff()
         {
@@ -100,10 +78,7 @@ namespace OperationLibrary
         public void RetrieveSingleStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            // Console.WriteLine("Enter ID :");
-            // inputId();
             Console.WriteLine("Enter Name :");
-            //name = Console.ReadLine();
             inputName();
 
             foreach (var support in supportList)
@@ -153,7 +128,6 @@ namespace OperationLibrary
                         break;
                     case 3:
                         Console.WriteLine("Enter date of birth");
-                        //DateTime.TryParse(Console.ReadLine(), out dob);
                         inputDob();
                         supportEdit.Dob = dob;
                         validation(supportEdit);
@@ -218,15 +192,12 @@ namespace OperationLibrary
             bool flag = false;
             Console.WriteLine("Enter Details of Staff to be Deleted :");
             Console.WriteLine("Enter Name :");
-           // name = Console.ReadLine();
-            //inputId();
             inputName();
             foreach (var support in supportList)
             {
                 if (support.Name == name)
                 {
                     SupportStaff supportEdit = new SupportStaff();
-                    // supportEdit.Id = support.Id;
                     supportEdit.Name = support.Name;
                     supportEdit.Phone = support.Phone;
                     supportEdit.Dob = support.Dob;
@@ -246,10 +217,9 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            // Console.WriteLine("Enter ID :");
-            // inputId();
+    
             Console.WriteLine("Enter Name :");
-           // name = Console.ReadLine();
+           
            inputName();
 
             foreach (var support in supportList)

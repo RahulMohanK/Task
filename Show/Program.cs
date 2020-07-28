@@ -18,7 +18,7 @@ namespace Show
 
         public void inputchClass(int index)
         { 
-            // int temp;
+           
             do
             {
                 parseSuccess = int.TryParse(Console.ReadLine(), out chClass);
@@ -45,7 +45,7 @@ namespace Show
          public void Print()
         {
             int i = 0, j = 0;
-            //  conClass, conMethod;
+           
             var assembly = Assembly.Load("OperationLibrary");
             Type[] types = assembly.GetTypes();
 
@@ -55,7 +55,7 @@ namespace Show
             {
 
                 var typeinfo = type.GetTypeInfo();
-                //Console.WriteLine("type" + typeinfo.FullName);
+                
                 if (typeinfo.FullName != "OperationLibrary.StaffOperation" && typeinfo.FullName != "OperationLibrary.IStaffOperation")
                 {
                     dict.Add(++i, type);
@@ -82,7 +82,7 @@ namespace Show
                     Console.WriteLine("{0}. {1}", item.Key, (string)item.Value.FullName.Remove(0, 17));
                 }
                 Console.WriteLine("Enter option :");
-                //int.TryParse(Console.ReadLine(), out chClass);
+                
                 inputchClass(i);
                 if (chClass == 0)
                 { break; }
@@ -90,7 +90,7 @@ namespace Show
                 {
                     while(true)
                     {
-                        //Console.Clear();
+                        
                         Console.WriteLine("\n" + dict[chClass].FullName.Remove(0, 17) + "\n");
                         foreach (KeyValuePair<int, string> item in dict2)
                         {
@@ -98,22 +98,20 @@ namespace Show
                         }
                         Console.WriteLine("Enter Operation option (0 to Exit):");
                         inputchMethod(j);
-                        //int.TryParse(Console.ReadLine(), out chMethod);
+                        
                         if (chMethod == 0)
                         { break; }
                         object obj = Activator.CreateInstance(dict[chClass]);
                         Console.WriteLine("\n"+dict2[chMethod]);
                         MethodInfo mi = dict[chClass].GetMethod(dict2[chMethod]);
                         mi.Invoke(obj, null);
-                        // Console.WriteLine("Do you want to return to main Menu(yes-1/No-0):");
-                        // int.TryParse(Console.ReadLine(), out conMethod);
+                        
                     }
                    
-                    // Console.WriteLine("Do you want to Exit Application (yes-1/No-0):");
-                    // int.TryParse(Console.ReadLine(), out conClass);
+                    
                 }
             }
-            // while (conClass != 1);
+            
 
 
         }

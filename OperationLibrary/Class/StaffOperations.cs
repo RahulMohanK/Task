@@ -72,8 +72,6 @@ namespace OperationLibrary
         public void EnterValues()
         {
             Console.WriteLine("Enter Details :\n");
-            // Console.WriteLine("Enter Id:");
-            // inputId();
             Console.WriteLine("Enter Name :");
             name = Console.ReadLine();
 
@@ -82,8 +80,6 @@ namespace OperationLibrary
 
             Console.WriteLine("Enter date of birth (DD/MM/YYYY):");
             inputDob();
-           // date = Console.ReadLine();
-            //DateTime.TryParse(Console.ReadLine(), out dob);
 
             Console.WriteLine("Enter Email :");
             email = Console.ReadLine();
