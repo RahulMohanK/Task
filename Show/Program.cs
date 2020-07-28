@@ -88,8 +88,6 @@ namespace Show
                 Console.WriteLine("==========Main Menu==========\nPress 0 To Exit Application");
                 foreach (KeyValuePair<int, Type> item in dict)
                 {
-                    // System.Attribute[] attrs = System.Attribute.GetCustomAttributes(item.Value);
-                    // var dname = attrs[0] as DisplayNameAttribute;
                     attrname = GetItemName(item.Value);
                     Console.WriteLine("{0}. {1}", item.Key, attrname);
                 }

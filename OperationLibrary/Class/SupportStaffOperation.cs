@@ -112,7 +112,6 @@ namespace OperationLibrary
             int option;
             bool valid = false;
             string name = "", phone = "", email = "", department = "", date = "";
-            //DateTime date = DateTime.Now;
             string[] Options;
             int Select, Count = 0;
             Console.WriteLine("Edit Details of Staff :" + support.Name);
