@@ -19,13 +19,13 @@ namespace OperationLibrary
         //public static string[] Options;
         //public int Select, Count = 0;
 
-        public static string[] configList(string select)
+        protected static string[] ConfigList(string select)
         {
             string a = ConfigurationManager.AppSettings[select];
             string[] list = a.Split('|');
             return list;
         }
-        public static int inputOption()
+        protected static int InputOption()
         {
             bool parseSuccess = false;
             int id;
@@ -40,11 +40,12 @@ namespace OperationLibrary
             while (parseSuccess != true);
             return id;
         }
-        public static string inputDob()
+        protected static string InputDob()
         {
             string date = "";
             bool parseSuccess = false;
             DateTime dob = DateTime.Now;
+            string retVal = "";
 
             do
             {
@@ -52,6 +53,7 @@ namespace OperationLibrary
                 if (!String.IsNullOrEmpty(date))
                 {
                     parseSuccess = DateTime.TryParse(date, out dob);
+                    retVal = dob.ToString();
                     if (!parseSuccess)
                     {
                         Console.WriteLine("Enter Valid Date:");
@@ -64,17 +66,9 @@ namespace OperationLibrary
 
             }
             while (parseSuccess != true);
-            if (String.IsNullOrEmpty(date))
-            {
-                return null;
-            }
-            else
-            {
-
-                return dob.ToString();
-            }
+            return retVal;
         }
-        public static string inputName()
+        protected static string InputName()
         {
             string name = "";
             bool parseSuccess = false;
@@ -92,10 +86,11 @@ namespace OperationLibrary
             return name;
         }
 
-        public static string[] EnterValues()
+        protected static object[] EnterValues()
         {
-            String[] fields = new String[4];
+            object[] fields = new object[4];
             string name = "", phone = "", email = "", dob = "";
+            // DateTime dob = DateTime.Now;
             Console.WriteLine("=====Enter Details=====");
             Console.WriteLine("Enter Name :");
             name = Console.ReadLine();
@@ -106,7 +101,7 @@ namespace OperationLibrary
             fields[1] = phone;
 
             Console.WriteLine("Enter date of birth (DD/MM/YYYY):");
-            dob = inputDob();
+            dob = InputDob();
             fields[2] = dob;
 
 
@@ -117,7 +112,7 @@ namespace OperationLibrary
             return fields;
 
         }
-        public static bool validation(object obj)
+        protected static bool Validation(object obj)
         {
             bool valid = false;
             ValidationContext context = new ValidationContext(obj, null, null);

@@ -4,6 +4,7 @@ using OperationLibrary;
 using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.Configuration;
 
 namespace Show
@@ -11,7 +12,14 @@ namespace Show
 
     class Program
     {
-        static int inputchClass(int index, int chClass)
+        static string GetItemName(System.Type type)
+        {
+            System.Attribute[] attrs = System.Attribute.GetCustomAttributes(type);
+            var attrname = attrs[0] as DisplayNameAttribute;
+            return attrname.DisplayName;
+
+        }
+        static int InputchClass(int index, int chClass)
         {
             bool parseSuccess;
             do
@@ -26,7 +34,7 @@ namespace Show
             while (parseSuccess != true || chClass > index || chClass < 0);
             return chClass;
         }
-        static int inputchMethod(int index, int chMethod)
+        static int InputchMethod(int index, int chMethod)
         {
             bool parseSuccess;
             do
@@ -46,12 +54,12 @@ namespace Show
             int i = 0, j = 0;
             Type Itype = null;
             int chClass = -1, chMethod = -1;
-
+            string attrname;
             var assembly = Assembly.Load("OperationLibrary");
             Type[] types = assembly.GetTypes();
 
             Dictionary<int, Type> dict = new Dictionary<int, Type>();
-            Dictionary<int, string> dict2 = new Dictionary<int, string>();
+            Dictionary<int, MethodInfo> dict2 = new Dictionary<int, MethodInfo>();
             foreach (var type in types)
             {
 
@@ -71,7 +79,7 @@ namespace Show
             var mis = Itype.GetMethods();
             foreach (var type1 in mis)
             {
-                dict2.Add(++j, type1.Name);
+                dict2.Add(++j, type1);
             }
 
             while (true)
@@ -80,31 +88,37 @@ namespace Show
                 Console.WriteLine("==========Main Menu==========\nPress 0 To Exit Application");
                 foreach (KeyValuePair<int, Type> item in dict)
                 {
-                    Console.WriteLine("{0}. {1}", item.Key, (string)item.Value.FullName.Remove(0, 17));
+                    // System.Attribute[] attrs = System.Attribute.GetCustomAttributes(item.Value);
+                    // var dname = attrs[0] as DisplayNameAttribute;
+                    attrname = GetItemName(item.Value);
+                    Console.WriteLine("{0}. {1}", item.Key, attrname);
                 }
                 Console.WriteLine("Enter option :");
 
-                chClass = inputchClass(i, chClass);
+                chClass = InputchClass(i, chClass);
                 if (chClass == 0)
                 { break; }
                 else
                 {
                     while (true)
                     {
-
-                        Console.WriteLine("\n" + dict[chClass].FullName.Remove(0, 17) + "\n");
-                        foreach (KeyValuePair<int, string> item in dict2)
+                        attrname = GetItemName(dict[chClass]);
+                        Console.WriteLine("\n" + attrname + "\n");
+                        foreach (KeyValuePair<int, MethodInfo> item in dict2)
                         {
-                            Console.WriteLine("{0}. {1}", item.Key, item.Value);
+                            System.Attribute[] attrs = System.Attribute.GetCustomAttributes(item.Value);
+                            var dname = attrs[0] as DisplayNameAttribute;
+
+                            Console.WriteLine("{0}. {1}", item.Key, dname.DisplayName);
                         }
                         Console.WriteLine("Enter Operation option (0 to Exit):");
-                        chMethod = inputchMethod(j, chMethod);
+                        chMethod = InputchMethod(j, chMethod);
 
                         if (chMethod == 0)
                         { break; }
                         object obj = Activator.CreateInstance(dict[chClass]);
                         Console.WriteLine("\n" + dict2[chMethod]);
-                        MethodInfo mi = dict[chClass].GetMethod(dict2[chMethod]);
+                        MethodInfo mi = dict[chClass].GetMethod(dict2[chMethod].Name);
                         mi.Invoke(obj, null);
 
                     }
@@ -112,6 +126,7 @@ namespace Show
 
                 }
             }
+
         }
     }
 }

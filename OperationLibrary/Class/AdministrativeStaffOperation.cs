@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 using StaffLibrary;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 namespace OperationLibrary
 {
+    [DisplayName("Administrative Staff")]
     public class AdministrativeStaffOperation : StaffOperation, IStaffOperation
     {
         static List<AdministrativeStaff> administrativeList = new List<AdministrativeStaff>();
         public void AddStaff()
         {
             string designation = "";
-            DateTime date = DateTime.Now;
             int Count = 0, Select, id = 0;
             bool valid = false;
-            string[] opt = new string[4];
+            object[] opt = new object[4];
             string[] Options;
             AdministrativeStaff admin = new AdministrativeStaff();
             do
@@ -21,7 +21,7 @@ namespace OperationLibrary
 
                 opt = EnterValues();
 
-                Options = configList("Designation");
+                Options = ConfigList("Designation");
                 Console.WriteLine("Enter Designation :");
                 do
                 {
@@ -41,19 +41,22 @@ namespace OperationLibrary
                 }
                 while (Select != 0);
 
-                admin.Name = opt[0];
-                admin.Phone = opt[1];
-                admin.Email = opt[3];
+                admin.Name = opt[0].ToString();
+                admin.Phone = opt[1].ToString();
+                admin.Email = opt[3].ToString();
                 admin.Designation = designation;
-                if (!String.IsNullOrEmpty(opt[2]))
+
+                if (!String.IsNullOrEmpty(opt[2].ToString()))
                 {
                     admin.Dob = Convert.ToDateTime(opt[2]);
                 }
-                valid = validation(admin);
+
+
+                valid = Validation(admin);
                 if (!valid)
                 {
                     Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
-                    id = inputOption();
+                    id = InputOption();
                     if (id == 1)
                     {
                         continue;
@@ -94,7 +97,7 @@ namespace OperationLibrary
 
             Console.WriteLine("Enter Name :");
 
-            name = inputName();
+            name = InputName();
 
             foreach (var admin in administrativeList)
             {
@@ -112,6 +115,7 @@ namespace OperationLibrary
             int option;
             bool valid = false;
             string name = "", phone = "", email = "", designation = "", date = "";
+            // DateTime date = DateTime.Now;
             string[] Options;
             int Select, Count = 0;
             Console.WriteLine("Edit Details of Staff:" + admin.Name);
@@ -125,7 +129,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Name :");
                         name = Console.ReadLine();
                         adminEdit.Name = name;
-                        valid = validation(adminEdit);
+                        valid = Validation(adminEdit);
                         if (valid)
                         {
                             Console.WriteLine(" Name :" + adminEdit.Name);
@@ -136,7 +140,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Phone No:");
                         phone = Console.ReadLine();
                         adminEdit.Phone = phone;
-                        valid = validation(adminEdit);
+                        valid = Validation(adminEdit);
                         if (valid)
                         {
                             Console.WriteLine("Phone No:" + adminEdit.Phone);
@@ -145,9 +149,12 @@ namespace OperationLibrary
                         break;
                     case 3:
                         Console.WriteLine("Enter date of birth");
-                        date = inputDob();
-                        adminEdit.Dob = Convert.ToDateTime(date);
-                        valid = validation(adminEdit);
+                        date = InputDob();
+                        if (!String.IsNullOrEmpty(date))
+                        {
+                            adminEdit.Dob = Convert.ToDateTime(date);
+                        }
+                        valid = Validation(adminEdit);
                         if (valid)
                         {
                             Console.WriteLine(" Date of birth :" + adminEdit.Dob);
@@ -158,7 +165,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Email");
                         email = Console.ReadLine();
                         adminEdit.Email = email;
-                        valid = validation(adminEdit);
+                        valid = Validation(adminEdit);
                         if (valid)
                         {
                             Console.WriteLine(" Email Address :" + adminEdit.Email);
@@ -166,7 +173,7 @@ namespace OperationLibrary
 
                         break;
                     case 5:
-                        Options = configList("Designation");
+                        Options = ConfigList("Designation");
                         Console.WriteLine("Enter Designation");
                         do
                         {
@@ -186,7 +193,7 @@ namespace OperationLibrary
                         }
                         while (Select != 0);
                         adminEdit.Designation = designation;
-                        valid = validation(adminEdit);
+                        valid = Validation(adminEdit);
                         if (valid)
                         {
                             Console.WriteLine("Designation :" + adminEdit.Designation);
@@ -194,7 +201,7 @@ namespace OperationLibrary
 
                         break;
                     case 6:
-                        valid = validation(adminEdit);
+                        valid = Validation(adminEdit);
                         if (!valid)
                         {
                             Console.WriteLine("Values Not Edited");
@@ -228,7 +235,7 @@ namespace OperationLibrary
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
             Console.WriteLine("Enter Id :");
-            id = inputOption();
+            id = InputOption();
 
             foreach (var admin in administrativeList)
             {
@@ -260,7 +267,7 @@ namespace OperationLibrary
             Console.WriteLine("\nEnter Details to Delete :");
 
             Console.WriteLine("Enter id:");
-            id = inputOption();
+            id = InputOption();
 
             foreach (var admin in administrativeList)
             {

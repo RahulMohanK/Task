@@ -4,7 +4,7 @@ using StaffLibrary;
 using System.ComponentModel;
 namespace OperationLibrary
 {
-
+    [DisplayName("Teaching Staff")]
     public class TeachingStaffOperation : StaffOperation, IStaffOperation
     {
         static List<TeachingStaff> teachingList = new List<TeachingStaff>();
@@ -13,16 +13,14 @@ namespace OperationLibrary
         {
             string subject = "";
             int Count = 0, Select, id = 0;
-
-            DateTime dob = DateTime.Now;
             bool valid = false;
-            string[] opt = new string[4];
+            object[] opt = new object[4];
             string[] Options;
             TeachingStaff teaching = new TeachingStaff();
             do
             {
                 opt = EnterValues();
-                Options = configList("Subject");
+                Options = ConfigList("Subject");
                 Console.WriteLine("Enter Subject :");
                 do
                 {
@@ -42,19 +40,19 @@ namespace OperationLibrary
                 }
                 while (Select != 0);
 
-                teaching.Name = opt[0];
-                teaching.Phone = opt[1];
-                if (!String.IsNullOrEmpty(opt[2]))
+                teaching.Name = opt[0].ToString();
+                teaching.Phone = opt[1].ToString();
+                if (!String.IsNullOrEmpty(opt[2].ToString()))
                 {
                     teaching.Dob = Convert.ToDateTime(opt[2]);
                 }
-                teaching.Email = opt[3];
+                teaching.Email = opt[3].ToString();
                 teaching.Subject = subject;
-                valid = validation(teaching);
+                valid = Validation(teaching);
                 if (!valid)
                 {
                     Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
-                    id = inputOption();
+                    id = InputOption();
                     if (id == 1)
                     {
                         continue;
@@ -98,7 +96,7 @@ namespace OperationLibrary
 
             Console.WriteLine("Enter Name :");
 
-            name = inputName();
+            name = InputName();
             foreach (var teaching in teachingList)
             {
                 if (teaching.Name == name)
@@ -115,6 +113,7 @@ namespace OperationLibrary
             int option;
             bool valid = false;
             string name = "", phone = "", email = "", subject = "", date = "";
+            //sDateTime date = DateTime.Now;
             string[] Options;
             int Select, Count = 0;
             Console.WriteLine("Edit Details of Staff :" + teaching.Name);
@@ -128,7 +127,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Name :");
                         name = Console.ReadLine();
                         teachingEdit.Name = name;
-                        valid = validation(teachingEdit);
+                        valid = Validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine("Name :" + teachingEdit.Name);
@@ -139,7 +138,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Phone No:");
                         phone = Console.ReadLine();
                         teachingEdit.Phone = phone;
-                        valid = validation(teachingEdit);
+                        valid = Validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine("Phone :" + teachingEdit.Phone);
@@ -149,9 +148,12 @@ namespace OperationLibrary
                     case 3:
                         Console.WriteLine("Enter date of birth");
 
-                        date = inputDob();
-                        teachingEdit.Dob = Convert.ToDateTime(date);
-                        valid = validation(teachingEdit);
+                        date = InputDob();
+                        if (!String.IsNullOrEmpty(date))
+                        {
+                            teachingEdit.Dob = Convert.ToDateTime(date);
+                        }
+                        valid = Validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine("Date of birth :" + teaching.Dob);
@@ -162,7 +164,7 @@ namespace OperationLibrary
                         Console.WriteLine("Enter Email");
                         email = Console.ReadLine();
                         teachingEdit.Email = email;
-                        valid = validation(teachingEdit);
+                        valid = Validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine(" Email :" + teachingEdit.Email);
@@ -170,7 +172,7 @@ namespace OperationLibrary
 
                         break;
                     case 5:
-                        Options = configList("Subject");
+                        Options = ConfigList("Subject");
                         Console.WriteLine("Enter Subject");
                         do
                         {
@@ -190,7 +192,7 @@ namespace OperationLibrary
                         }
                         while (Select != 0);
                         teachingEdit.Subject = subject;
-                        valid = validation(teachingEdit);
+                        valid = Validation(teachingEdit);
                         if (valid)
                         {
                             Console.WriteLine("Subject :" + teachingEdit.Subject);
@@ -198,7 +200,7 @@ namespace OperationLibrary
 
                         break;
                     case 6:
-                        valid = validation(teachingEdit);
+                        valid = Validation(teachingEdit);
                         if (!valid)
                         {
                             Console.WriteLine("Values Not Edited");
@@ -231,7 +233,7 @@ namespace OperationLibrary
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
             Console.WriteLine("Enter Id :");
-            id = inputOption();
+            id = InputOption();
 
 
             //name = inputName();
@@ -267,7 +269,7 @@ namespace OperationLibrary
             Console.WriteLine("\nEnter Details to Delete :");
 
             Console.WriteLine("Enter id:");
-            id = inputOption();
+            id = InputOption();
             foreach (var teaching in teachingList)
             {
                 ++iterator;
