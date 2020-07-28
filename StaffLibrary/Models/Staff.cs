@@ -1,23 +1,25 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace StaffLibrary
 {
+    
     public class Staff
     {
 
-        private int id;
+       // private int id;
         private string name;
         private string phone;
-        private string dob;
+        private DateTime dob;
         private string email;
 
-        [Required(ErrorMessage = "Id must not be null")]
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        // [Required(ErrorMessage = "Id must not be null")]
+        // public int Id
+        // {
+        //     get { return id; }
+        //     set { id = value; }
+        // }
 
         [Required(ErrorMessage = "Name must not be null")]
         [DataType(DataType.Text)]
@@ -36,9 +38,8 @@ namespace StaffLibrary
             set { phone = value; }
         }
 
-        [DataType(DataType.Date)]
-        [RegularExpression(@"^\d{1,2}/\d{1,2}/\d{4}$", ErrorMessage = "Dateformat not correct")]
-        public string Dob
+        [DataType(DataType.DateTime,ErrorMessage=" DateFormat Not Correct")]    
+        public DateTime Dob
         {
             get { return dob; }
             set { dob = value; }

@@ -9,52 +9,73 @@ namespace OperationLibrary
         static List<AdministrativeStaff> administrativeList = new List<AdministrativeStaff>();
         public void AddStaff()
         {
+            AdministrativeStaff admin = new AdministrativeStaff();
+            do{
+            
             EnterValues();
-            SubjectOptions = configList("Designation");
+            Options = configList("Designation");
             Console.WriteLine("Enter Designation :");
             do
             {
                 Console.WriteLine("\nSelect any one option(0 to exit)");
 
-                foreach (var val in SubjectOptions)
+                foreach (var val in Options)
                     Console.WriteLine(++Count + " :" + val);
+                Count =0;
 
                 int.TryParse(Console.ReadLine(), out Select);
                 if (Select == 0)
                 {
                     break;
                 }
-                designation = SubjectOptions[Select - 1];
+                designation = Options[Select - 1];
                 break;
             }
             while (Select != 0);
-            AdministrativeStaff admin = new AdministrativeStaff();
-            admin.Id = id;
+            
+            // admin.Id = id;
             admin.Name = name;
             admin.Phone = phone;
             admin.Dob = dob;
             admin.Email = email;
             admin.Designation = designation;
-
-            if (admin != null)
-            {
-                ValidationContext context = new ValidationContext(admin, null, null);
-                List<ValidationResult> validationResults = new List<ValidationResult>();
-                bool valid = Validator.TryValidateObject(admin, context, validationResults, true);
-                if (!valid)
-                {
-                    foreach (ValidationResult validation in validationResults)
-                    {
-                        Console.WriteLine(validation.ErrorMessage);
-                    }
-                }
-                else
-                {
-                    administrativeList.Add(admin);
-                    Console.WriteLine("\nValues added are :\n");
-                    Console.WriteLine("\nId :" + admin.Id + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
-                }
+            validation(admin);
+            if(!valid)
+            {Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
+            inputOption();
+             if(id == 1)
+             {
+                 continue;
+             }
+             else{break;}
             }
+        }
+        while(!valid);
+        if(valid)
+        {
+             administrativeList.Add(admin);
+             Console.WriteLine("\nValues added are :\n");
+             Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
+        }
+            // if (admin != null)
+            // {
+            //     ValidationContext context = new ValidationContext(admin, null, null);
+            //     List<ValidationResult> validationResults = new List<ValidationResult>();
+            //     bool valid = Validator.TryValidateObject(admin, context, validationResults, true);
+            //     if (!valid)
+            //     {
+            //         foreach (ValidationResult validation in validationResults)
+            //         {
+            //             Console.WriteLine(validation.ErrorMessage);
+            //         }
+            //     }
+            //     else
+            //     {
+            //         administrativeList.Add(admin);
+            //         Console.WriteLine("\nValues added are :\n");
+            //         Console.WriteLine("\nId :" + admin.Id + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
+            //     }
+            // }
         }
         public void RetrieveAllStaff()
         {
@@ -67,7 +88,7 @@ namespace OperationLibrary
                 Console.WriteLine("Details are :\n");
                 foreach (var admin in administrativeList)
                 {
-                    Console.WriteLine("\nId :" + admin.Id + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
+                    Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
                 }
             }
 
@@ -75,16 +96,17 @@ namespace OperationLibrary
         public void RetrieveSingleStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            Console.WriteLine("Enter ID :");
-            inputId();
+            // Console.WriteLine("Enter ID :");
+            // inputId();
             Console.WriteLine("Enter Name :");
-            name = Console.ReadLine();
+            //name = Console.ReadLine();
+            inputName();
 
             foreach (var admin in administrativeList)
             {
-                if (admin.Id == Convert.ToInt32(id) && admin.Name == name)
+                if (admin.Name == name)
                 {
-                    Console.WriteLine("\nId :" + admin.Id + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
+                    Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
                     return;
                 }
             }
@@ -94,7 +116,7 @@ namespace OperationLibrary
         public void EditHelp(AdministrativeStaff admin, AdministrativeStaff adminEdit)
         {
             int option;
-            Console.WriteLine("Edit Details of StaffId :" + admin.Id);
+            Console.WriteLine("Edit Details of Staff:" + admin.Name);
             do
             {
                 Console.WriteLine("Select Values (1/2/3/4/5/6) :\n1.Edit Name\n2.Edit Phone\n3.Edit Dob\n4.Edit Email\n5.Edit Subject\n6.Exit");
@@ -125,7 +147,8 @@ namespace OperationLibrary
                         break;
                     case 3:
                         Console.WriteLine("Enter date of birth");
-                        dob = Console.ReadLine();
+                        inputDob();
+                        //DateTime.TryParse(Console.ReadLine(), out dob);
                         adminEdit.Dob = dob;
                         validation(adminEdit);
                         if (valid)
@@ -187,14 +210,16 @@ namespace OperationLibrary
         {
             bool flag = false;
             Console.WriteLine("Enter Details of Staff to be Deleted :");
-            Console.WriteLine("Enter ID :");
-            inputId();
+            Console.WriteLine("Enter Name :");
+            //name = Console.ReadLine();
+            //inputId(();
+            inputName();
             foreach (var admin in administrativeList)
             {
-                if (admin.Id == Convert.ToInt32(id))
+                if (admin.Name == name)
                 {
                     AdministrativeStaff adminEdit = new AdministrativeStaff();
-                    adminEdit.Id = admin.Id;
+                    // adminEdit.Id = admin.Id;
                     adminEdit.Name = admin.Name;
                     adminEdit.Phone = admin.Phone;
                     adminEdit.Email = admin.Email;
@@ -213,17 +238,18 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            Console.WriteLine("Enter ID :");
-            inputId();
+            // Console.WriteLine("Enter ID :");
+            // inputId();
             Console.WriteLine("Enter Name :");
-            name = Console.ReadLine();
+            //name = Console.ReadLine();
+            inputName();
 
             foreach (var admin in administrativeList)
             {
-                if (admin.Id == Convert.ToInt32(id) && admin.Name == name)
+                if (admin.Name == name)
                 {
                     administrativeList.Remove(admin);
-                    Console.WriteLine("Successfully Deleted :\n" + "\nId :" + admin.Id + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
+                    Console.WriteLine("Successfully Deleted :\n" +"\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
                     return;
                 }
             }

@@ -11,156 +11,116 @@ namespace Show
 
     class Program
     {
-        public int menuOpt;
-        public void Teaching()
-        {
+        public Type Itype;
+        public int chClass,chMethod;
+        public bool parseSuccess;
 
+
+        public void inputchClass(int index)
+        { 
+            // int temp;
             do
             {
-
-                Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Retrieve Single Staff\n4.Delete Staff\n5.Edit Staff \n6.Exit");
-                menuOpt = Convert.ToInt32(Console.ReadLine());
-                TeachingStaffOperation teachingStaffOperation = new TeachingStaffOperation();
-
-                switch (menuOpt)
+                parseSuccess = int.TryParse(Console.ReadLine(), out chClass);
+               
+                if (!parseSuccess || chClass>index || chClass<0 )
                 {
-                    case 1:
-                        teachingStaffOperation.AddStaff();
-                        break;
-                    case 2:
-                        teachingStaffOperation.RetrieveAllStaff();
-                        break;
-                    case 3:
-                        teachingStaffOperation.RetrieveSingleStaff();
-                        break;
-                    case 4:
-                        teachingStaffOperation.DeleteStaff();
-                        break;
-                    case 5:
-                        teachingStaffOperation.EditStaff();
-                        break;
-                    case 6:
-                        Console.Clear();
-                        return;
-                    default:
-                        Console.Write("Invalid Option !!");
-                        break;
+                    Console.WriteLine("Enter valid option:");
                 }
             }
-            while (menuOpt != 6);
+            while (parseSuccess != true || chClass>index || chClass<0);
         }
-        public void Administration()
+        public void inputchMethod( int index)
         {
-
-
             do
             {
-                Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Retrieve Single Staff\n4.Delete Staff\n5.Edit Staff \n6.Exit");
-                menuOpt = Convert.ToInt32(Console.ReadLine());
-                AdministrativeStaffOperation administrativeStaffOperation = new AdministrativeStaffOperation();
-                switch (menuOpt)
+                parseSuccess = int.TryParse(Console.ReadLine(), out chMethod);
+                if (!parseSuccess|| chMethod>index || chMethod<0)
                 {
-                    case 1:
-                        administrativeStaffOperation.AddStaff();
-                        break;
-                    case 2:
-                        administrativeStaffOperation.RetrieveAllStaff();
-                        break;
-                    case 3:
-                        administrativeStaffOperation.RetrieveSingleStaff();
-                        break;
-                    case 4:
-                        administrativeStaffOperation.DeleteStaff();
-                        break;
-                    case 5:
-                        administrativeStaffOperation.EditStaff();
-                        break;
-                    case 6:
-                        Console.Clear();
-                        return;
-                    default:
-                        Console.Write("Invalid Option !!");
-                        break;
+                    Console.WriteLine("Enter valid option:");
                 }
             }
-            while (menuOpt != 6);
+            while (parseSuccess != true || chMethod>index || chMethod<0);
         }
-        public void Support()
+         public void Print()
         {
+            int i = 0, j = 0;
+            //  conClass, conMethod;
+            var assembly = Assembly.Load("OperationLibrary");
+            Type[] types = assembly.GetTypes();
 
-            do
+            Dictionary<int, Type> dict = new Dictionary<int, Type>();
+            Dictionary<int, string> dict2 = new Dictionary<int, string>();
+            foreach (var type in types)
             {
 
-                Console.WriteLine("\n1.Add Staff \n2.Retrieve All Staff \n3.Retrieve Single Staff\n4.Delete Staff\n5.Edit Staff \n6.Exit");
-                menuOpt = Convert.ToInt32(Console.ReadLine());
-                SupportStaffOperation supportStaffOperation = new SupportStaffOperation();
-                switch (menuOpt)
+                var typeinfo = type.GetTypeInfo();
+                //Console.WriteLine("type" + typeinfo.FullName);
+                if (typeinfo.FullName != "OperationLibrary.StaffOperation" && typeinfo.FullName != "OperationLibrary.IStaffOperation")
                 {
-                    case 1:
-                        supportStaffOperation.AddStaff();
-                        break;
-                    case 2:
-                        supportStaffOperation.RetrieveAllStaff();
-                        break;
-                    case 3:
-                        supportStaffOperation.RetrieveSingleStaff();
-                        break;
-                    case 4:
-                        supportStaffOperation.DeleteStaff();
-                        break;
-                    case 5:
-                        supportStaffOperation.EditStaff();
-                        break;
-                    case 6:
-                        Console.Clear();
-                        return;
-                    default:
-                        Console.Write("Invalid Option !!");
-                        break;
+                    dict.Add(++i, type);
+                }
+                else if (typeinfo.FullName == "OperationLibrary.IStaffOperation")
+                {
+                    Itype = type;
+                }
+
+
+            }
+            var mis = Itype.GetMethods();
+            foreach (var type1 in mis)
+            {
+                dict2.Add(++j, type1.Name);
+            }
+
+            while(true)
+            {
+                Console.Clear();
+                Console.WriteLine("==========Main Menu==========\nPress 0 To Exit Application");
+                foreach (KeyValuePair<int, Type> item in dict)
+                {
+                    Console.WriteLine("{0}. {1}", item.Key, (string)item.Value.FullName.Remove(0, 17));
+                }
+                Console.WriteLine("Enter option :");
+                //int.TryParse(Console.ReadLine(), out chClass);
+                inputchClass(i);
+                if (chClass == 0)
+                { break; }
+                else
+                {
+                    while(true)
+                    {
+                        //Console.Clear();
+                        Console.WriteLine("\n" + dict[chClass].FullName.Remove(0, 17) + "\n");
+                        foreach (KeyValuePair<int, string> item in dict2)
+                        {
+                            Console.WriteLine("{0}. {1}", item.Key, item.Value);
+                        }
+                        Console.WriteLine("Enter Operation option (0 to Exit):");
+                        inputchMethod(j);
+                        //int.TryParse(Console.ReadLine(), out chMethod);
+                        if (chMethod == 0)
+                        { break; }
+                        object obj = Activator.CreateInstance(dict[chClass]);
+                        Console.WriteLine("\n"+dict2[chMethod]);
+                        MethodInfo mi = dict[chClass].GetMethod(dict2[chMethod]);
+                        mi.Invoke(obj, null);
+                        // Console.WriteLine("Do you want to return to main Menu(yes-1/No-0):");
+                        // int.TryParse(Console.ReadLine(), out conMethod);
+                    }
+                   
+                    // Console.WriteLine("Do you want to Exit Application (yes-1/No-0):");
+                    // int.TryParse(Console.ReadLine(), out conClass);
                 }
             }
-            while (menuOpt != 6);
+            // while (conClass != 1);
+
+
         }
         static void Main(string[] args)
-        {
-            //  List<TeachingStaff> teachingList = new List<TeachingStaff>();
-
-            //    int opt;
-            //     do{
-            //         Console.Clear();
-            //         Console.WriteLine("Select the Type of Staff (1 /2 /3 /4) :\n 1. Teaching Staff\n 2. Administrative Staff\n 3. Support Staff\n 4. Exit"); 
-            //         opt = Convert.ToInt32(Console.ReadLine());
-            //          Program pgm = new Program();
-            //         switch(opt)
-            //         {
-            //             case 1:  
-            //                     pgm.Teaching();
-            //                      break;
-            //             case 2: 
-            //                      pgm.Administration();
-            //                      break;
-            //             case 3: 
-            //                      pgm.Support();
-            //                      break;
-            //             case 4: return;
-
-            //             default : Console.WriteLine("Invalid Input !!");
-            //                     break;
-            //         }
-
-            //     }
-            //    while(opt!=4);  
-
-            StaffOperation s = new StaffOperation();
-            s.Print();
-            // string[] list = s.configList("Subject");
-            // foreach (var val in list)
-            //     Console.WriteLine("this is value:" + val);
-            // var a = ConfigurationManager.AppSettings["a"];
-            // Console.WriteLine("This is value:" + a);
-
-
-
+        {       
+            Program pgm = new Program();
+            pgm.Print();
         }
     }
 }

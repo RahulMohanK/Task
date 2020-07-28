@@ -10,53 +10,77 @@ namespace OperationLibrary
 
         public void AddStaff()
         {
+            SupportStaff support = new SupportStaff();
+            do{
             EnterValues();
-            SubjectOptions = configList("Department");
+            Options = configList("Department");
             Console.WriteLine("Enter Department :");
             do
             {
                 Console.WriteLine("\nSelect any one option(0 to exit)");
 
-                foreach (var val in SubjectOptions)
+                foreach (var val in Options)
                     Console.WriteLine(++Count + " :" + val);
+                Count = 0;
 
                 int.TryParse(Console.ReadLine(), out Select);
                 if (Select == 0)
                 {
                     break;
                 }
-                department = SubjectOptions[Select - 1];
+                department = Options[Select - 1];
                 break;
             }
             while (Select != 0);
-            SupportStaff support = new SupportStaff();
-            support.Id = id;
+            
+           
+            // support.Id = id;
             support.Name = name;
             support.Phone = phone;
             support.Dob = dob;
             support.Email = email;
             support.Department = department;
+            validation(support);
+            if(!valid)
+            {Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
+            inputOption();
+             if(id == 1)
+             {
+                 continue;
+             }
+             else{break;}
+            }
+            }
+            while(!valid);
 
-            if (support != null)
+            if(valid)
             {
-                ValidationContext context = new ValidationContext(support, null, null);
-                List<ValidationResult> validationResults = new List<ValidationResult>();
-                valid = Validator.TryValidateObject(support, context, validationResults, true);
-                if (!valid)
-                {
-                    foreach (ValidationResult validation in validationResults)
-                    {
-                        Console.WriteLine(validation.ErrorMessage);
-                    }
-                }
-                else
-                {
-                    supportList.Add(support);
+                 supportList.Add(support);
                     Console.WriteLine("\nValues added are :\n");
 
-                    Console.WriteLine("Id :" + support.Id + " Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
-                }
+                    Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
             }
+
+            // if (support != null)
+            // {
+            //     ValidationContext context = new ValidationContext(support, null, null);
+            //     List<ValidationResult> validationResults = new List<ValidationResult>();
+            //     valid = Validator.TryValidateObject(support, context, validationResults, true);
+            //     if (!valid)
+            //     {
+            //         foreach (ValidationResult validation in validationResults)
+            //         {
+            //             Console.WriteLine(validation.ErrorMessage);
+            //         }
+            //     }
+            //     else
+            //     {
+            //         supportList.Add(support);
+            //         Console.WriteLine("\nValues added are :\n");
+
+            //         Console.WriteLine("Id :" + support.Id + " Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
+            //     }
+            // }
         }
         public void RetrieveAllStaff()
         {
@@ -69,23 +93,24 @@ namespace OperationLibrary
                 Console.WriteLine("Details are :\n");
                 foreach (var support in supportList)
                 {
-                    Console.WriteLine("\nId :" + support.Id + "Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
+                    Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
                 }
             }
         }
         public void RetrieveSingleStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            Console.WriteLine("Enter ID :");
-            inputId();
+            // Console.WriteLine("Enter ID :");
+            // inputId();
             Console.WriteLine("Enter Name :");
-            name = Console.ReadLine();
+            //name = Console.ReadLine();
+            inputName();
 
             foreach (var support in supportList)
             {
-                if (support.Id == Convert.ToInt32(id) && support.Name == name)
+                if (support.Name == name)
                 {
-                    Console.WriteLine("\nId :" + support.Id + " Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Subject: " + support.Department);
+                    Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Subject: " + support.Department);
                     return;
                 }
             }
@@ -97,7 +122,7 @@ namespace OperationLibrary
         public void EditHelp(SupportStaff support, SupportStaff supportEdit)
         {
             int option;
-            Console.WriteLine("Edit Details of StaffId :" + support.Id);
+            Console.WriteLine("Edit Details of Staff :" + support.Name);
             do
             {
                 Console.WriteLine("Select Values (1/2/3/4/5/6) :\n1.Edit Name\n2.Edit Phone\n3.Edit Dob\n4.Edit Email\n5.Edit Subject\n6.Exit");
@@ -128,7 +153,8 @@ namespace OperationLibrary
                         break;
                     case 3:
                         Console.WriteLine("Enter date of birth");
-                        dob = Console.ReadLine();
+                        //DateTime.TryParse(Console.ReadLine(), out dob);
+                        inputDob();
                         supportEdit.Dob = dob;
                         validation(supportEdit);
                         if (valid)
@@ -191,14 +217,16 @@ namespace OperationLibrary
         {
             bool flag = false;
             Console.WriteLine("Enter Details of Staff to be Deleted :");
-            Console.WriteLine("Enter ID :");
-            inputId();
+            Console.WriteLine("Enter Name :");
+           // name = Console.ReadLine();
+            //inputId();
+            inputName();
             foreach (var support in supportList)
             {
-                if (support.Id == Convert.ToInt32(id))
+                if (support.Name == name)
                 {
                     SupportStaff supportEdit = new SupportStaff();
-                    supportEdit.Id = support.Id;
+                    // supportEdit.Id = support.Id;
                     supportEdit.Name = support.Name;
                     supportEdit.Phone = support.Phone;
                     supportEdit.Dob = support.Dob;
@@ -218,17 +246,18 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             Console.WriteLine("Enter Details to Search :");
-            Console.WriteLine("Enter ID :");
-            inputId();
+            // Console.WriteLine("Enter ID :");
+            // inputId();
             Console.WriteLine("Enter Name :");
-            name = Console.ReadLine();
+           // name = Console.ReadLine();
+           inputName();
 
             foreach (var support in supportList)
             {
-                if (support.Id == Convert.ToInt32(id) && support.Name == name)
+                if (support.Name == name)
                 {
                     supportList.Remove(support);
-                    Console.WriteLine("Successfully Deleted :\n" + "\nId :" + support.Id + " Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Subject: " + support.Department);
+                    Console.WriteLine("Successfully Deleted :\n" +" Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Subject: " + support.Department);
                     return;
                 }
             }
