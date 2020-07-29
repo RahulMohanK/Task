@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using StaffLibrary;
 using System.ComponentModel;
+using FileOperationLibrary;
 namespace OperationLibrary
 {
     [DisplayName("Teaching Staff")]
@@ -65,6 +66,8 @@ namespace OperationLibrary
             if (valid)
             {
                 teachingList.Add(teaching);
+                JsonFileOperation jfile = new JsonFileOperation();
+                jfile.AddToFile(teaching, "Teaching Staff");
                 Console.WriteLine("\nValues added are :\n");
                 Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
             }
@@ -74,19 +77,21 @@ namespace OperationLibrary
 
         public void RetrieveAllStaff()
         {
-            int k = 0;
-            if (teachingList.Count == 0)
-            {
-                Console.WriteLine("List is empty\n");
-            }
-            else
-            {
-                Console.WriteLine("\nDetails are :");
-                foreach (var teaching in teachingList)
-                {
-                    Console.WriteLine("\nId: " + (++k) + " Name: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
-                }
-            }
+            JsonFileOperation jfile = new JsonFileOperation();
+            jfile.RetrieveAllFromFile("Teaching Staff");
+            // int k = 0;
+            // if (teachingList.Count == 0)
+            // {
+            //     Console.WriteLine("List is empty\n");
+            // }
+            // else
+            // {
+            //     Console.WriteLine("\nDetails are :");
+            //     foreach (var teaching in teachingList)
+            //     {
+            //         Console.WriteLine("\nId: " + (++k) + " Name: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
+            //     }
+            // }
 
         }
         public void RetrieveSingleStaff()
@@ -264,23 +269,25 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
 
-            int id = 0, iterator = 0;
+            int id = 0;//iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
 
             Console.WriteLine("Enter id:");
             id = InputOption();
-            foreach (var teaching in teachingList)
-            {
-                ++iterator;
-                if (id == iterator)
-                {
-                    teachingList.Remove(teaching);
-                    Console.WriteLine("Successfully Deleted :" + "\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
-                    return;
-                }
-            }
-            Console.WriteLine("\nStaff Not Found !!");
+            JsonFileOperation jfile = new JsonFileOperation();
+            jfile.DeleteFromFile(id, "Teaching Staff");
+            // foreach (var teaching in teachingList)
+            // {
+            //     ++iterator;
+            //     if (id == iterator)
+            //     {
+            //         teachingList.Remove(teaching);
+            //         Console.WriteLine("Successfully Deleted :" + "\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
+            //         return;
+            //     }
+            // }
+            // Console.WriteLine("\nStaff Not Found !!");
         }
 
 

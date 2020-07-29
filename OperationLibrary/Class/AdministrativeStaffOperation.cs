@@ -2,6 +2,11 @@ using System;
 using System.Collections.Generic;
 using StaffLibrary;
 using System.ComponentModel;
+using FileOperationLibrary;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
+
 namespace OperationLibrary
 {
     [DisplayName("Administrative Staff")]
@@ -67,7 +72,11 @@ namespace OperationLibrary
             while (!valid);
             if (valid)
             {
+
                 administrativeList.Add(admin);
+                JsonFileOperation jfile = new JsonFileOperation();
+                jfile.AddToFile(admin, "Administrative Staff");
+
                 Console.WriteLine("\nValues added are :\n");
                 Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
             }
@@ -75,19 +84,22 @@ namespace OperationLibrary
         }
         public void RetrieveAllStaff()
         {
-            int k = 0;
-            if (administrativeList.Count == 0)
-            {
-                Console.WriteLine("List is empty\n");
-            }
-            else
-            {
-                Console.WriteLine("\nDetails are :");
-                foreach (var admin in administrativeList)
-                {
-                    Console.WriteLine("\nId: " + (++k) + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
-                }
-            }
+            JsonFileOperation jfile = new JsonFileOperation();
+            jfile.RetrieveAllFromFile("Administrative Staff");
+
+            // int k = 0;
+            // if (administrativeList.Count == 0)
+            // {
+            //     Console.WriteLine("List is empty\n");
+            // }
+            // else
+            // {
+            //     Console.WriteLine("\nDetails are :");
+            //     foreach (var admin in administrativeList)
+            //     {
+            //         Console.WriteLine("\nId: " + (++k) + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
+            //     }
+            // }
 
         }
         public void RetrieveSingleStaff()
@@ -261,25 +273,28 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
 
-            int id = 0, iterator = 0;
+            int id = 0;//, iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
 
             Console.WriteLine("Enter id:");
             id = InputOption();
+            JsonFileOperation jfile = new JsonFileOperation();
+            jfile.DeleteFromFile(id, "Administrative Staff");
+            // foreach (var admin in administrativeList)
+            // {
+            //     ++iterator;
+            //     if (id == iterator)
+            //     {
+            //         JsonFileOperation jfile = new JsonFileOperation();
+            //         jfile.DeleteFromFile(id, "Administrative Staff");
+            //         administrativeList.Remove(admin);
+            //         Console.WriteLine("Successfully Deleted :" + "\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
+            //         return;
+            //     }
+            // }
 
-            foreach (var admin in administrativeList)
-            {
-                ++iterator;
-                if (id == iterator)
-                {
-                    administrativeList.Remove(admin);
-                    Console.WriteLine("Successfully Deleted :" + "\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
-                    return;
-                }
-            }
-
-            Console.WriteLine("\nStaff Not Found !!");
+            // Console.WriteLine("\nStaff Not Found !!");
         }
 
     }

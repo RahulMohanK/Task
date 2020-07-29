@@ -18,6 +18,15 @@ namespace OperationLibrary
         //public bool valid;
         //public static string[] Options;
         //public int Select, Count = 0;
+        // public void AddStaff()
+        // {
+
+        // }
+        // public void RetrieveAllStaff() { }
+        // public void RetrieveSingleStaff() { }
+        // public void EditStaff() { }
+        // public void DeleteStaff() { }
+
 
         protected static string[] ConfigList(string select)
         {
