@@ -12,14 +12,14 @@ namespace Show
 
     class Program
     {
-        static string GetItemName(System.Type type)
+        private static string GetItemName(System.Type type)
         {
             System.Attribute[] attrs = System.Attribute.GetCustomAttributes(type);
             var attrname = attrs[0] as DisplayNameAttribute;
             return attrname.DisplayName;
 
         }
-        static int InputchClass(int index, int chClass)
+        private static int InputchClass(int index, int chClass)
         {
             bool parseSuccess;
             do
@@ -34,7 +34,7 @@ namespace Show
             while (parseSuccess != true || chClass > index || chClass < 0);
             return chClass;
         }
-        static int InputchMethod(int index, int chMethod)
+        private static int InputchMethod(int index, int chMethod)
         {
             bool parseSuccess;
             do
@@ -115,7 +115,9 @@ namespace Show
                         if (chMethod == 0)
                         { break; }
                         object obj = Activator.CreateInstance(dict[chClass]);
-                        Console.WriteLine("\n" + dict2[chMethod]);
+                        System.Attribute[] attr = System.Attribute.GetCustomAttributes(dict2[chMethod]);
+                        var dnam = attr[0] as DisplayNameAttribute;
+                        Console.WriteLine("\n-----" + dnam.DisplayName + "-----\n");
                         MethodInfo mi = dict[chClass].GetMethod(dict2[chMethod].Name);
                         mi.Invoke(obj, null);
 
