@@ -10,9 +10,18 @@ namespace FileOperationLibrary
         {
 
         }
-        public void DeleteFromFile(int obj, string staffname)
+        public void DeleteFromFile(int id, string staffname)
         {
 
         }
+        public void UpdateFile(int id, string staffname, object obj)
+        {
+
+        }
+        public void RetrieveFromFile(string name, string staffname)
+        {
+
+        }
+
     }
 }

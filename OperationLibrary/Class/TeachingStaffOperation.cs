@@ -102,17 +102,19 @@ namespace OperationLibrary
             Console.WriteLine("Enter Name :");
 
             name = InputName();
-            foreach (var teaching in teachingList)
-            {
-                if (teaching.Name == name)
-                {
-                    Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
-                    return;
-                }
-            }
-            Console.WriteLine("\nStaff Not Found !!");
+            JsonFileOperation jfile = new JsonFileOperation();
+            jfile.RetrieveFromFile(name, "Teaching Staff");
+            // foreach (var teaching in teachingList)
+            // {
+            //     if (teaching.Name == name)
+            //     {
+            //         Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
+            //         return;
+            //     }
+            // }
+            // Console.WriteLine("\nStaff Not Found !!");
         }
-        public void EditHelp(TeachingStaff teaching, TeachingStaff teachingEdit)
+        public void EditHelp(int id, TeachingStaff teaching, TeachingStaff teachingEdit)
         {
 
             int option;
@@ -217,8 +219,8 @@ namespace OperationLibrary
                         }
                         else
                         {
-                            teachingList.Remove(teaching);
-                            teachingList.Add(teachingEdit);
+                            JsonFileOperation jfile = new JsonFileOperation();
+                            jfile.UpdateFile(id, "Teaching Staff", teachingEdit);
                             Console.WriteLine("Edit Successfull");
                             return;
                         }
@@ -233,36 +235,35 @@ namespace OperationLibrary
         }
         public void EditStaff()
         {
-            bool flag = false;
-            int id = 0, iterator = 0;
+            //bool flag = false;
+            int id = 0;
+            //, iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
             Console.WriteLine("Enter Id :");
             id = InputOption();
 
-
+            TeachingStaff teaching = new TeachingStaff();
+            JsonFileOperation jfile = new JsonFileOperation();
+            teaching = (TeachingStaff)jfile.GetObj<TeachingStaff>(id, "Administrative Staff", teaching);
             //name = inputName();
-            foreach (var teaching in teachingList)
+            if (teaching.Name == null)
             {
-                ++iterator;
-                if (id == iterator)
-                {
-                    TeachingStaff teachingEdit = new TeachingStaff();
+                Console.WriteLine("\nStaff Not Found!!");
+            }
+            else
+            {
+                TeachingStaff teachingEdit = new TeachingStaff();
 
-                    teachingEdit.Name = teaching.Name;
-                    teachingEdit.Phone = teaching.Phone;
-                    teachingEdit.Dob = teaching.Dob;
-                    teachingEdit.Email = teaching.Email;
-                    teachingEdit.Subject = teaching.Subject;
-                    EditHelp(teaching, teachingEdit);
-                    flag = true;
-                    break;
-                }
+                teachingEdit.Name = teaching.Name;
+                teachingEdit.Phone = teaching.Phone;
+                teachingEdit.Dob = teaching.Dob;
+                teachingEdit.Email = teaching.Email;
+                teachingEdit.Subject = teaching.Subject;
+                EditHelp(id, teaching, teachingEdit);
             }
-            if (flag == false)
-            {
-                Console.WriteLine("\nStaff Not Found !!");
-            }
+            // flag = true;
+
 
 
         }

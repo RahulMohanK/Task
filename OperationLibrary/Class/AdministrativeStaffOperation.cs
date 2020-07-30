@@ -104,25 +104,29 @@ namespace OperationLibrary
         }
         public void RetrieveSingleStaff()
         {
+
             string name = "";
             Console.WriteLine("Enter Details to Search :");
 
             Console.WriteLine("Enter Name :");
 
             name = InputName();
+            Console.WriteLine("");
+            JsonFileOperation jfile = new JsonFileOperation();
+            jfile.RetrieveFromFile(name, "Administrative Staff");
 
-            foreach (var admin in administrativeList)
-            {
-                if (admin.Name == name)
-                {
-                    Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
-                    return;
-                }
-            }
-            Console.WriteLine("\nStaff Not Found !!");
+            // foreach (var admin in administrativeList)
+            // {
+            //     if (admin.Name == name)
+            //     {
+            //         Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
+            //         return;
+            //     }
+            // }
+            // Console.WriteLine("\nStaff Not Found !!");
 
         }
-        public void EditHelp(AdministrativeStaff admin, AdministrativeStaff adminEdit)
+        public void EditHelp(int id, AdministrativeStaff admin, AdministrativeStaff adminEdit)
         {
             int option;
             bool valid = false;
@@ -224,8 +228,8 @@ namespace OperationLibrary
                         }
                         else
                         {
-                            administrativeList.Remove(admin);
-                            administrativeList.Add(adminEdit);
+                            JsonFileOperation jfile = new JsonFileOperation();
+                            jfile.UpdateFile(id, "Administrative Staff", adminEdit);
                             Console.WriteLine("Edit Successfull");
                             return;
                         }
@@ -240,35 +244,42 @@ namespace OperationLibrary
         }
         public void EditStaff()
         {
-            bool flag = false;
+            // bool flag = false;
 
-            int id = 0, iterator = 0;
+            int id = 0;
+            // iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
             Console.WriteLine("Enter Id :");
             id = InputOption();
-
-            foreach (var admin in administrativeList)
-            {
-                ++iterator;
-                if (iterator == id)
-                {
-                    AdministrativeStaff adminEdit = new AdministrativeStaff();
-
-                    adminEdit.Name = admin.Name;
-                    adminEdit.Phone = admin.Phone;
-                    adminEdit.Email = admin.Email;
-                    adminEdit.Dob = admin.Dob;
-                    adminEdit.Designation = admin.Designation;
-                    EditHelp(admin, adminEdit);
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag == false)
+            //object objt;
+            AdministrativeStaff admin = new AdministrativeStaff();
+            JsonFileOperation jfile = new JsonFileOperation();
+            admin = (AdministrativeStaff)jfile.GetObj<AdministrativeStaff>(id, "Administrative Staff", admin);
+            //Console.WriteLine("Name " + admin.Designation);
+            if (admin.Name == null)
             {
                 Console.WriteLine("\nStaff Not Found !!");
             }
+            else
+            {
+                AdministrativeStaff adminEdit = new AdministrativeStaff();
+
+                adminEdit.Name = admin.Name;
+                adminEdit.Phone = admin.Phone;
+                adminEdit.Email = admin.Email;
+                adminEdit.Dob = admin.Dob;
+                adminEdit.Designation = admin.Designation;
+                EditHelp(id, admin, adminEdit);
+                //flag = true;
+            }
+
+
+
+            // if (flag == false)
+            // {
+            //     Console.WriteLine("\nStaff Not Found !!");
+            // }
         }
         public void DeleteStaff()
         {

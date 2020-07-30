@@ -98,21 +98,23 @@ namespace OperationLibrary
             Console.WriteLine("Enter Details to Search :");
             Console.WriteLine("Enter Name :");
             name = InputName();
+            JsonFileOperation jfile = new JsonFileOperation();
+            jfile.RetrieveFromFile(name, "Support Staff");
 
-            foreach (var support in supportList)
-            {
-                if (support.Name == name)
-                {
-                    Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Subject: " + support.Department);
-                    return;
-                }
-            }
-            Console.WriteLine("\nStaff Not Found !!");
+            // foreach (var support in supportList)
+            // {
+            //     if (support.Name == name)
+            //     {
+            //         Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Subject: " + support.Department);
+            //         return;
+            //     }
+            // }
+            // Console.WriteLine("\nStaff Not Found !!");
         }
 
 
 
-        public void EditHelp(SupportStaff support, SupportStaff supportEdit)
+        public void EditHelp(int id, SupportStaff support, SupportStaff supportEdit)
         {
             int option;
             bool valid = false;
@@ -215,8 +217,8 @@ namespace OperationLibrary
                         }
                         else
                         {
-                            supportList.Remove(support);
-                            supportList.Add(supportEdit);
+                            JsonFileOperation jfile = new JsonFileOperation();
+                            jfile.UpdateFile(id, "Support Staff", supportEdit);
                             Console.WriteLine("Edit Successfull");
                             return;
                         }
@@ -232,34 +234,37 @@ namespace OperationLibrary
         }
         public void EditStaff()
         {
-            bool flag = false;
-            int id = 0, iterator = 0;
+            // bool flag = false;
+            int id = 0;
+            //, iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
             Console.WriteLine("Enter Id :");
             id = InputOption();
-            foreach (var support in supportList)
-            {
-                ++iterator;
-                if (id == iterator)
-                {
-                    SupportStaff supportEdit = new SupportStaff();
-                    supportEdit.Name = support.Name;
-                    supportEdit.Phone = support.Phone;
-                    supportEdit.Dob = support.Dob;
-                    supportEdit.Email = support.Email;
-                    supportEdit.Department = support.Department;
-                    EditHelp(support, supportEdit);
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag == false)
+
+            SupportStaff support = new SupportStaff();
+            JsonFileOperation jfile = new JsonFileOperation();
+            support = (SupportStaff)jfile.GetObj<SupportStaff>(id, "Administrative Staff", support);
+            if (support.Name == null)
             {
                 Console.WriteLine("\nStaff Not Found !!");
             }
+            else
+            {
+                SupportStaff supportEdit = new SupportStaff();
+                supportEdit.Name = support.Name;
+                supportEdit.Phone = support.Phone;
+                supportEdit.Dob = support.Dob;
+                supportEdit.Email = support.Email;
+                supportEdit.Department = support.Department;
+                EditHelp(id, support, supportEdit);
+                //flag = true;
 
+            }
         }
+
+
+
         public void DeleteStaff()
         {
 

@@ -11,7 +11,7 @@ namespace OperationLibrary
         void AddStaff();
         [DisplayName("Retrieve All Staff")]
         void RetrieveAllStaff();
-        [DisplayName("Retrieve Single Staff")]
+        [DisplayName("Search Staff")]
         void RetrieveSingleStaff();
         [DisplayName("Edit Staff")]
         void EditStaff();
