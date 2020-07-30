@@ -1,10 +1,6 @@
 {
-  "Administrative Staff": [
-    "{\"Designation\":\"Office Assistant\",\"Name\":\"ramo\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}"
-  ],
-  "Teaching Staff": [
-    "{\"Subject\":\"Chemistry\",\"Name\":\"mohan\",\"Phone\":\"+91-9645211698\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}"
-  ],
+  "Administrative Staff": [],
+  "Teaching Staff": [],
   "Support Staff": [
     "{\"Department\":\"EEE\",\"Name\":\"mohan\",\"Phone\":\"+91-9645211698\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}"
   ]

@@ -244,7 +244,7 @@ namespace OperationLibrary
 
             SupportStaff support = new SupportStaff();
             JsonFileOperation jfile = new JsonFileOperation();
-            support = (SupportStaff)jfile.GetObj<SupportStaff>(id, "Administrative Staff", support);
+            support = (SupportStaff)jfile.GetObj<SupportStaff>(id, "Support Staff", support);
             if (support.Name == null)
             {
                 Console.WriteLine("\nStaff Not Found !!");
@@ -275,7 +275,7 @@ namespace OperationLibrary
             Console.WriteLine("Enter id:");
             id = InputOption();
             JsonFileOperation jfile = new JsonFileOperation();
-            jfile.DeleteFromFile(id, "Administrative Staff");
+            jfile.DeleteFromFile(id, "Support Staff");
             // foreach (var support in supportList)
             // {
             //     ++iterator;

@@ -245,7 +245,7 @@ namespace OperationLibrary
 
             TeachingStaff teaching = new TeachingStaff();
             JsonFileOperation jfile = new JsonFileOperation();
-            teaching = (TeachingStaff)jfile.GetObj<TeachingStaff>(id, "Administrative Staff", teaching);
+            teaching = (TeachingStaff)jfile.GetObj<TeachingStaff>(id, "Teaching Staff", teaching);
             //name = inputName();
             if (teaching.Name == null)
             {
