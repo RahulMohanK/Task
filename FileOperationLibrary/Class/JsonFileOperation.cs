@@ -9,8 +9,8 @@ namespace FileOperationLibrary
 {
     public class JsonFileOperation : IFileOperation
     {
-        string path = @"C:\Users\Workstation\Desktop\Staff\staff.json";
-        public void AddToFile(object obj, string staffname)
+        string path = @"staff.json";
+        public void AddToFile<T>(object obj, string staffname)
         {
             try
             {
@@ -31,11 +31,11 @@ namespace FileOperationLibrary
                 Console.WriteLine("File addition error" + e);
             }
             string jsonN = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            Console.WriteLine(jsonN);
+            //Console.WriteLine(jsonN);
         }
 
 
-        public void RetrieveAllFromFile(string staffname)
+        public void RetrieveAllFromFile<T>(string staffname)
         {
 
             int id = 0;
@@ -71,7 +71,7 @@ namespace FileOperationLibrary
             {
                 var jobj = JObject.Parse(json);
                 var stafflist = jobj.GetValue(staffname) as JArray;
-                if (id <= stafflist.Count)
+                if (id <= stafflist.Count && id > 0)
                 {
                     Console.WriteLine(stafflist[id - 1] + "\n Deleted Succesfully");
                     stafflist.RemoveAt(id - 1);
@@ -155,7 +155,7 @@ namespace FileOperationLibrary
             }
             return t;
         }
-        public void UpdateFile(int id, string staffname, object obj)
+        public void UpdateFile<T>(int id, string staffname, object obj)
         {
             var json = File.ReadAllText(path);
             try

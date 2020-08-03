@@ -101,7 +101,7 @@ namespace Show
                     while (true)
                     {
                         attrname = GetItemName(dict[chClass]);
-                        Console.WriteLine("\n" + attrname + "\n");
+                        Console.WriteLine("\n" + "------" + attrname + "------" + "\n");
                         foreach (KeyValuePair<int, MethodInfo> item in dict2)
                         {
                             System.Attribute[] attrs = System.Attribute.GetCustomAttributes(item.Value);

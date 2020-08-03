@@ -3,10 +3,10 @@ namespace FileOperationLibrary
 {
     interface IFileOperation
     {
-        void AddToFile(object obj, string staffname);
-        void RetrieveAllFromFile(string staffname);
+        void AddToFile<T>(object obj, string staffname);
+        void RetrieveAllFromFile<T>(string staffname);
         void DeleteFromFile(int id, string staffname);
-        void UpdateFile(int id, string staffname, object obj);
+        void UpdateFile<T>(int id, string staffname, object obj);
         void RetrieveFromFile(string name, string staffname);
         //object GetObj(int id ,string staffname, object obj);
     }

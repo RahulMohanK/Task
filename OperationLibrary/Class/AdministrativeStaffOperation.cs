@@ -13,6 +13,7 @@ namespace OperationLibrary
     public class AdministrativeStaffOperation : StaffOperation, IStaffOperation
     {
         static List<AdministrativeStaff> administrativeList = new List<AdministrativeStaff>();
+        private string staffname = "Administrative Staff";
         public void AddStaff()
         {
             string designation = "";
@@ -75,7 +76,9 @@ namespace OperationLibrary
 
                 administrativeList.Add(admin);
                 JsonFileOperation jfile = new JsonFileOperation();
-                jfile.AddToFile(admin, "Administrative Staff");
+                jfile.AddToFile<AdministrativeStaff>(admin, staffname);
+                // XmlFileOperation xfile = new XmlFileOperation();
+                // xfile.AddToFile<AdministrativeStaff>(admin, staffname);
 
                 Console.WriteLine("\nValues added are :\n");
                 Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
@@ -85,7 +88,9 @@ namespace OperationLibrary
         public void RetrieveAllStaff()
         {
             JsonFileOperation jfile = new JsonFileOperation();
-            jfile.RetrieveAllFromFile("Administrative Staff");
+            jfile.RetrieveAllFromFile<AdministrativeStaff>(staffname);
+            // XmlFileOperation xfile = new XmlFileOperation();
+            // xfile.RetrieveAllFromFile<AdministrativeStaff>(staffname);
 
             // int k = 0;
             // if (administrativeList.Count == 0)
@@ -113,8 +118,9 @@ namespace OperationLibrary
             name = InputName();
             Console.WriteLine("");
             JsonFileOperation jfile = new JsonFileOperation();
-            jfile.RetrieveFromFile(name, "Administrative Staff");
-
+            jfile.RetrieveFromFile(name, staffname);
+            // XmlFileOperation xfile = new XmlFileOperation();
+            // xfile.RetrieveFromFile(name, staffname);
             // foreach (var admin in administrativeList)
             // {
             //     if (admin.Name == name)
@@ -229,7 +235,9 @@ namespace OperationLibrary
                         else
                         {
                             JsonFileOperation jfile = new JsonFileOperation();
-                            jfile.UpdateFile(id, "Administrative Staff", adminEdit);
+                            jfile.UpdateFile<AdministrativeStaff>(id, staffname, adminEdit);
+                            // XmlFileOperation xfile = new XmlFileOperation();
+                            // xfile.UpdateFile<AdministrativeStaff>(id, staffname, adminEdit);
                             Console.WriteLine("Edit Successfull");
                             return;
                         }
@@ -255,7 +263,9 @@ namespace OperationLibrary
             //object objt;
             AdministrativeStaff admin = new AdministrativeStaff();
             JsonFileOperation jfile = new JsonFileOperation();
-            admin = (AdministrativeStaff)jfile.GetObj<AdministrativeStaff>(id, "Administrative Staff", admin);
+            admin = (AdministrativeStaff)jfile.GetObj<AdministrativeStaff>(id, staffname, admin);
+            // XmlFileOperation xfile = new XmlFileOperation();
+            // admin = (AdministrativeStaff)xfile.GetObj<AdministrativeStaff>(id, staffname, admin);
             //Console.WriteLine("Name " + admin.Designation);
             if (admin.Name == null)
             {
@@ -291,14 +301,17 @@ namespace OperationLibrary
             Console.WriteLine("Enter id:");
             id = InputOption();
             JsonFileOperation jfile = new JsonFileOperation();
-            jfile.DeleteFromFile(id, "Administrative Staff");
+            jfile.DeleteFromFile(id, staffname);
+            // XmlFileOperation xfile = new XmlFileOperation();
+            // xfile.DeleteFromFile(id, staffname);
+
             // foreach (var admin in administrativeList)
             // {
             //     ++iterator;
             //     if (id == iterator)
             //     {
             //         JsonFileOperation jfile = new JsonFileOperation();
-            //         jfile.DeleteFromFile(id, "Administrative Staff");
+            //         jfile.DeleteFromFile(id, staffname);
             //         administrativeList.Remove(admin);
             //         Console.WriteLine("Successfully Deleted :" + "\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
             //         return;

@@ -9,6 +9,7 @@ namespace OperationLibrary
     public class SupportStaffOperation : StaffOperation, IStaffOperation
     {
         static List<SupportStaff> supportList = new List<SupportStaff>();
+        private string staffname = "Support Staff";
 
         public void AddStaff()
         {
@@ -65,8 +66,10 @@ namespace OperationLibrary
             if (valid)
             {
                 supportList.Add(support);
-                JsonFileOperation jfile = new JsonFileOperation();
-                jfile.AddToFile(support, "Support Staff");
+                // JsonFileOperation jfile = new JsonFileOperation();
+                // jfile.AddToFile<SupportStaff>(support, staffname);
+                XmlFileOperation xfile = new XmlFileOperation();
+                xfile.AddToFile<SupportStaff>(support, staffname);
                 Console.WriteLine("\nValues added are :\n");
 
                 Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
@@ -76,8 +79,11 @@ namespace OperationLibrary
         }
         public void RetrieveAllStaff()
         {
-            JsonFileOperation jfile = new JsonFileOperation();
-            jfile.RetrieveAllFromFile("Support Staff");
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // jfile.RetrieveAllFromFile<SupportStaff>(staffname);
+            XmlFileOperation xfile = new XmlFileOperation();
+            xfile.RetrieveAllFromFile<SupportStaff>(staffname);
+
             // int k = 0;
             // if (supportList.Count == 0)
             // {
@@ -98,8 +104,10 @@ namespace OperationLibrary
             Console.WriteLine("Enter Details to Search :");
             Console.WriteLine("Enter Name :");
             name = InputName();
-            JsonFileOperation jfile = new JsonFileOperation();
-            jfile.RetrieveFromFile(name, "Support Staff");
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // jfile.RetrieveFromFile(name, staffname);
+            XmlFileOperation xfile = new XmlFileOperation();
+            xfile.RetrieveFromFile(name, staffname);
 
             // foreach (var support in supportList)
             // {
@@ -217,8 +225,10 @@ namespace OperationLibrary
                         }
                         else
                         {
-                            JsonFileOperation jfile = new JsonFileOperation();
-                            jfile.UpdateFile(id, "Support Staff", supportEdit);
+                            // JsonFileOperation jfile = new JsonFileOperation();
+                            // jfile.UpdateFile<SupportStaff>(id, staffname, supportEdit);
+                            XmlFileOperation xfile = new XmlFileOperation();
+                            xfile.UpdateFile<SupportStaff>(id, staffname, supportEdit);
                             Console.WriteLine("Edit Successfull");
                             return;
                         }
@@ -243,8 +253,10 @@ namespace OperationLibrary
             id = InputOption();
 
             SupportStaff support = new SupportStaff();
-            JsonFileOperation jfile = new JsonFileOperation();
-            support = (SupportStaff)jfile.GetObj<SupportStaff>(id, "Support Staff", support);
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // support = (SupportStaff)jfile.GetObj<SupportStaff>(id, staffname, support);
+            XmlFileOperation xfile = new XmlFileOperation();
+            support = (SupportStaff)xfile.GetObj<SupportStaff>(id, staffname, support);
             if (support.Name == null)
             {
                 Console.WriteLine("\nStaff Not Found !!");
@@ -274,8 +286,10 @@ namespace OperationLibrary
 
             Console.WriteLine("Enter id:");
             id = InputOption();
-            JsonFileOperation jfile = new JsonFileOperation();
-            jfile.DeleteFromFile(id, "Support Staff");
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // jfile.DeleteFromFile(id, staffname);
+            XmlFileOperation xfile = new XmlFileOperation();
+            xfile.DeleteFromFile(id, staffname);
             // foreach (var support in supportList)
             // {
             //     ++iterator;
