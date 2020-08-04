@@ -1,4 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Staff>
-  
+  <SupportStaff Id="1">
+    <StaffType>SupportStaff</StaffType>
+    <Name>asd asd</Name>
+    <Phone>+91-78945</Phone>
+    <Dob>1999-02-22T00:00:00</Dob>
+    <Email>asd@asd.com</Email>
+    <Department>EEE</Department>
+  </SupportStaff>
+  <TeachingStaff Id="10">
+    <StaffType>TeachingStaff</StaffType>
+    <Name>ramu</Name>
+    <Phone>+91-78945</Phone>
+    <Dob>1999-02-22T00:00:00</Dob>
+    <Email>asd@asd.com</Email>
+    <Subject>Physics</Subject>
+  </TeachingStaff>
 </Staff>

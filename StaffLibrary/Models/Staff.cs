@@ -1,20 +1,38 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Xml.Serialization;
 
 namespace StaffLibrary
 {
-
+    public enum SType
+    {
+        AdministrativeStaff,
+        TeachingStaff,
+        SupportStaff
+    }
     public abstract class Staff
     {
 
-
+        private int id;
         private string name;
         private string phone;
         private DateTime dob;
         private string email;
+        private SType staffType;
 
+        public SType StaffType
+        {
+            get { return staffType; }
+            set { staffType = value; }
 
+        }
+        [XmlAttributeAttribute("Id")]
+        public int Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
         [Required(ErrorMessage = "Name must not be null")]
         [DataType(DataType.Text)]

@@ -10,19 +10,21 @@ namespace FileOperationLibrary
     public class JsonFileOperation : IFileOperation
     {
         string path = @"staff.json";
-        public void AddToFile<T>(object obj, string staffname)
+        public void AddToFile<T>(object obj)
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
             try
             {
 
                 var json = File.ReadAllText(path);
                 var jsonObj = JObject.Parse(json);
-                var stafflist = jsonObj.GetValue(staffname) as JArray;
+                var stafflist = jsonObj.GetValue(typevalue) as JArray;
 
                 var item = JsonConvert.SerializeObject(obj);
                 stafflist.Add(item);
 
-                jsonObj[staffname] = stafflist;
+                jsonObj[typevalue] = stafflist;
                 string newJsonResult = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText(path, newJsonResult);
             }
@@ -31,25 +33,26 @@ namespace FileOperationLibrary
                 Console.WriteLine("File addition error" + e);
             }
             string jsonN = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            //Console.WriteLine(jsonN);
         }
 
 
-        public void RetrieveAllFromFile<T>(string staffname)
+        public void RetrieveAllFromFile<T>()
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
 
-            int id = 0;
             var json = File.ReadAllText(path);
             try
             {
                 var jobj = JObject.Parse(json);
-                var stafflist = jobj.GetValue(staffname) as JArray;
-
+                var stafflist = jobj.GetValue(typevalue) as JArray;
+                var definition = new { Id = "" };
                 if (stafflist.HasValues)
                 {
                     foreach (var item in stafflist)
                     {
-                        Console.WriteLine("Id :" + (++id) + " " + item);
+                        var content = JsonConvert.DeserializeAnonymousType(item.ToString(), definition);
+                        Console.WriteLine("Id :" + content.Id + " " + item);
                     }
                 }
                 else
@@ -63,18 +66,30 @@ namespace FileOperationLibrary
                 Console.WriteLine("Retieval Error :" + e);
             }
         }
-        public void DeleteFromFile(int id, string staffname)
+        public void DeleteFromFile<T>(int id)
         {
-            //int i = 0;
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
+            int i = 0;
             var json = File.ReadAllText(path);
             try
             {
                 var jobj = JObject.Parse(json);
-                var stafflist = jobj.GetValue(staffname) as JArray;
-                if (id <= stafflist.Count && id > 0)
+                var stafflist = jobj.GetValue(typevalue) as JArray;
+                var definition = new { Id = "" };
+                if (id <= stafflist.Count)
                 {
-                    Console.WriteLine(stafflist[id - 1] + "\n Deleted Succesfully");
-                    stafflist.RemoveAt(id - 1);
+                    foreach (var item in stafflist)
+                    {
+                        ++i;
+                        var content = JsonConvert.DeserializeAnonymousType(item.ToString(), definition);
+                        if (Convert.ToInt32(content.Id) == id)
+                        {
+                            break;
+                        }
+                    }
+                    Console.WriteLine(stafflist[i - 1] + "\n Deleted Succesfully");
+                    stafflist.RemoveAt(i - 1);
 
                 }
                 else
@@ -82,7 +97,7 @@ namespace FileOperationLibrary
                     Console.WriteLine("\nStaff Not Found !!");
                 }
 
-                jobj[staffname] = stafflist;
+                jobj[typevalue] = stafflist;
 
                 string newJsonResult = JsonConvert.SerializeObject(jobj, Newtonsoft.Json.Formatting.Indented);
 
@@ -94,24 +109,26 @@ namespace FileOperationLibrary
             }
         }
 
-        public void RetrieveFromFile(string name, string staffname)
+        public void RetrieveFromFile<T>(string name)
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
             var json = File.ReadAllText(path);
             try
             {
                 var jobj = JObject.Parse(json);
-                //Console.WriteLine(jobj[staffname]);
+
                 var definition = new { Name = "" };
-                if (jobj[staffname].HasValues)
+                if (jobj[typevalue].HasValues)
                 {
-                    foreach (var item in jobj[staffname])
+                    foreach (var item in jobj[typevalue])
                     {
                         var it = JsonConvert.DeserializeAnonymousType(item.ToString(), definition);
 
                         if (name.Equals(it.Name))
                         {
                             Console.WriteLine(item);
-                            //Console.WriteLine(it.Name);
+
                         }
                     }
                 }
@@ -126,20 +143,24 @@ namespace FileOperationLibrary
             }
         }
 
-        public object GetObj<T>(int id, string staffname, object obj)
+        public object GetObj<T>(int id, object obj)
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
+
             var json = File.ReadAllText(path);
             T t = (T)obj;
             try
             {
                 var jobj = JObject.Parse(json);
-                JArray stafflist = jobj.GetValue(staffname) as JArray;
-                var definition = new { Name = "", Designation = "" };
-                int iterator = 0;
+                JArray stafflist = jobj.GetValue(typevalue) as JArray;
+                var definition = new { Id = "" };
+
                 foreach (var item in stafflist)
                 {
-                    ++iterator;
-                    if (id == iterator)
+
+                    var content = JsonConvert.DeserializeAnonymousType(item.ToString(), definition);
+                    if (id == Convert.ToInt32(content.Id))
                     {
                         t = JsonConvert.DeserializeObject<T>(item.ToString());
                         break;
@@ -155,18 +176,34 @@ namespace FileOperationLibrary
             }
             return t;
         }
-        public void UpdateFile<T>(int id, string staffname, object obj)
+        public void UpdateFile<T>(int id, object obj)
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
+            int i = 0;
             var json = File.ReadAllText(path);
             try
             {
                 var jobj = JObject.Parse(json);
-                JArray stafflist = jobj.GetValue(staffname) as JArray;
-                var definition = new { Name = "", Designation = "" };
-                stafflist.RemoveAt(id - 1);
+                JArray stafflist = jobj.GetValue(typevalue) as JArray;
+                var definition = new { Id = "" };
+                foreach (var it in stafflist)
+                {
+                    ++i;
+                    var content = JsonConvert.DeserializeAnonymousType(it.ToString(), definition);
+                    if (id == Convert.ToInt32(content.Id))
+                    {
+
+                        break;
+
+                    }
+                }
+                stafflist.RemoveAt(i - 1);
+
+
                 var item = JsonConvert.SerializeObject(obj);
                 stafflist.Add(item);
-                jobj[staffname] = stafflist;
+                jobj[typevalue] = stafflist;
                 string output = JsonConvert.SerializeObject(jobj, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText(path, output);
 

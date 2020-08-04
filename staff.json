@@ -1,5 +1,9 @@
 {
-  "Administrative Staff": [],
-  "Teaching Staff": [],
-  "Support Staff": []
+  "AdministrativeStaff": [
+    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":1,\"Name\":\"ram gopal\",\"Phone\":\"+91-456\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}"
+  ],
+  "TeachingStaff": [
+    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":1,\"Name\":\"ram gopal\",\"Phone\":\"+91-456\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}"
+  ],
+  "SupportStaff": []
 }

@@ -97,10 +97,15 @@ namespace OperationLibrary
 
         protected static object[] EnterValues()
         {
-            object[] fields = new object[4];
+            object[] fields = new object[5];
             string name = "", phone = "", email = "", dob = "";
+            int id;
             // DateTime dob = DateTime.Now;
             Console.WriteLine("=====Enter Details=====");
+            Console.WriteLine("Enter Id :");
+            id = InputOption();
+            fields[4] = id;
+
             Console.WriteLine("Enter Name :");
             name = Console.ReadLine();
             fields[0] = name;
@@ -117,6 +122,7 @@ namespace OperationLibrary
             Console.WriteLine("Enter Email :");
             email = Console.ReadLine();
             fields[3] = email;
+
 
             return fields;
 

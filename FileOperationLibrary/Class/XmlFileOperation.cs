@@ -10,82 +10,81 @@ namespace FileOperationLibrary
     public class XmlFileOperation : IFileOperation
     {
         string path = @"staff.xml";
-        public void AddToFile<T>(object obj, string staffname)
+        public void AddToFile<T>(object obj)
         {
+
             try
             {
-
-                string[] tagname = staffname.Split(' ');
-                StringWriter xml = new StringWriter();
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
                 XmlDocument doc = new XmlDocument();
                 doc.Load(path);
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                ns.Add("", "");
-                XmlWriterSettings writtersetting = new XmlWriterSettings();
-                writtersetting.OmitXmlDeclaration = true;
+                var rootNode = doc.GetElementsByTagName("Staff")[0];
+                var nav = rootNode.CreateNavigator();
+                var emptyNamepsaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
 
-                using (XmlWriter writer = XmlWriter.Create(xml, writtersetting))
+                using (var writer = nav.AppendChild())
                 {
-                    xmlSerializer.Serialize(writer, obj, ns);
+                    var serializer = new XmlSerializer(typeof(T));
+                    writer.WriteWhitespace("");
+                    serializer.Serialize(writer, obj, emptyNamepsaces);
+                    writer.Close();
                 }
-                XmlNode xnode = doc.CreateNode(XmlNodeType.Element, tagname[0], null);
-
-                xnode.InnerXml = xml.ToString();
-                doc.DocumentElement.AppendChild(xnode);
-
                 doc.Save(path);
+
             }
             catch (Exception e)
             {
                 Console.WriteLine("Xml add error" + e);
             }
         }
-        public void RetrieveAllFromFile<T>(string staffname)
+        public void RetrieveAllFromFile<T>()
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
             XDocument xdoc;
             xdoc = XDocument.Load(path);
             xdoc.Save(path);
-            int iterator = 0;
-            IEnumerable<XElement> accounts = xdoc.Root.Descendants(staffname.Replace(" ", ""));
+            IEnumerable<XElement> accounts = xdoc.Root.Descendants(typevalue);
+
             if (accounts.ToList().Count != 0)
             {
                 foreach (XElement el in accounts)
                 {
-                    ++iterator;
-                    Console.WriteLine(iterator + " :" + el);
+
+                    Console.WriteLine("Id :" + el.Attribute("Id").Value + "\n" + el);
                 }
             }
             else
             {
                 Console.WriteLine("\nList is Empty");
             }
-
-            // var result = from q in xdoc.Descendants(staffname.Replace(" ", ""))
-            //              select new
-            //              {
-            //                  Name = q.Element("Name").Value,
-            //                  Phone = q.Element("Phone").Value,
-
-            //              };
-            // foreach (var item in result)
-            // {
-            //     Console.WriteLine("Name :{0}, Phone:{1}", item.Name, item.Phone);
-            // }
-
-
         }
-        public void DeleteFromFile(int id, string staffname)
+        public void DeleteFromFile<T>(int id)
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
+            Console.WriteLine("id :{0}", id);
 
-            string[] tagname = staffname.Split(' ');
             XDocument xDocument;
             xDocument = XDocument.Load(path);
-            IEnumerable<XElement> accounts = xDocument.Root.Descendants(tagname[0]);
-            if (id <= accounts.ToList().Count && id > 0)
+            int i = 0;
+            bool flag = false;
+            IEnumerable<XElement> accounts = xDocument.Root.Descendants(typevalue);
+            foreach (XElement el in accounts)
             {
-                Console.WriteLine("Deleted :\n" + accounts.ElementAt(id - 1));
-                accounts.ElementAt(id - 1).Remove();
+                ++i;
+                var check = el.Attribute("Id").Value;
+                if (Convert.ToInt32(check) == id)
+                {
+
+
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                Console.WriteLine("Deleted :\n" + accounts.ElementAt(i - 1));
+                accounts.ElementAt(i - 1).Remove();
                 xDocument.Save(path);
             }
             else
@@ -94,37 +93,67 @@ namespace FileOperationLibrary
             }
 
         }
-        public object GetObj<T>(int id, string staffname, object obj)
+        public object GetObj<T>(int id, object obj)
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
+
+            int i = 0;
+            bool flag = false;
             T t = (T)obj;
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             XDocument xDocument;
             xDocument = XDocument.Load(path);
-            IEnumerable<XElement> accounts = xDocument.Root.Descendants(staffname.Replace(" ", ""));
-            if (id <= accounts.ToList().Count && id > 0)
+            IEnumerable<XElement> accounts = xDocument.Root.Descendants(typevalue);
+
+            foreach (XElement el in accounts)
             {
-                var item = accounts.ElementAt(id - 1);
+                ++i;
+                var check = el.Attribute("Id").Value;
+                if (Convert.ToInt32(check) == id)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                var item = accounts.ElementAt(i - 1);
                 using (TextReader reader = new StringReader(item.ToString()))
                 {
                     t = (T)serializer.Deserialize(reader);
                 }
-
             }
+
             return t;
 
         }
-        public void UpdateFile<T>(int id, string staffname, object obj)
+        public void UpdateFile<T>(int id, object obj)
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
+            int i = 0;
+            bool flag = false;
 
-            string[] tagname = staffname.Split(' ');
             XDocument xDocument;
             xDocument = XDocument.Load(path);
-            IEnumerable<XElement> accounts = xDocument.Root.Descendants(tagname[0]);
-            if (id <= accounts.ToList().Count && id > 0)
+            IEnumerable<XElement> accounts = xDocument.Root.Descendants(typevalue);
+
+            foreach (XElement el in accounts)
             {
-                accounts.ElementAt(id - 1).Remove();
+                ++i;
+                var check = el.Attribute("Id").Value;
+                if (Convert.ToInt32(check) == id)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                accounts.ElementAt(i - 1).Remove();
                 xDocument.Save(path);
-                AddToFile<T>(obj, staffname);
+                AddToFile<T>(obj);
             }
             else
             {
@@ -132,14 +161,16 @@ namespace FileOperationLibrary
             }
 
         }
-        public void RetrieveFromFile(string name, string staffname)
+        public void RetrieveFromFile<T>(string name)
         {
+            string[] type = typeof(T).ToString().Split('.');
+            var typevalue = type[1];
             int iterator = 0;
             bool flag = false;
             XDocument xDocument;
             xDocument = XDocument.Load(path);
-            IEnumerable<XElement> accounts = xDocument.Root.Descendants(staffname.Replace(" ", ""));
-            var node = from val in xDocument.Descendants(staffname.Replace(" ", ""))
+            IEnumerable<XElement> accounts = xDocument.Root.Descendants(typevalue);
+            var node = from val in xDocument.Descendants(typevalue)
                        select new
                        {
                            Name = val.Element("Name").Value
