@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperationLibrary", "Operati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOperationLibrary", "FileOperationLibrary\FileOperationLibrary.csproj", "{DD818DB6-4B23-459B-8A47-D2328519F6DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbOperationLibrary", "DbOperationLibrary\DbOperationLibrary.csproj", "{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,17 @@ Global
 		{DD818DB6-4B23-459B-8A47-D2328519F6DF}.Release|x64.Build.0 = Release|Any CPU
 		{DD818DB6-4B23-459B-8A47-D2328519F6DF}.Release|x86.ActiveCfg = Release|Any CPU
 		{DD818DB6-4B23-459B-8A47-D2328519F6DF}.Release|x86.Build.0 = Release|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Debug|x64.Build.0 = Debug|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Debug|x86.Build.0 = Debug|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Release|x64.ActiveCfg = Release|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Release|x64.Build.0 = Release|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Release|x86.ActiveCfg = Release|Any CPU
+		{53E86117-1AF1-4F0E-85FF-7E7A5D2CA04C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

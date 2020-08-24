@@ -2,6 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\StaffLibrary\StaffLibrary.csproj" />
     <ProjectReference Include="..\OperationLibrary\OperationLibrary.csproj" />
+    <ProjectReference Include="..\DbOperationLibrary\DbOperationLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Configuration" Version="2.0.5" />

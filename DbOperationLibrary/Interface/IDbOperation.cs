@@ -1,0 +1,7 @@
+namespace DbOperationLibrary
+{
+    interface IDbOperation
+    {
+
+    }
+}

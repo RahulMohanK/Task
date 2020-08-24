@@ -14,7 +14,7 @@ namespace StaffLibrary
     public abstract class Staff
     {
 
-        private int id;
+        private string empId;
         private string name;
         private string phone;
         private DateTime dob;
@@ -27,11 +27,11 @@ namespace StaffLibrary
             set { staffType = value; }
 
         }
-        [XmlAttributeAttribute("Id")]
-        public int Id
+        [XmlAttributeAttribute("Id  ")]
+        public string EmpId
         {
-            get { return id; }
-            set { id = value; }
+            get { return empId; }
+            set { empId = value; }
         }
 
         [Required(ErrorMessage = "Name must not be null")]

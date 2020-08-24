@@ -99,11 +99,11 @@ namespace OperationLibrary
         {
             object[] fields = new object[5];
             string name = "", phone = "", email = "", dob = "";
-            int id;
+            string id;
             // DateTime dob = DateTime.Now;
             Console.WriteLine("=====Enter Details=====");
-            Console.WriteLine("Enter Id :");
-            id = InputOption();
+            Console.WriteLine("Enter EmpId :");
+            id = Console.ReadLine();
             fields[4] = id;
 
             Console.WriteLine("Enter Name :");

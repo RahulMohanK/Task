@@ -6,6 +6,7 @@ using FileOperationLibrary;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using DbOperationLibrary;
 
 namespace OperationLibrary
 {
@@ -47,7 +48,7 @@ namespace OperationLibrary
                 }
                 while (Select != 0);
                 admin.StaffType = SType.AdministrativeStaff;
-                admin.Id = (int)opt[4];
+                admin.EmpId = opt[4].ToString();
                 admin.Name = opt[0].ToString();
                 admin.Phone = opt[1].ToString();
                 admin.Email = opt[3].ToString();
@@ -75,11 +76,13 @@ namespace OperationLibrary
             if (valid)
             {
 
-                administrativeList.Add(admin);
-                JsonFileOperation jfile = new JsonFileOperation();
-                jfile.AddToFile<AdministrativeStaff>(admin);
+                // administrativeList.Add(admin);
+                // JsonFileOperation jfile = new JsonFileOperation();
+                // jfile.AddToFile<AdministrativeStaff>(admin);
                 // XmlFileOperation xfile = new XmlFileOperation();
                 // xfile.AddToFile<AdministrativeStaff>(admin);
+                DatabaseOperation db = new DatabaseOperation();
+                db.AddData(admin.EmpId, admin.Name, admin.Phone, admin.Email, admin.Dob, (int)admin.StaffType, admin.Designation);
 
                 Console.WriteLine("\nValues added are :\n");
                 Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
@@ -88,10 +91,16 @@ namespace OperationLibrary
         }
         public void RetrieveAllStaff()
         {
-            JsonFileOperation jfile = new JsonFileOperation();
-            jfile.RetrieveAllFromFile<AdministrativeStaff>();
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // jfile.RetrieveAllFromFile<AdministrativeStaff>();
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.RetrieveAllFromFile<AdministrativeStaff>();
+            DatabaseOperation db = new DatabaseOperation();
+            db.RetriveAll((int)SType.AdministrativeStaff);
+
+
+
+
 
             // int k = 0;
             // if (administrativeList.Count == 0)
@@ -133,7 +142,7 @@ namespace OperationLibrary
             // Console.WriteLine("\nStaff Not Found !!");
 
         }
-        public void EditHelp(int id, AdministrativeStaff admin, AdministrativeStaff adminEdit)
+        public void EditHelp(string id, AdministrativeStaff admin, AdministrativeStaff adminEdit)
         {
             int option;
             bool valid = false;
@@ -235,8 +244,8 @@ namespace OperationLibrary
                         }
                         else
                         {
-                            JsonFileOperation jfile = new JsonFileOperation();
-                            jfile.UpdateFile<AdministrativeStaff>(id, adminEdit);
+                            // JsonFileOperation jfile = new JsonFileOperation();
+                            // jfile.UpdateFile<AdministrativeStaff>(id, adminEdit);
                             // XmlFileOperation xfile = new XmlFileOperation();
                             // xfile.UpdateFile<AdministrativeStaff>(id, adminEdit);
                             Console.WriteLine("Edit Successfull");
@@ -254,17 +263,18 @@ namespace OperationLibrary
         public void EditStaff()
         {
             // bool flag = false;
-
-            int id = 0;
+            string id;
+            //int id = 0;
             // iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
-            Console.WriteLine("Enter Id :");
-            id = InputOption();
+            Console.WriteLine("Enter EmpId :");
+            // id = InputOption();
+            id = Console.ReadLine();
             //object objt;
             AdministrativeStaff admin = new AdministrativeStaff();
-            JsonFileOperation jfile = new JsonFileOperation();
-            admin = (AdministrativeStaff)jfile.GetObj<AdministrativeStaff>(id, admin);
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // admin = (AdministrativeStaff)jfile.GetObj<AdministrativeStaff>(id, admin);
             // XmlFileOperation xfile = new XmlFileOperation();
             // admin = (AdministrativeStaff)xfile.GetObj<AdministrativeStaff>(id);
             //Console.WriteLine("Name " + admin.Designation);
@@ -276,7 +286,7 @@ namespace OperationLibrary
             {
                 AdministrativeStaff adminEdit = new AdministrativeStaff();
                 adminEdit.StaffType = SType.AdministrativeStaff;
-                adminEdit.Id = admin.Id;
+                adminEdit.EmpId = admin.EmpId;
                 adminEdit.Name = admin.Name;
                 adminEdit.Phone = admin.Phone;
                 adminEdit.Email = admin.Email;
@@ -295,18 +305,20 @@ namespace OperationLibrary
         }
         public void DeleteStaff()
         {
-
-            int id = 0;//, iterator = 0;
+            string id;
+            //int id = 0;//, iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
 
-            Console.WriteLine("Enter id:");
-            id = InputOption();
-            JsonFileOperation jfile = new JsonFileOperation();
-            jfile.DeleteFromFile<AdministrativeStaff>(id);
+            Console.WriteLine("Enter EmpId:");
+            id = Console.ReadLine();
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // jfile.DeleteFromFile<AdministrativeStaff>(id);
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.DeleteFromFile<AdministrativeStaff>(id);
 
+            DatabaseOperation db = new DatabaseOperation();
+            db.DeleteFromDb((int)SType.AdministrativeStaff, id);
             // foreach (var admin in administrativeList)
             // {
             //     ++iterator;
