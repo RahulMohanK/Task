@@ -52,15 +52,6 @@ namespace Show
 
         static void Main(string[] args)
         {
-
-            // DatabaseOperation db = new DatabaseOperation();
-            // db.AddData();
-
-            // DatabaseOperation dbs = new DatabaseOperation();
-            // dbs.DeleteFromDb();
-            // DatabaseOperation dba = new DatabaseOperation();
-            // dba.RetriveAll();
-
             int i = 0, j = 0;
             Type Itype = null;
             int chClass = -1, chMethod = -1;

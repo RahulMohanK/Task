@@ -112,8 +112,10 @@ namespace OperationLibrary
             name = InputName();
             // JsonFileOperation jfile = new JsonFileOperation();
             // jfile.RetrieveFromFile<SupportStaff>(name);
-            XmlFileOperation xfile = new XmlFileOperation();
-            xfile.RetrieveFromFile<SupportStaff>(name);
+            // XmlFileOperation xfile = new XmlFileOperation();
+            // xfile.RetrieveFromFile<SupportStaff>(name);
+            DatabaseOperation db = new DatabaseOperation();
+            db.SearchStaff(name, (int)SType.SupportStaff);
 
             // foreach (var support in supportList)
             // {
@@ -235,6 +237,8 @@ namespace OperationLibrary
                             // jfile.UpdateFile<SupportStaff>(id, supportEdit);
                             // XmlFileOperation xfile = new XmlFileOperation();
                             // xfile.UpdateFile<SupportStaff>(id, supportEdit);
+                            DatabaseOperation db = new DatabaseOperation();
+                            db.UpdateStaff(supportEdit.EmpId, supportEdit.Name, supportEdit.Phone, supportEdit.Email, supportEdit.Dob, (int)supportEdit.StaffType, supportEdit.Department);
                             Console.WriteLine("Edit Successfull");
                             return;
                         }
@@ -250,37 +254,50 @@ namespace OperationLibrary
         }
         public void EditStaff()
         {
-            // bool flag = false;
+            object[] result = new object[6];
             string id;
-            // int id = 0;
-            //, iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
             Console.WriteLine("Enter EmpohId :");
             id = Console.ReadLine();
 
             SupportStaff support = new SupportStaff();
-            // JsonFileOperation jfile = new JsonFileOperation();
-            // support = (SupportStaff)jfile.GetObj<SupportStaff>(id, support);
-            // XmlFileOperation xfile = new XmlFileOperation();
-            // support = (SupportStaff)xfile.GetObj<SupportStaff>(id, support);
-            if (support.Name == null)
+            try
+            {
+                DatabaseOperation db = new DatabaseOperation();
+                result = db.GetSingleStaff(id, (int)SType.SupportStaff);
+                support.EmpId = result[0].ToString();
+                support.Name = result[1].ToString();
+                support.Phone = result[2].ToString();
+                support.Email = result[3].ToString();
+                support.Dob = (DateTime)result[4];
+                support.Department = result[5].ToString();
+                // JsonFileOperation jfile = new JsonFileOperation();
+                // support = (SupportStaff)jfile.GetObj<SupportStaff>(id, support);
+                // XmlFileOperation xfile = new XmlFileOperation();
+                // support = (SupportStaff)xfile.GetObj<SupportStaff>(id, support);
+                if (support.Name == null)
+                {
+                    Console.WriteLine("\nStaff Not Found !!");
+                }
+                else
+                {
+                    SupportStaff supportEdit = new SupportStaff();
+                    supportEdit.StaffType = SType.SupportStaff;
+                    supportEdit.EmpId = support.EmpId;
+                    supportEdit.Name = support.Name;
+                    supportEdit.Phone = support.Phone;
+                    supportEdit.Dob = support.Dob;
+                    supportEdit.Email = support.Email;
+                    supportEdit.Department = support.Department;
+                    EditHelp(id, support, supportEdit);
+
+
+                }
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("\nStaff Not Found !!");
-            }
-            else
-            {
-                SupportStaff supportEdit = new SupportStaff();
-                supportEdit.StaffType = SType.SupportStaff;
-                supportEdit.EmpId = support.EmpId;
-                supportEdit.Name = support.Name;
-                supportEdit.Phone = support.Phone;
-                supportEdit.Dob = support.Dob;
-                supportEdit.Email = support.Email;
-                supportEdit.Department = support.Department;
-                EditHelp(id, support, supportEdit);
-                //flag = true;
-
             }
         }
 
@@ -289,6 +306,7 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             string id;
+            object[] result = new object[6];
             //int id = 0; //iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
@@ -299,9 +317,18 @@ namespace OperationLibrary
             // jfile.DeleteFromFile<SupportStaff>(id);
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.DeleteFromFile<SupportStaff>(id);
-
-            DatabaseOperation db = new DatabaseOperation();
-            db.DeleteFromDb((int)SType.SupportStaff, id);
+            DatabaseOperation dbr = new DatabaseOperation();
+            result = dbr.GetSingleStaff(id, (int)SType.SupportStaff);
+            if (result[0] != null)
+            {
+                DatabaseOperation db = new DatabaseOperation();
+                db.DeleteFromDb((int)SType.SupportStaff, id);
+                Console.WriteLine("\nDeleted Successfull");
+            }
+            else
+            {
+                Console.WriteLine("\nStaff Not Found !!");
+            }
             // foreach (var support in supportList)
             // {
             //     ++iterator;

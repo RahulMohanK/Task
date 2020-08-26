@@ -5,8 +5,8 @@ namespace FileOperationLibrary
     {
         void AddToFile<T>(T obj);
         void RetrieveAllFromFile<T>();
-        void DeleteFromFile<T>(int id);
-        void UpdateFile<T>(int id, T obj);
+        void DeleteFromFile<T>(string EmpId);
+        void UpdateFile<T>(string EmpId, T obj);
         void RetrieveFromFile<T>(string name);
 
     }

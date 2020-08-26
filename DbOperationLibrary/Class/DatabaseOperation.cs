@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Configuration;
 
 
 namespace DbOperationLibrary
@@ -12,37 +13,32 @@ namespace DbOperationLibrary
         SqlConnection connection;
         public DatabaseOperation()
         {
-
-            connectionString = @"Server=DESKTOP-ROBHQ7Q;Database=School Database;Trusted_Connection=True";
+            connectionString = ConfigurationManager.AppSettings["connectionstring"];
             connection = new SqlConnection(connectionString);
             connection.Open();
         }
 
-        public void AddData(String EmpId, String Name, String Phone, String Email, object Dob, int StaffType, String Value)
+        public void AddData(String EmpId, String Name, String Phone, String Email, object Dob, int StaffType, String item)
         {
-
             try
             {
-
                 SqlCommand sqlCommand;
-                SqlDataAdapter adapter = new SqlDataAdapter();
-                string sql = "";
-                //sql = "addData " + "'admin1','ramo','+91-78945612','asd@asd.com'," + 22 / 02 / 1999 + "," + 0 + "," + "'Chemistry'";
-                sql = "addData @EmpId,@Name,@Phone,@Email,@Dob,@StaffType,@Value";
-                sqlCommand = new SqlCommand(sql, connection);
-                sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
-                sqlCommand.Parameters.AddWithValue("@Name", Name);
-                sqlCommand.Parameters.AddWithValue("@Phone", Phone);
-                sqlCommand.Parameters.AddWithValue("@Email", Email);
-                sqlCommand.Parameters.AddWithValue("@Dob", Dob);
-                sqlCommand.Parameters.AddWithValue("@StaffType", StaffType);
-                sqlCommand.Parameters.AddWithValue("@Value", Value);
+                // SqlDataAdapter adapter = new SqlDataAdapter();
+                sqlCommand = new SqlCommand("Proc_Staff_addData", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@EmpId", SqlDbType.NVarChar).Value = EmpId;
+                sqlCommand.Parameters.AddWithValue("@Name", SqlDbType.NVarChar).Value = Name;
+                sqlCommand.Parameters.AddWithValue("@Phone", SqlDbType.NVarChar).Value = Phone;
+                sqlCommand.Parameters.AddWithValue("@Email", SqlDbType.NVarChar).Value = Email;
+                sqlCommand.Parameters.AddWithValue("@Dob", SqlDbType.DateTime).Value = Dob;
+                sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
+                sqlCommand.Parameters.AddWithValue("@Value", SqlDbType.NVarChar).Value = item;
 
 
                 // adapter.InsertCommand = new SqlCommand(sql, connection);
                 // adapter.InsertCommand.ExecuteScalar();
-                sqlCommand.CommandText = sql;
-                sqlCommand.ExecuteScalar();
+
+                sqlCommand.ExecuteNonQuery();
                 sqlCommand.Dispose();
                 connection.Close();
             }
@@ -56,23 +52,38 @@ namespace DbOperationLibrary
         {
             try
             {
-                string sql, output = " ";
-
+                string output = " ";
                 SqlCommand sqlCommand;
                 SqlDataReader sqlDataReader;
-
-                sql = "retireveAll @StaffType";
-                Console.WriteLine("Connection ready");
-
-                sqlCommand = new SqlCommand(sql, connection);
-                sqlCommand.Parameters.AddWithValue("@StaffType", StaffType);
+                sqlCommand = new SqlCommand("Proc_Staff_retireveAll", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
                 sqlDataReader = sqlCommand.ExecuteReader();
 
-                while (sqlDataReader.Read())
+                if (sqlDataReader.HasRows)
                 {
-                    output = "EmpId : " + sqlDataReader.GetValue(1) + " Name : " + sqlDataReader.GetValue(2) + " Phone : " + sqlDataReader.GetValue(3) +
-                             " Email :" + sqlDataReader.GetValue(4) + " Subject :" + sqlDataReader.GetValue(11) + "\n";
-                    Console.WriteLine(output);
+                    while (sqlDataReader.Read())
+                    {
+                        output = "EmpId : " + sqlDataReader.GetValue(0) + " Name : " + sqlDataReader.GetValue(1) + " Phone : " + sqlDataReader.GetValue(2) +
+                                 " Email : " + sqlDataReader.GetValue(3) + " Dob : " + sqlDataReader.GetValue(4) + " Age : " + sqlDataReader.GetValue(8);
+                        if (StaffType == 0)
+                        {
+                            output = output + " Designation : " + sqlDataReader.GetValue(5) + "\n";
+                        }
+                        else if (StaffType == 1)
+                        {
+                            output = output + " Subject : " + sqlDataReader.GetValue(6) + "\n";
+                        }
+                        else if (StaffType == 2)
+                        {
+                            output = output + " Department: " + sqlDataReader.GetValue(7) + "\n";
+                        }
+                        Console.WriteLine(output);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\n List is empty \n");
                 }
 
                 sqlDataReader.Close();
@@ -91,15 +102,13 @@ namespace DbOperationLibrary
         {
             try
             {
-                String sql;
                 SqlCommand sqlCommand;
                 SqlDataAdapter adapter = new SqlDataAdapter();
-                sql = "deleteStaff @StaffType,@EmpId";
-                sqlCommand = new SqlCommand(sql, connection);
-                sqlCommand.Parameters.AddWithValue("@StaffType", StaffType);
-                sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
-                sqlCommand.CommandText = sql;
-                sqlCommand.ExecuteScalar();
+                sqlCommand = new SqlCommand("Proc_Staff_deleteStaff", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
+                sqlCommand.Parameters.AddWithValue("@EmpId", SqlDbType.NVarChar).Value = EmpId;
+                sqlCommand.ExecuteNonQuery();
                 // adapter.DeleteCommand = new SqlCommand(sql, connection);
                 // adapter.DeleteCommand.ExecuteNonQuery();
                 sqlCommand.Dispose();
@@ -112,28 +121,68 @@ namespace DbOperationLibrary
 
 
         }
-        public string GetSingleStaff()
+        public void UpdateStaff(String EmpId, String Name, String Phone, String Email, object Dob, int StaffType, String item)
         {
-            string output = " ";
             try
             {
-                string sql;
-
+                SqlCommand sqlCommand;
+                // SqlDataAdapter adapter = new SqlDataAdapter();
+                sqlCommand = new SqlCommand("Proc_Staff_updateData", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@EmpId", SqlDbType.NVarChar).Value = EmpId;
+                sqlCommand.Parameters.AddWithValue("@Name", SqlDbType.NVarChar).Value = Name;
+                sqlCommand.Parameters.AddWithValue("@Phone", SqlDbType.NVarChar).Value = Phone;
+                sqlCommand.Parameters.AddWithValue("@Email", SqlDbType.NVarChar).Value = Email;
+                sqlCommand.Parameters.AddWithValue("@Dob", SqlDbType.DateTime).Value = Dob;
+                sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
+                sqlCommand.Parameters.AddWithValue("@Value", SqlDbType.NVarChar).Value = item;
+                // adapter.InsertCommand = new SqlCommand(sql, connection);
+                // adapter.InsertCommand.ExecuteScalar();
+                sqlCommand.ExecuteNonQuery();
+                sqlCommand.Dispose();
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Sql Updation :" + e);
+            }
+        }
+        public void SearchStaff(string Name, int StaffType)
+        {
+            try
+            {
+                string output = " ";
                 SqlCommand sqlCommand;
                 SqlDataReader sqlDataReader;
-
-                sql = "select * from Staff as S inner join AdministrativeStaff as Ad on S.Id = Ad.StaffId";
-                Console.WriteLine("Connection ready");
-
-                sqlCommand = new SqlCommand(sql, connection);
-                // sqlCommand.Parameters.AddWithValue("@StaffType", StaffType);
+                sqlCommand = new SqlCommand("Proc_Staff_searchStaff", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
+                sqlCommand.Parameters.AddWithValue("@Name", SqlDbType.NVarChar).Value = Name;
                 sqlDataReader = sqlCommand.ExecuteReader();
-
-                while (sqlDataReader.Read())
+                if (sqlDataReader.HasRows)
                 {
-                    output = "EmpId : " + sqlDataReader.GetValue(1) + " Name : " + sqlDataReader.GetValue(2) + " Phone : " + sqlDataReader.GetValue(3) +
-                             " Email :" + sqlDataReader.GetValue(4) + " Subject :" + sqlDataReader.GetValue(11) + "\n";
-                    Console.WriteLine(output);
+                    while (sqlDataReader.Read())
+                    {
+                        output = "EmpId : " + sqlDataReader.GetValue(0) + " Name : " + sqlDataReader.GetValue(1) + " Phone : " + sqlDataReader.GetValue(2) +
+                                 " Email : " + sqlDataReader.GetValue(3) + " Dob : " + sqlDataReader.GetValue(4) + " Age : " + sqlDataReader.GetValue(8);
+                        if (StaffType == 0)
+                        {
+                            output = output + " Designation : " + sqlDataReader.GetValue(5) + "\n";
+                        }
+                        else if (StaffType == 1)
+                        {
+                            output = output + " Subject : " + sqlDataReader.GetValue(6) + "\n";
+                        }
+                        else if (StaffType == 2)
+                        {
+                            output = output + " Department: " + sqlDataReader.GetValue(7) + "\n";
+                        }
+                        Console.WriteLine(output);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\nStaff Not Found!!\n");
                 }
 
                 sqlDataReader.Close();
@@ -145,7 +194,52 @@ namespace DbOperationLibrary
             {
                 Console.WriteLine("Sql connection :" + e);
             }
-            return output;
+        }
+        public object[] GetSingleStaff(string EmpId, int StaffType)
+        {
+            object[] result = new Object[6];
+            try
+            {
+                SqlCommand sqlCommand;
+                SqlDataReader sqlDataReader;
+                sqlCommand = new SqlCommand("Proc_Staff_retireveSingleStaff", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
+                sqlCommand.Parameters.AddWithValue("@EmpId", SqlDbType.NVarChar).Value = EmpId;
+                sqlDataReader = sqlCommand.ExecuteReader();
+
+                while (sqlDataReader.Read())
+                {
+                    result[0] = sqlDataReader.GetValue(0);
+                    result[1] = sqlDataReader.GetValue(1);
+                    result[2] = sqlDataReader.GetValue(2);
+                    result[3] = sqlDataReader.GetValue(3);
+                    result[4] = sqlDataReader.GetValue(4);
+                    if (StaffType == 0)
+                    {
+                        result[5] = sqlDataReader.GetValue(5);
+                    }
+                    else if (StaffType == 1)
+                    {
+                        result[5] = sqlDataReader.GetValue(6);
+                    }
+                    else
+                    {
+                        result[5] = sqlDataReader.GetValue(7);
+                    }
+
+                }
+                sqlDataReader.Close();
+                sqlCommand.Dispose();
+                connection.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Sql connection :" + e);
+            }
+            return result;
+
         }
     }
 }

@@ -75,6 +75,7 @@ namespace OperationLibrary
                 // xfile.AddToFile<TeachingStaff>(teaching);
                 DatabaseOperation db = new DatabaseOperation();
                 db.AddData(teaching.EmpId, teaching.Name, teaching.Phone, teaching.Email, teaching.Dob, (int)teaching.StaffType, teaching.Subject);
+
                 Console.WriteLine("\nValues added are :\n");
                 Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
             }
@@ -116,8 +117,10 @@ namespace OperationLibrary
             // JsonFileOperation jfile = new JsonFileOperation();
             // jfile.RetrieveFromFile<TeachingStaff>(name);
 
-            XmlFileOperation xfile = new XmlFileOperation();
-            xfile.RetrieveFromFile<TeachingStaff>(name);
+            // XmlFileOperation xfile = new XmlFileOperation();
+            // xfile.RetrieveFromFile<TeachingStaff>(name);
+            DatabaseOperation db = new DatabaseOperation();
+            db.SearchStaff(name, (int)SType.TeachingStaff);
             // foreach (var teaching in teachingList)
             // {
             //     if (teaching.Name == name)
@@ -237,6 +240,8 @@ namespace OperationLibrary
                             // jfile.UpdateFile<TeachingStaff>(id, teachingEdit);
                             // XmlFileOperation xfile = new XmlFileOperation();
                             // xfile.UpdateFile<TeachingStaff>(id, teachingEdit);
+                            DatabaseOperation db = new DatabaseOperation();
+                            db.UpdateStaff(teachingEdit.EmpId, teachingEdit.Name, teachingEdit.Phone, teachingEdit.Email, teachingEdit.Dob, (int)teachingEdit.StaffType, teachingEdit.Subject);
                             Console.WriteLine("Edit Successfull");
                             return;
                         }
@@ -251,41 +256,51 @@ namespace OperationLibrary
         }
         public void EditStaff()
         {
+            object[] result = new object[6];
             string id;
-            //bool flag = false;
-            //int id = 0;
-            //, iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
             Console.WriteLine("Enter EmpId :");
             id = Console.ReadLine();
 
             TeachingStaff teaching = new TeachingStaff();
+            try
+            {
+                DatabaseOperation db = new DatabaseOperation();
+                result = db.GetSingleStaff(id, (int)SType.TeachingStaff);
+                teaching.EmpId = result[0].ToString();
+                teaching.Name = result[1].ToString();
+                teaching.Phone = result[2].ToString();
+                teaching.Email = result[3].ToString();
+                teaching.Dob = (DateTime)result[4];
+                teaching.Subject = result[5].ToString();
+                // JsonFileOperation jfile = new JsonFileOperation();
+                // teaching = (TeachingStaff)jfile.GetObj<TeachingStaff>(id, teaching);
+                // XmlFileOperation xfile = new XmlFileOperation();
+                // teaching = (TeachingStaff)xfile.GetObj<TeachingStaff>(id, teaching);
 
-            // JsonFileOperation jfile = new JsonFileOperation();
-            // teaching = (TeachingStaff)jfile.GetObj<TeachingStaff>(id, teaching);
-            // XmlFileOperation xfile = new XmlFileOperation();
-            // teaching = (TeachingStaff)xfile.GetObj<TeachingStaff>(id, teaching);
 
-            //name = inputName();
-            //Console.WriteLine("Name " + teaching.Name);
-            if (teaching.Name == null)
+                if (teaching.Name == null)
+                {
+                    Console.WriteLine("\nStaff Not Found!!");
+                }
+                else
+                {
+                    TeachingStaff teachingEdit = new TeachingStaff();
+                    teachingEdit.StaffType = SType.TeachingStaff;
+                    teachingEdit.EmpId = teaching.EmpId;
+                    teachingEdit.Name = teaching.Name;
+                    teachingEdit.Phone = teaching.Phone;
+                    teachingEdit.Dob = teaching.Dob;
+                    teachingEdit.Email = teaching.Email;
+                    teachingEdit.Subject = teaching.Subject;
+                    EditHelp(id, teaching, teachingEdit);
+                }
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("\nStaff Not Found!!");
             }
-            else
-            {
-                TeachingStaff teachingEdit = new TeachingStaff();
-                teachingEdit.StaffType = SType.TeachingStaff;
-                teachingEdit.EmpId = teaching.EmpId;
-                teachingEdit.Name = teaching.Name;
-                teachingEdit.Phone = teaching.Phone;
-                teachingEdit.Dob = teaching.Dob;
-                teachingEdit.Email = teaching.Email;
-                teachingEdit.Subject = teaching.Subject;
-                EditHelp(id, teaching, teachingEdit);
-            }
-            // flag = true;
 
 
 
@@ -293,7 +308,7 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             string id;
-            //int id = 0;//iterator = 0;
+            object[] result = new object[6];
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
 
@@ -303,8 +318,18 @@ namespace OperationLibrary
             // jfile.DeleteFromFile<TeachingStaff>(id);
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.DeleteFromFile<TeachingStaff>(id);
-            DatabaseOperation db = new DatabaseOperation();
-            db.DeleteFromDb((int)SType.TeachingStaff, id);
+            DatabaseOperation dbr = new DatabaseOperation();
+            result = dbr.GetSingleStaff(id, (int)SType.TeachingStaff);
+            if (result[0] != null)
+            {
+                DatabaseOperation db = new DatabaseOperation();
+                db.DeleteFromDb((int)SType.TeachingStaff, id);
+                Console.WriteLine("\nDeletion Successfull");
+            }
+            else
+            {
+                Console.WriteLine("\nStaff Not Found!!");
+            }
             // foreach (var teaching in teachingList)
             // {
             //     ++iterator;

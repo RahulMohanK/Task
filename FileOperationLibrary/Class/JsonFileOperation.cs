@@ -66,10 +66,10 @@ namespace FileOperationLibrary
                 Console.WriteLine("Retieval Error :" + e);
             }
         }
-        public void DeleteFromFile<T>(int id)
+        public void DeleteFromFile<T>(string EmpId)
         {
             string staffType = typeof(T).ToString().Split('.')[1];
-
+            int flag = 0;
             int i = 0;
             var json = File.ReadAllText(path);
             try
@@ -77,21 +77,24 @@ namespace FileOperationLibrary
                 var jobj = JObject.Parse(json);
                 var stafflist = jobj.GetValue(staffType) as JArray;
                 var definition = new { Id = "" };
-                if (id <= stafflist.Count)
+
+                foreach (var item in stafflist)
                 {
-                    foreach (var item in stafflist)
+                    ++i;
+                    var content = JsonConvert.DeserializeAnonymousType(item.ToString(), definition);
+                    if (content.Id == EmpId)
                     {
-                        ++i;
-                        var content = JsonConvert.DeserializeAnonymousType(item.ToString(), definition);
-                        if (Convert.ToInt32(content.Id) == id)
-                        {
-                            break;
-                        }
+                        flag = 1;
+                        break;
                     }
+                }
+
+                if (flag == 1)
+                {
                     Console.WriteLine(stafflist[i - 1] + "\n Deleted Succesfully");
                     stafflist.RemoveAt(i - 1);
-
                 }
+
                 else
                 {
                     Console.WriteLine("\nStaff Not Found !!");
@@ -143,7 +146,7 @@ namespace FileOperationLibrary
             }
         }
 
-        public object GetObj<T>(int id, T obj)
+        public object GetObj<T>(string EmpId, T obj)
         {
             string staffType = typeof(T).ToString().Split('.')[1];
 
@@ -160,7 +163,7 @@ namespace FileOperationLibrary
                 {
 
                     var content = JsonConvert.DeserializeAnonymousType(item.ToString(), definition);
-                    if (id == Convert.ToInt32(content.Id))
+                    if (EmpId == content.Id)
                     {
                         t = JsonConvert.DeserializeObject<T>(item.ToString());
                         break;
@@ -176,7 +179,7 @@ namespace FileOperationLibrary
             }
             return t;
         }
-        public void UpdateFile<T>(int id, T obj)
+        public void UpdateFile<T>(string EmpId, T obj)
         {
             string staffType = typeof(T).ToString().Split('.')[1];
 
@@ -191,7 +194,7 @@ namespace FileOperationLibrary
                 {
                     ++i;
                     var content = JsonConvert.DeserializeAnonymousType(it.ToString(), definition);
-                    if (id == Convert.ToInt32(content.Id))
+                    if (EmpId == content.Id)
                     {
 
                         break;

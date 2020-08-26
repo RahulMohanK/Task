@@ -49,7 +49,7 @@ namespace FileOperationLibrary
                 foreach (XElement el in staffElements)
                 {
 
-                    Console.WriteLine("Id :" + el.Attribute("Id").Value + "\n" + el);
+                    Console.WriteLine("Id :" + el.Attribute("EmpId").Value + "\n" + el);
                 }
             }
             else
@@ -57,11 +57,11 @@ namespace FileOperationLibrary
                 Console.WriteLine("\nList is Empty");
             }
         }
-        public void DeleteFromFile<T>(int id)
+        public void DeleteFromFile<T>(string EmpId)
         {
             string staffType = typeof(T).ToString().Split('.')[1];
 
-            Console.WriteLine("id :{0}", id);
+            Console.WriteLine("id :{0}", EmpId);
 
             XDocument xDocument;
             xDocument = XDocument.Load(path);
@@ -71,8 +71,8 @@ namespace FileOperationLibrary
             foreach (XElement el in staffElements)
             {
                 ++i;
-                var check = el.Attribute("Id").Value;
-                if (Convert.ToInt32(check) == id)
+                var check = el.Attribute("EmpId").Value;
+                if (check == EmpId)
                 {
                     flag = true;
                     break;
@@ -90,7 +90,7 @@ namespace FileOperationLibrary
             }
 
         }
-        public object GetObj<T>(int id, T obj)
+        public object GetObj<T>(string EmpId, T obj)
         {
             string staffType = typeof(T).ToString().Split('.')[1];
 
@@ -106,8 +106,8 @@ namespace FileOperationLibrary
             foreach (XElement el in staffElements)
             {
                 ++i;
-                var check = el.Attribute("Id").Value;
-                if (Convert.ToInt32(check) == id)
+                var check = el.Attribute("EmpId").Value;
+                if (check == EmpId)
                 {
                     flag = true;
                     break;
@@ -125,7 +125,7 @@ namespace FileOperationLibrary
             return t;
 
         }
-        public void UpdateFile<T>(int id, T obj)
+        public void UpdateFile<T>(string EmpId, T obj)
         {
             string staffType = typeof(T).ToString().Split('.')[1];
 
@@ -139,8 +139,8 @@ namespace FileOperationLibrary
             foreach (XElement el in staffElements)
             {
                 ++i;
-                var check = el.Attribute("Id").Value;
-                if (Convert.ToInt32(check) == id)
+                var check = el.Attribute("EmpId").Value;
+                if (check == EmpId)
                 {
                     flag = true;
                     break;

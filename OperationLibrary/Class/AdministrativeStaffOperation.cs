@@ -126,11 +126,14 @@ namespace OperationLibrary
             Console.WriteLine("Enter Name :");
 
             name = InputName();
-            Console.WriteLine("");
-            JsonFileOperation jfile = new JsonFileOperation();
-            jfile.RetrieveFromFile<AdministrativeStaff>(name);
+
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // jfile.RetrieveFromFile<AdministrativeStaff>(name);
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.RetrieveFromFile<AdministrativeStaff>(name);
+            DatabaseOperation db = new DatabaseOperation();
+            db.SearchStaff(name, (int)SType.AdministrativeStaff);
+
             // foreach (var admin in administrativeList)
             // {
             //     if (admin.Name == name)
@@ -248,6 +251,8 @@ namespace OperationLibrary
                             // jfile.UpdateFile<AdministrativeStaff>(id, adminEdit);
                             // XmlFileOperation xfile = new XmlFileOperation();
                             // xfile.UpdateFile<AdministrativeStaff>(id, adminEdit);
+                            DatabaseOperation db = new DatabaseOperation();
+                            db.UpdateStaff(adminEdit.EmpId, adminEdit.Name, adminEdit.Phone, adminEdit.Email, adminEdit.Dob, (int)adminEdit.StaffType, adminEdit.Designation);
                             Console.WriteLine("Edit Successfull");
                             return;
                         }
@@ -262,50 +267,62 @@ namespace OperationLibrary
         }
         public void EditStaff()
         {
-            // bool flag = false;
+            object[] result = new object[6];
             string id;
-            //int id = 0;
-            // iterator = 0;
+
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
             Console.WriteLine("Enter EmpId :");
-            // id = InputOption();
             id = Console.ReadLine();
-            //object objt;
+
             AdministrativeStaff admin = new AdministrativeStaff();
             // JsonFileOperation jfile = new JsonFileOperation();
             // admin = (AdministrativeStaff)jfile.GetObj<AdministrativeStaff>(id, admin);
             // XmlFileOperation xfile = new XmlFileOperation();
             // admin = (AdministrativeStaff)xfile.GetObj<AdministrativeStaff>(id);
             //Console.WriteLine("Name " + admin.Designation);
-            if (admin.Name == null)
+            try
+            {
+                DatabaseOperation db = new DatabaseOperation();
+                result = db.GetSingleStaff(id, (int)SType.AdministrativeStaff);
+                admin.EmpId = result[0].ToString();
+                admin.Name = result[1].ToString();
+                admin.Phone = result[2].ToString();
+                admin.Email = result[3].ToString();
+                admin.Dob = (DateTime)result[4];
+                admin.Designation = result[5].ToString();
+                // Console.WriteLine("Name " + result[0].ToString());
+                if (admin.Name == null)
+                {
+                    Console.WriteLine("\nStaff Not Found !!");
+                }
+                else
+                {
+                    AdministrativeStaff adminEdit = new AdministrativeStaff();
+                    adminEdit.StaffType = SType.AdministrativeStaff;
+                    adminEdit.EmpId = admin.EmpId;
+                    adminEdit.Name = admin.Name;
+                    adminEdit.Phone = admin.Phone;
+                    adminEdit.Email = admin.Email;
+                    adminEdit.Dob = admin.Dob;
+                    adminEdit.Designation = admin.Designation;
+                    EditHelp(id, admin, adminEdit);
+
+                }
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("\nStaff Not Found !!");
             }
-            else
-            {
-                AdministrativeStaff adminEdit = new AdministrativeStaff();
-                adminEdit.StaffType = SType.AdministrativeStaff;
-                adminEdit.EmpId = admin.EmpId;
-                adminEdit.Name = admin.Name;
-                adminEdit.Phone = admin.Phone;
-                adminEdit.Email = admin.Email;
-                adminEdit.Dob = admin.Dob;
-                adminEdit.Designation = admin.Designation;
-                EditHelp(id, admin, adminEdit);
-                //flag = true;
-            }
 
 
 
-            // if (flag == false)
-            // {
-            //     Console.WriteLine("\nStaff Not Found !!");
-            // }
+
         }
         public void DeleteStaff()
         {
             string id;
+            object[] result = new object[6];
             //int id = 0;//, iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
@@ -317,8 +334,19 @@ namespace OperationLibrary
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.DeleteFromFile<AdministrativeStaff>(id);
 
-            DatabaseOperation db = new DatabaseOperation();
-            db.DeleteFromDb((int)SType.AdministrativeStaff, id);
+            DatabaseOperation dbr = new DatabaseOperation();
+            result = dbr.GetSingleStaff(id, (int)SType.AdministrativeStaff);
+            if (result[0] != null)
+            {
+                DatabaseOperation db = new DatabaseOperation();
+                db.DeleteFromDb((int)SType.AdministrativeStaff, id);
+                Console.WriteLine("\nDeletion Successfull");
+            }
+            else
+            {
+                Console.WriteLine("\nStaff Not Found !!");
+            }
+
             // foreach (var admin in administrativeList)
             // {
             //     ++iterator;

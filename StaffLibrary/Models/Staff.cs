@@ -27,7 +27,7 @@ namespace StaffLibrary
             set { staffType = value; }
 
         }
-        [XmlAttributeAttribute("Id  ")]
+        [XmlAttributeAttribute("EmpId")]
         public string EmpId
         {
             get { return empId; }
