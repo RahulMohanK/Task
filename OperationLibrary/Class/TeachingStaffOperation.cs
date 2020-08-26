@@ -76,8 +76,8 @@ namespace OperationLibrary
                 DatabaseOperation db = new DatabaseOperation();
                 db.AddData(teaching.EmpId, teaching.Name, teaching.Phone, teaching.Email, teaching.Dob, (int)teaching.StaffType, teaching.Subject);
 
-                Console.WriteLine("\nValues added are :\n");
-                Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
+                // Console.WriteLine("\nValues added are :\n");
+                //Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
             }
 
 

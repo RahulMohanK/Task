@@ -28,6 +28,7 @@ namespace StaffLibrary
 
         }
         [XmlAttributeAttribute("EmpId")]
+        [RegularExpression("^[a-z0-9]+$", ErrorMessage = "Enter valid Employee Id")]
         public string EmpId
         {
             get { return empId; }

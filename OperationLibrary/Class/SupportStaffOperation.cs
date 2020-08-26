@@ -75,9 +75,9 @@ namespace OperationLibrary
                 // xfile.AddToFile<SupportStaff>(support);
                 DatabaseOperation db = new DatabaseOperation();
                 db.AddData(support.EmpId, support.Name, support.Phone, support.Email, support.Dob, (int)support.StaffType, support.Department);
-                Console.WriteLine("\nValues added are :\n");
+                //Console.WriteLine("\nValues added are :\n");
 
-                Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
+                // Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
             }
 
 

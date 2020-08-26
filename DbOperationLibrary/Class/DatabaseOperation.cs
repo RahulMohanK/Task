@@ -20,27 +20,38 @@ namespace DbOperationLibrary
 
         public void AddData(String EmpId, String Name, String Phone, String Email, object Dob, int StaffType, String item)
         {
+            object[] result = new object[6];
             try
             {
-                SqlCommand sqlCommand;
-                // SqlDataAdapter adapter = new SqlDataAdapter();
-                sqlCommand = new SqlCommand("Proc_Staff_addData", connection);
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@EmpId", SqlDbType.NVarChar).Value = EmpId;
-                sqlCommand.Parameters.AddWithValue("@Name", SqlDbType.NVarChar).Value = Name;
-                sqlCommand.Parameters.AddWithValue("@Phone", SqlDbType.NVarChar).Value = Phone;
-                sqlCommand.Parameters.AddWithValue("@Email", SqlDbType.NVarChar).Value = Email;
-                sqlCommand.Parameters.AddWithValue("@Dob", SqlDbType.DateTime).Value = Dob;
-                sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
-                sqlCommand.Parameters.AddWithValue("@Value", SqlDbType.NVarChar).Value = item;
+                DatabaseOperation db = new DatabaseOperation();
+                result = db.GetSingleStaff(EmpId, StaffType);
+                if (result[0] == null)
+                {
+                    SqlCommand sqlCommand;
+                    // SqlDataAdapter adapter = new SqlDataAdapter();
+                    sqlCommand = new SqlCommand("Proc_Staff_addData", connection);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@EmpId", SqlDbType.NVarChar).Value = EmpId;
+                    sqlCommand.Parameters.AddWithValue("@Name", SqlDbType.NVarChar).Value = Name;
+                    sqlCommand.Parameters.AddWithValue("@Phone", SqlDbType.NVarChar).Value = Phone;
+                    sqlCommand.Parameters.AddWithValue("@Email", SqlDbType.NVarChar).Value = Email;
+                    sqlCommand.Parameters.AddWithValue("@Dob", SqlDbType.DateTime).Value = Dob;
+                    sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
+                    sqlCommand.Parameters.AddWithValue("@Value", SqlDbType.NVarChar).Value = item;
 
 
-                // adapter.InsertCommand = new SqlCommand(sql, connection);
-                // adapter.InsertCommand.ExecuteScalar();
+                    // adapter.InsertCommand = new SqlCommand(sql, connection);
+                    // adapter.InsertCommand.ExecuteScalar();
 
-                sqlCommand.ExecuteNonQuery();
-                sqlCommand.Dispose();
-                connection.Close();
+                    sqlCommand.ExecuteNonQuery();
+                    Console.WriteLine("\nData Insertion Complete");
+                    sqlCommand.Dispose();
+                    connection.Close();
+                }
+                else
+                {
+                    Console.WriteLine("\nEmployee Id already exists");
+                }
             }
             catch (Exception e)
             {
