@@ -100,30 +100,69 @@ namespace OperationLibrary
 
         public void RetrieveAllStaff()
         {
+            string output = "";
+
+            List<object[]> finalResult = new List<object[]>();
+            object[] result = new object[7];
             // JsonFileOperation jfile = new JsonFileOperation();
             // jfile.RetrieveAllFromFile<SupportStaff>();
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.RetrieveAllFromFile<TeachingStaff>();
-            DatabaseOperation db = new DatabaseOperation();
-            db.RetriveAll((int)SType.TeachingStaff);
+            try
+            {
+                DatabaseOperation db = new DatabaseOperation();
+                finalResult = db.RetriveAll((int)SType.TeachingStaff);
+
+                foreach (var item in finalResult)
+                {
+                    result = (object[])item;
+                    output = "EmpId : " + result[0] + " Name : " + result[1] + " Phone : " + result[2] +
+                                  " Email : " + result[3] + " Dob : " + result[4] + " Age : " + result[5] + " Subject : " + result[6];
+                    Console.WriteLine(output);
+                }
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("\n List is empty \n");
+            }
 
 
         }
         public void RetrieveSingleStaff()
         {
-            string name = "";
+
+            string name = "", output = "";
+            List<object[]> finalResult = new List<object[]>();
+            object[] result = new object[7];
             Console.WriteLine("Enter Details to Search :");
 
             Console.WriteLine("Enter Name :");
 
             name = InputName();
-            JsonFileOperation jfile = new JsonFileOperation();
-            jfile.RetrieveFromFile<TeachingStaff>(name);
+            // JsonFileOperation jfile = new JsonFileOperation();
+            // jfile.RetrieveFromFile<TeachingStaff>(name);
 
-            XmlFileOperation xfile = new XmlFileOperation();
-            xfile.RetrieveFromFile<TeachingStaff>(name);
-            DatabaseOperation db = new DatabaseOperation();
-            db.SearchStaff(name, (int)SType.TeachingStaff);
+            // XmlFileOperation xfile = new XmlFileOperation();
+            // xfile.RetrieveFromFile<TeachingStaff>(name);
+            try
+            {
+                DatabaseOperation db = new DatabaseOperation();
+                finalResult = db.SearchStaff(name, (int)SType.TeachingStaff);
+
+                foreach (var item in finalResult)
+                {
+                    result = (object[])item;
+                    output = "EmpId : " + result[0] + " Name : " + result[1] + " Phone : " + result[2] +
+                                  " Email : " + result[3] + " Dob : " + result[4] + " Age : " + result[5] + " Subject : " + result[6];
+                    Console.WriteLine(output);
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("\nStaff Not Found!!");
+            }
+
 
         }
         public void EditHelp(string id, TeachingStaff teaching, TeachingStaff teachingEdit)

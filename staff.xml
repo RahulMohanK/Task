@@ -24,4 +24,28 @@
     <Email>asd@qwe.com</Email>
     <Designation>Office Assistant</Designation>
   </AdministrativeStaff>
+  <AdministrativeStaff EmpId="admin01">
+    <StaffType>AdministrativeStaff</StaffType>
+    <Name>rahul</Name>
+    <Phone>+91-789</Phone>
+    <Dob>1999-02-22T00:00:00</Dob>
+    <Email>asd@asd.com</Email>
+    <Designation>Clerk</Designation>
+  </AdministrativeStaff>
+  <AdministrativeStaff EmpId="admin02">
+    <StaffType>AdministrativeStaff</StaffType>
+    <Name>rahul mohan</Name>
+    <Phone>+91-78945612</Phone>
+    <Dob>1974-02-22T00:00:00</Dob>
+    <Email>asdf@asd.com</Email>
+    <Designation>Office Assistant</Designation>
+  </AdministrativeStaff>
+  <AdministrativeStaff EmpId="admin03">
+    <StaffType>AdministrativeStaff</StaffType>
+    <Name>asdf</Name>
+    <Phone>+91-78945</Phone>
+    <Dob>1999-02-22T00:00:00</Dob>
+    <Email>asd@asdfg.com</Email>
+    <Designation>Clerk</Designation>
+  </AdministrativeStaff>
 </Staff>
