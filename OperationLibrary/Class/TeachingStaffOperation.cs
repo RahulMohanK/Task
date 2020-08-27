@@ -14,71 +14,87 @@ namespace OperationLibrary
 
         public void AddStaff()
         {
-            string subject = "";
-            int Count = 0, Select, id = 0;
-            bool valid = false;
-            object[] opt = new object[5];
-            string[] Options;
-            TeachingStaff teaching = new TeachingStaff();
+            string bulkOrNot = "n";
             do
             {
-                opt = EnterValues();
-                Options = ConfigList("Subject");
-                Console.WriteLine("Enter Subject :");
+                string subject = "";
+                int Count = 0, Select, id = 0;
+                bool valid = false;
+                object[] opt = new object[5];
+                string[] Options;
+                TeachingStaff teaching = new TeachingStaff();
                 do
                 {
-                    Console.WriteLine("\nSelect any one option(0 to exit)");
-
-                    foreach (var val in Options)
-                        Console.WriteLine(++Count + " :" + val);
-                    Count = 0;
-
-                    int.TryParse(Console.ReadLine(), out Select);
-                    if (Select == 0)
+                    opt = EnterValues();
+                    Options = ConfigList("Subject");
+                    Console.WriteLine("Enter Subject :");
+                    do
                     {
+                        Console.WriteLine("\nSelect any one option(0 to exit)");
+
+                        foreach (var val in Options)
+                            Console.WriteLine(++Count + " :" + val);
+                        Count = 0;
+
+                        int.TryParse(Console.ReadLine(), out Select);
+                        if (Select == 0)
+                        {
+                            break;
+                        }
+                        subject = Options[Select - 1];
                         break;
                     }
-                    subject = Options[Select - 1];
+                    while (Select != 0);
+                    teaching.StaffType = SType.TeachingStaff;
+                    teaching.EmpId = opt[4].ToString();
+                    teaching.Name = opt[0].ToString();
+                    teaching.Phone = opt[1].ToString();
+                    if (!String.IsNullOrEmpty(opt[2].ToString()))
+                    {
+                        teaching.Dob = Convert.ToDateTime(opt[2]);
+                    }
+                    teaching.Email = opt[3].ToString();
+                    teaching.Subject = subject;
+                    valid = Validation(teaching);
+                    if (!valid)
+                    {
+                        Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
+                        id = InputOption();
+                        if (id == 1)
+                        {
+                            continue;
+                        }
+                        else { break; }
+                    }
+                }
+                while (!valid);
+
+                if (valid)
+                {
+                    teachingList.Add(teaching);
+                    // JsonFileOperation jfile = new JsonFileOperation();
+                    // jfile.AddToFile<TeachingStaff>(teaching);
+                    // XmlFileOperation xfile = new XmlFileOperation();
+                    // xfile.AddToFile<TeachingStaff>(teaching);
+                    DatabaseOperation createtb = new DatabaseOperation();
+                    createtb.CreateTable();
+                    DatabaseOperation db = new DatabaseOperation();
+                    db.AddBulkData(teaching.EmpId, teaching.Name, teaching.Phone, teaching.Email, teaching.Dob, (int)teaching.StaffType, teaching.Subject);
+
+                    // Console.WriteLine("\nValues added are :\n");
+                    //Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
+                }
+                Console.WriteLine("Add data again : (y/n)\n");
+                bulkOrNot = Console.ReadLine();
+                if (bulkOrNot.Equals("n"))
+                {
+                    DatabaseOperation database = new DatabaseOperation();
+                    database.ExecuteBulkProc();
                     break;
                 }
-                while (Select != 0);
-                teaching.StaffType = SType.TeachingStaff;
-                teaching.EmpId = opt[4].ToString();
-                teaching.Name = opt[0].ToString();
-                teaching.Phone = opt[1].ToString();
-                if (!String.IsNullOrEmpty(opt[2].ToString()))
-                {
-                    teaching.Dob = Convert.ToDateTime(opt[2]);
-                }
-                teaching.Email = opt[3].ToString();
-                teaching.Subject = subject;
-                valid = Validation(teaching);
-                if (!valid)
-                {
-                    Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
-                    id = InputOption();
-                    if (id == 1)
-                    {
-                        continue;
-                    }
-                    else { break; }
-                }
-            }
-            while (!valid);
 
-            if (valid)
-            {
-                teachingList.Add(teaching);
-                // JsonFileOperation jfile = new JsonFileOperation();
-                // jfile.AddToFile<TeachingStaff>(teaching);
-                // XmlFileOperation xfile = new XmlFileOperation();
-                // xfile.AddToFile<TeachingStaff>(teaching);
-                DatabaseOperation db = new DatabaseOperation();
-                db.AddData(teaching.EmpId, teaching.Name, teaching.Phone, teaching.Email, teaching.Dob, (int)teaching.StaffType, teaching.Subject);
-
-                // Console.WriteLine("\nValues added are :\n");
-                //Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
             }
+            while (bulkOrNot.Equals("y"));
 
 
         }
@@ -91,19 +107,7 @@ namespace OperationLibrary
             // xfile.RetrieveAllFromFile<TeachingStaff>();
             DatabaseOperation db = new DatabaseOperation();
             db.RetriveAll((int)SType.TeachingStaff);
-            // int k = 0;
-            // if (teachingList.Count == 0)
-            // {
-            //     Console.WriteLine("List is empty\n");
-            // }
-            // else
-            // {
-            //     Console.WriteLine("\nDetails are :");
-            //     foreach (var teaching in teachingList)
-            //     {
-            //         Console.WriteLine("\nId: " + (++k) + " Name: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
-            //     }
-            // }
+
 
         }
         public void RetrieveSingleStaff()
@@ -114,22 +118,14 @@ namespace OperationLibrary
             Console.WriteLine("Enter Name :");
 
             name = InputName();
-            // JsonFileOperation jfile = new JsonFileOperation();
-            // jfile.RetrieveFromFile<TeachingStaff>(name);
+            JsonFileOperation jfile = new JsonFileOperation();
+            jfile.RetrieveFromFile<TeachingStaff>(name);
 
-            // XmlFileOperation xfile = new XmlFileOperation();
-            // xfile.RetrieveFromFile<TeachingStaff>(name);
+            XmlFileOperation xfile = new XmlFileOperation();
+            xfile.RetrieveFromFile<TeachingStaff>(name);
             DatabaseOperation db = new DatabaseOperation();
             db.SearchStaff(name, (int)SType.TeachingStaff);
-            // foreach (var teaching in teachingList)
-            // {
-            //     if (teaching.Name == name)
-            //     {
-            //         Console.WriteLine("\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
-            //         return;
-            //     }
-            // }
-            // Console.WriteLine("\nStaff Not Found !!");
+
         }
         public void EditHelp(string id, TeachingStaff teaching, TeachingStaff teachingEdit)
         {
@@ -330,17 +326,6 @@ namespace OperationLibrary
             {
                 Console.WriteLine("\nStaff Not Found!!");
             }
-            // foreach (var teaching in teachingList)
-            // {
-            //     ++iterator;
-            //     if (id == iterator)
-            //     {
-            //         teachingList.Remove(teaching);
-            //         Console.WriteLine("Successfully Deleted :" + "\nName: " + teaching.Name + " " + "DOB: " + teaching.Dob + " " + "Phone :" + teaching.Phone + " " + "Email :" + teaching.Email + " Subject: " + teaching.Subject);
-            //         return;
-            //     }
-            // }
-            // Console.WriteLine("\nStaff Not Found !!");
         }
 
 

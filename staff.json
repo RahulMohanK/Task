@@ -1,22 +1,5 @@
 {
-  "AdministrativeStaff": [
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":1,\"Name\":\"ram gopal\",\"Phone\":\"+91-456\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}",
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":12,\"Name\":\"asdf\",\"Phone\":\"+91-78945612\",\"Dob\":\"0199-02-22T00:00:00\",\"Email\":\"asd@asdf.com\"}",
-    "{\"Designation\":\"Clerk\",\"StaffType\":0,\"Id\":45,\"Name\":\"rahul mohan\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"ads@asd.com\"}",
-    "{\"Designation\":\"Clerk\",\"StaffType\":0,\"Id\":456,\"Name\":\"ramo\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@ad.com\"}",
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":78945,\"Name\":\"asdr\",\"Phone\":\"+91-7894561278\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asdf.com\"}",
-    "{\"Designation\":\"Clerk\",\"StaffType\":0,\"Id\":458,\"Name\":\"asdf\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@sdf.com\"}",
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":789,\"Name\":\"yui\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asdf@asdfg.com\"}",
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":176,\"Name\":\"asdr\",\"Phone\":\"+91-456789212\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asdf@asdft.com\"}",
-    "{\"Designation\":\"Clerk\",\"StaffType\":0,\"Id\":69,\"Name\":\"asdc\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@zsd.com\"}",
-    "{\"Designation\":\"Clerk\",\"StaffType\":0,\"Id\":78,\"Name\":\"asdg\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}",
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":23,\"Name\":\"asd\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asdf.com\"}",
-    "{\"Designation\":\"Clerk\",\"StaffType\":0,\"Id\":2,\"Name\":\"asd\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}",
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":123,\"Name\":\"asdf\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}",
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":123,\"Name\":\"asd\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}"
-  ],
-  "TeachingStaff": [
-    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"Id\":1,\"Name\":\"ram gopal\",\"Phone\":\"+91-456\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asd.com\"}"
-  ],
+  "AdministrativeStaff": [],
+  "TeachingStaff": [],
   "SupportStaff": []
 }

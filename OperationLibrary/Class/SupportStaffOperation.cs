@@ -14,71 +14,86 @@ namespace OperationLibrary
 
         public void AddStaff()
         {
-            string department = "";
-            int Count = 0, Select, id = 0;
-            bool valid = false;
-            object[] opt = new object[5];
-            string[] Options;
-            SupportStaff support = new SupportStaff();
+            string bulkOrNot = "n";
             do
             {
-                opt = EnterValues();
-                Options = ConfigList("Department");
-                Console.WriteLine("Enter Department :");
+                string department = "";
+                int Count = 0, Select, id = 0;
+                bool valid = false;
+                object[] opt = new object[5];
+                string[] Options;
+                SupportStaff support = new SupportStaff();
                 do
                 {
-                    Console.WriteLine("\nSelect any one option(0 to exit)");
-
-                    foreach (var val in Options)
-                        Console.WriteLine(++Count + " :" + val);
-                    Count = 0;
-
-                    int.TryParse(Console.ReadLine(), out Select);
-                    if (Select == 0)
+                    opt = EnterValues();
+                    Options = ConfigList("Department");
+                    Console.WriteLine("Enter Department :");
+                    do
                     {
+                        Console.WriteLine("\nSelect any one option(0 to exit)");
+
+                        foreach (var val in Options)
+                            Console.WriteLine(++Count + " :" + val);
+                        Count = 0;
+
+                        int.TryParse(Console.ReadLine(), out Select);
+                        if (Select == 0)
+                        {
+                            break;
+                        }
+                        department = Options[Select - 1];
                         break;
                     }
-                    department = Options[Select - 1];
+                    while (Select != 0);
+                    support.StaffType = SType.SupportStaff;
+                    support.EmpId = opt[4].ToString();
+                    support.Name = opt[0].ToString();
+                    support.Phone = opt[1].ToString();
+                    if (!String.IsNullOrEmpty(opt[2].ToString()))
+                    {
+                        support.Dob = Convert.ToDateTime(opt[2]);
+                    }
+                    support.Email = opt[3].ToString();
+                    support.Department = department;
+                    valid = Validation(support);
+                    if (!valid)
+                    {
+                        Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
+                        id = InputOption();
+                        if (id == 1)
+                        {
+                            continue;
+                        }
+                        else { break; }
+                    }
+                }
+                while (!valid);
+
+                if (valid)
+                {
+                    supportList.Add(support);
+                    JsonFileOperation jfile = new JsonFileOperation();
+                    jfile.AddToFile<SupportStaff>(support);
+                    XmlFileOperation xfile = new XmlFileOperation();
+                    xfile.AddToFile<SupportStaff>(support);
+                    DatabaseOperation createtb = new DatabaseOperation();
+                    createtb.CreateTable();
+                    DatabaseOperation db = new DatabaseOperation();
+                    db.AddBulkData(support.EmpId, support.Name, support.Phone, support.Email, support.Dob, (int)support.StaffType, support.Department);
+                    //Console.WriteLine("\nValues added are :\n");
+
+                    // Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
+                }
+                Console.WriteLine("Add data again : (y/n)\n");
+                bulkOrNot = Console.ReadLine();
+                if (bulkOrNot.Equals("n"))
+                {
+                    DatabaseOperation database = new DatabaseOperation();
+                    database.ExecuteBulkProc();
                     break;
                 }
-                while (Select != 0);
-                support.StaffType = SType.SupportStaff;
-                support.EmpId = opt[4].ToString();
-                support.Name = opt[0].ToString();
-                support.Phone = opt[1].ToString();
-                if (!String.IsNullOrEmpty(opt[2].ToString()))
-                {
-                    support.Dob = Convert.ToDateTime(opt[2]);
-                }
-                support.Email = opt[3].ToString();
-                support.Department = department;
-                valid = Validation(support);
-                if (!valid)
-                {
-                    Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
-                    id = InputOption();
-                    if (id == 1)
-                    {
-                        continue;
-                    }
-                    else { break; }
-                }
             }
-            while (!valid);
-
-            if (valid)
-            {
-                supportList.Add(support);
-                // JsonFileOperation jfile = new JsonFileOperation();
-                // jfile.AddToFile<SupportStaff>(support);
-                // XmlFileOperation xfile = new XmlFileOperation();
-                // xfile.AddToFile<SupportStaff>(support);
-                DatabaseOperation db = new DatabaseOperation();
-                db.AddData(support.EmpId, support.Name, support.Phone, support.Email, support.Dob, (int)support.StaffType, support.Department);
-                //Console.WriteLine("\nValues added are :\n");
-
-                // Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
-            }
+            while (bulkOrNot.Equals("y"));
 
 
         }
@@ -90,19 +105,7 @@ namespace OperationLibrary
             // xfile.RetrieveAllFromFile<SupportStaff>();
             DatabaseOperation db = new DatabaseOperation();
             db.RetriveAll((int)SType.SupportStaff);
-            // int k = 0;
-            // if (supportList.Count == 0)
-            // {
-            //     Console.WriteLine("List is empty\n");
-            // }
-            // else
-            // {
-            //     Console.WriteLine("\nDetails are :");
-            //     foreach (var support in supportList)
-            //     {
-            //         Console.WriteLine("\nId: " + (++k) + "Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Department: " + support.Department);
-            //     }
-            // }
+
         }
         public void RetrieveSingleStaff()
         {
@@ -117,15 +120,6 @@ namespace OperationLibrary
             DatabaseOperation db = new DatabaseOperation();
             db.SearchStaff(name, (int)SType.SupportStaff);
 
-            // foreach (var support in supportList)
-            // {
-            //     if (support.Name == name)
-            //     {
-            //         Console.WriteLine("\nName: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Subject: " + support.Department);
-            //         return;
-            //     }
-            // }
-            // Console.WriteLine("\nStaff Not Found !!");
         }
 
 
@@ -329,17 +323,7 @@ namespace OperationLibrary
             {
                 Console.WriteLine("\nStaff Not Found !!");
             }
-            // foreach (var support in supportList)
-            // {
-            //     ++iterator;
-            //     if (id == iterator)
-            //     {
-            //         supportList.Remove(support);
-            //         Console.WriteLine("Successfully Deleted :\n" + " Name: " + support.Name + " " + "DOB: " + support.Dob + " " + "Phone :" + support.Phone + " " + "Email :" + support.Email + " Subject: " + support.Department);
-            //         return;
-            //     }
-            // }
-            // Console.WriteLine("\nStaff Not Found !!");
+
         }
     }
 }

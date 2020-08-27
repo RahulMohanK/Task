@@ -11,13 +11,68 @@ namespace DbOperationLibrary
     {
         string connectionString;
         SqlConnection connection;
+        static DataTable dataTable = new DataTable("typ_Staff");
+        DataRow dataRow;
+
         public DatabaseOperation()
         {
             connectionString = ConfigurationManager.AppSettings["connectionstring"];
             connection = new SqlConnection(connectionString);
             connection.Open();
-        }
 
+        }
+        public void CreateTable()
+        {
+            try
+            {
+                dataTable.Columns.Add("EmpId", typeof(string));
+                dataTable.Columns.Add("Name", typeof(string));
+                dataTable.Columns.Add("Phone", typeof(string));
+                dataTable.Columns.Add("Email", typeof(string));
+                dataTable.Columns.Add("Dob", typeof(DateTime));
+                dataTable.Columns.Add("StaffType", typeof(int));
+                dataTable.Columns.Add("CreatedDate", typeof(DateTime));
+                dataTable.Columns.Add("UpdatedDate", typeof(DateTime));
+                dataTable.Columns.Add("Value", typeof(string));
+            }
+            catch (Exception)
+            { }
+
+        }
+        public void ExecuteBulkProc()
+        {
+            try
+            {
+                SqlCommand sqlCommand;
+                sqlCommand = new SqlCommand("Proc_Staff_bulkInsertionHelper", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@typetable", dataTable);
+                sqlCommand.ExecuteNonQuery();
+                sqlCommand.Dispose();
+                connection.Close();
+                dataTable.Clear();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\nBulk proc error : " + e);
+            }
+        }
+        public void AddBulkData(String EmpId, String Name, String Phone, String Email, object Dob, int StaffType, String item)
+        {
+            dataRow = dataTable.NewRow();
+            dataRow["EmpId"] = EmpId;
+            dataRow["Name"] = Name;
+            dataRow["Phone"] = Phone;
+            dataRow["Email"] = Email;
+            dataRow["Dob"] = Convert.ToDateTime(Dob);
+            dataRow["StaffType"] = StaffType;
+            dataRow["Value"] = item;
+            dataRow["CreatedDate"] = Convert.ToDateTime(DateTime.Now);
+            dataRow["UpdatedDate"] = Convert.ToDateTime(DateTime.Now);
+            dataTable.Rows.Add(dataRow);
+            Console.WriteLine("\nInsertion Successfull\n");
+
+        }
         public void AddData(String EmpId, String Name, String Phone, String Email, object Dob, int StaffType, String item)
         {
             object[] result = new object[6];
@@ -28,7 +83,7 @@ namespace DbOperationLibrary
                 if (result[0] == null)
                 {
                     SqlCommand sqlCommand;
-                    // SqlDataAdapter adapter = new SqlDataAdapter();
+
                     sqlCommand = new SqlCommand("Proc_Staff_addData", connection);
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.Parameters.AddWithValue("@EmpId", SqlDbType.NVarChar).Value = EmpId;
@@ -39,14 +94,11 @@ namespace DbOperationLibrary
                     sqlCommand.Parameters.AddWithValue("@StaffType", SqlDbType.Int).Value = StaffType;
                     sqlCommand.Parameters.AddWithValue("@Value", SqlDbType.NVarChar).Value = item;
 
-
-                    // adapter.InsertCommand = new SqlCommand(sql, connection);
-                    // adapter.InsertCommand.ExecuteScalar();
-
                     sqlCommand.ExecuteNonQuery();
                     Console.WriteLine("\nData Insertion Complete");
                     sqlCommand.Dispose();
                     connection.Close();
+
                 }
                 else
                 {

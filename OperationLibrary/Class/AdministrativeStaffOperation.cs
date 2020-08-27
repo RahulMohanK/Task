@@ -17,76 +17,94 @@ namespace OperationLibrary
 
         public void AddStaff()
         {
-            string designation = "";
-            int Count = 0, Select, id = 0;
-            bool valid = false;
-            object[] opt = new object[5];
-            string[] Options;
-            AdministrativeStaff admin = new AdministrativeStaff();
+
+            string bulkOrNot = "n";
+
             do
             {
 
-                opt = EnterValues();
-
-                Options = ConfigList("Designation");
-                Console.WriteLine("Enter Designation :");
+                string designation = "";
+                int Count = 0, Select, id = 0;
+                bool valid = false;
+                object[] opt = new object[5];
+                string[] Options;
+                AdministrativeStaff admin = new AdministrativeStaff();
                 do
                 {
-                    Console.WriteLine("\nSelect any one option(0 to exit)");
 
-                    foreach (var val in Options)
-                        Console.WriteLine(++Count + " :" + val);
-                    Count = 0;
+                    opt = EnterValues();
 
-                    int.TryParse(Console.ReadLine(), out Select);
-                    if (Select == 0)
+                    Options = ConfigList("Designation");
+                    Console.WriteLine("Enter Designation :");
+                    do
                     {
+                        Console.WriteLine("\nSelect any one option(0 to exit)");
+
+                        foreach (var val in Options)
+                            Console.WriteLine(++Count + " :" + val);
+                        Count = 0;
+
+                        int.TryParse(Console.ReadLine(), out Select);
+                        if (Select == 0)
+                        {
+                            break;
+                        }
+                        designation = Options[Select - 1];
                         break;
                     }
-                    designation = Options[Select - 1];
+                    while (Select != 0);
+                    admin.StaffType = SType.AdministrativeStaff;
+                    admin.EmpId = opt[4].ToString();
+                    admin.Name = opt[0].ToString();
+                    admin.Phone = opt[1].ToString();
+                    admin.Email = opt[3].ToString();
+                    admin.Designation = designation;
+
+                    if (!String.IsNullOrEmpty(opt[2].ToString()))
+                    {
+                        admin.Dob = Convert.ToDateTime(opt[2]);
+                    }
+
+
+                    valid = Validation(admin);
+                    if (!valid)
+                    {
+                        Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
+                        id = InputOption();
+                        if (id == 1)
+                        {
+                            continue;
+                        }
+                        else { break; }
+                    }
+                }
+                while (!valid);
+                if (valid)
+                {
+
+                    // administrativeList.Add(admin);
+                    JsonFileOperation jfile = new JsonFileOperation();
+                    jfile.AddToFile<AdministrativeStaff>(admin);
+                    XmlFileOperation xfile = new XmlFileOperation();
+                    xfile.AddToFile<AdministrativeStaff>(admin);
+                    DatabaseOperation createtb = new DatabaseOperation();
+                    createtb.CreateTable();
+                    DatabaseOperation db = new DatabaseOperation();
+                    db.AddBulkData(admin.EmpId, admin.Name, admin.Phone, admin.Email, admin.Dob, (int)admin.StaffType, admin.Designation);
+
+                    //Console.WriteLine("\nValues added are :\n");
+                    //Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
+                }
+                Console.WriteLine("Add data again : (y/n)\n");
+                bulkOrNot = Console.ReadLine();
+                if (bulkOrNot.Equals("n"))
+                {
+                    DatabaseOperation database = new DatabaseOperation();
+                    database.ExecuteBulkProc();
                     break;
                 }
-                while (Select != 0);
-                admin.StaffType = SType.AdministrativeStaff;
-                admin.EmpId = opt[4].ToString();
-                admin.Name = opt[0].ToString();
-                admin.Phone = opt[1].ToString();
-                admin.Email = opt[3].ToString();
-                admin.Designation = designation;
-
-                if (!String.IsNullOrEmpty(opt[2].ToString()))
-                {
-                    admin.Dob = Convert.ToDateTime(opt[2]);
-                }
-
-
-                valid = Validation(admin);
-                if (!valid)
-                {
-                    Console.WriteLine("\nDo you want to correct entered values ??(yes-1/No-0)");
-                    id = InputOption();
-                    if (id == 1)
-                    {
-                        continue;
-                    }
-                    else { break; }
-                }
             }
-            while (!valid);
-            if (valid)
-            {
-
-                // administrativeList.Add(admin);
-                // JsonFileOperation jfile = new JsonFileOperation();
-                // jfile.AddToFile<AdministrativeStaff>(admin);
-                // XmlFileOperation xfile = new XmlFileOperation();
-                // xfile.AddToFile<AdministrativeStaff>(admin);
-                DatabaseOperation db = new DatabaseOperation();
-                db.AddData(admin.EmpId, admin.Name, admin.Phone, admin.Email, admin.Dob, (int)admin.StaffType, admin.Designation);
-
-                //Console.WriteLine("\nValues added are :\n");
-                //Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
-            }
+            while (bulkOrNot.Equals("y"));
 
         }
         public void RetrieveAllStaff()
@@ -101,20 +119,6 @@ namespace OperationLibrary
 
 
 
-
-            // int k = 0;
-            // if (administrativeList.Count == 0)
-            // {
-            //     Console.WriteLine("List is empty\n");
-            // }
-            // else
-            // {
-            //     Console.WriteLine("\nDetails are :");
-            //     foreach (var admin in administrativeList)
-            //     {
-            //         Console.WriteLine("\nId: " + (++k) + " Name: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Designation: " + admin.Designation);
-            //     }
-            // }
 
         }
         public void RetrieveSingleStaff()
@@ -133,16 +137,6 @@ namespace OperationLibrary
             // xfile.RetrieveFromFile<AdministrativeStaff>(name);
             DatabaseOperation db = new DatabaseOperation();
             db.SearchStaff(name, (int)SType.AdministrativeStaff);
-
-            // foreach (var admin in administrativeList)
-            // {
-            //     if (admin.Name == name)
-            //     {
-            //         Console.WriteLine("\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
-            //         return;
-            //     }
-            // }
-            // Console.WriteLine("\nStaff Not Found !!");
 
         }
         public void EditHelp(string id, AdministrativeStaff admin, AdministrativeStaff adminEdit)
@@ -323,7 +317,6 @@ namespace OperationLibrary
         {
             string id;
             object[] result = new object[6];
-            //int id = 0;//, iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
 
@@ -346,21 +339,6 @@ namespace OperationLibrary
             {
                 Console.WriteLine("\nStaff Not Found !!");
             }
-
-            // foreach (var admin in administrativeList)
-            // {
-            //     ++iterator;
-            //     if (id == iterator)
-            //     {
-            //         JsonFileOperation jfile = new JsonFileOperation();
-            //         jfile.DeleteFromFile(id, staffname);
-            //         administrativeList.Remove(admin);
-            //         Console.WriteLine("Successfully Deleted :" + "\nName: " + admin.Name + " " + "DOB: " + admin.Dob + " " + "Phone :" + admin.Phone + " " + "Email :" + admin.Email + " Subject: " + admin.Designation);
-            //         return;
-            //     }
-            // }
-
-            // Console.WriteLine("\nStaff Not Found !!");
         }
 
     }

@@ -11,6 +11,7 @@ namespace StaffLibrary
         TeachingStaff,
         SupportStaff
     }
+   
     public abstract class Staff
     {
 
