@@ -100,8 +100,8 @@ namespace OperationLibrary
         {
             string output = "";
 
-            List<object[]> finalResult = new List<object[]>();
-            object[] result = new object[7];
+            List<Staff> finalResult = new List<Staff>();
+
             // JsonFileOperation jfile = new JsonFileOperation();
             // jfile.RetrieveAllFromFile<SupportStaff>();
             // XmlFileOperation xfile = new XmlFileOperation();
@@ -111,12 +111,12 @@ namespace OperationLibrary
                 DatabaseOperation db = new DatabaseOperation();
                 finalResult = db.RetriveAll((int)SType.SupportStaff);
 
-                foreach (var item in finalResult)
+                foreach (var items in finalResult)
                 {
-                    result = (object[])item;
-                    output = "EmpId : " + result[0] + " Name : " + result[1] + " Phone : " + result[2] +
-                                  " Email : " + result[3] + " Dob : " + result[4] + " Age : " + result[5] + " Department : " + result[6];
-                    Console.WriteLine(output);
+                    SupportStaff item = (SupportStaff)items;
+                    output = "EmpId : " + item.EmpId + " Name : " + item.Name + " Phone : " + item.Phone +
+                                   " Email : " + item.Email + " Dob : " + item.Dob + " Designation : " + item.Department;
+                    Console.WriteLine(output + "\n");
                 }
 
             }
@@ -130,7 +130,7 @@ namespace OperationLibrary
         {
 
             string name = "", output = "";
-            List<object[]> finalResult = new List<object[]>();
+            List<Staff> finalResult = new List<Staff>();
             object[] result = new object[7];
             Console.WriteLine("Enter Details to Search :");
             Console.WriteLine("Enter Name :");
@@ -139,22 +139,23 @@ namespace OperationLibrary
             // jfile.RetrieveFromFile<SupportStaff>(name);
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.RetrieveFromFile<SupportStaff>(name);
-            try
-            {
-                DatabaseOperation db = new DatabaseOperation();
-                finalResult = db.SearchStaff(name, (int)SType.SupportStaff);
 
-                foreach (var item in finalResult)
-                {
-                    result = (object[])item;
-                    output = "EmpId : " + result[0] + " Name : " + result[1] + " Phone : " + result[2] +
-                                  " Email : " + result[3] + " Dob : " + result[4] + " Age : " + result[5] + " Department : " + result[6];
-                    Console.WriteLine(output);
-                }
-            }
-            catch (Exception)
+            DatabaseOperation db = new DatabaseOperation();
+            finalResult = db.SearchStaff(name, (int)SType.SupportStaff);
+            if (finalResult.Count > 0)
             {
-                Console.WriteLine("\nStaff Not Found!!\n");
+                foreach (var items in finalResult)
+                {
+                    SupportStaff item = (SupportStaff)items;
+                    output = "EmpId : " + item.EmpId + " Name : " + item.Name + " Phone : " + item.Phone +
+                                   " Email : " + item.Email + " Dob : " + item.Dob + " Designation : " + item.Department;
+                    Console.WriteLine(output + "\n");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("\n List is empty \n");
             }
 
         }
@@ -285,7 +286,7 @@ namespace OperationLibrary
         }
         public void EditStaff()
         {
-            object[] result = new object[6];
+
             string id;
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
@@ -296,13 +297,8 @@ namespace OperationLibrary
             try
             {
                 DatabaseOperation db = new DatabaseOperation();
-                result = db.GetSingleStaff(id, (int)SType.SupportStaff);
-                support.EmpId = result[0].ToString();
-                support.Name = result[1].ToString();
-                support.Phone = result[2].ToString();
-                support.Email = result[3].ToString();
-                support.Dob = (DateTime)result[4];
-                support.Department = result[5].ToString();
+                support = (SupportStaff)db.GetSingleStaff(id, (int)SType.SupportStaff);
+
                 // JsonFileOperation jfile = new JsonFileOperation();
                 // support = (SupportStaff)jfile.GetObj<SupportStaff>(id, support);
                 // XmlFileOperation xfile = new XmlFileOperation();
@@ -337,7 +333,7 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             string id;
-            object[] result = new object[6];
+            SupportStaff result = new SupportStaff();
             //int id = 0; //iterator = 0;
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
@@ -349,11 +345,11 @@ namespace OperationLibrary
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.DeleteFromFile<SupportStaff>(id);
             DatabaseOperation dbr = new DatabaseOperation();
-            result = dbr.GetSingleStaff(id, (int)SType.SupportStaff);
-            if (result[0] != null)
+            result = (SupportStaff)dbr.GetSingleStaff(id, (int)SType.SupportStaff);
+            if (result != null)
             {
                 DatabaseOperation db = new DatabaseOperation();
-                db.DeleteFromDb((int)SType.SupportStaff, id);
+                db.DeleteStaff((int)SType.SupportStaff, id);
                 Console.WriteLine("\nDeleted Successfull");
             }
             else

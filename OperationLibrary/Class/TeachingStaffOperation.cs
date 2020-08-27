@@ -102,8 +102,8 @@ namespace OperationLibrary
         {
             string output = "";
 
-            List<object[]> finalResult = new List<object[]>();
-            object[] result = new object[7];
+            List<Staff> finalResult = new List<Staff>();
+
             // JsonFileOperation jfile = new JsonFileOperation();
             // jfile.RetrieveAllFromFile<SupportStaff>();
             // XmlFileOperation xfile = new XmlFileOperation();
@@ -113,12 +113,12 @@ namespace OperationLibrary
                 DatabaseOperation db = new DatabaseOperation();
                 finalResult = db.RetriveAll((int)SType.TeachingStaff);
 
-                foreach (var item in finalResult)
+                foreach (var items in finalResult)
                 {
-                    result = (object[])item;
-                    output = "EmpId : " + result[0] + " Name : " + result[1] + " Phone : " + result[2] +
-                                  " Email : " + result[3] + " Dob : " + result[4] + " Age : " + result[5] + " Subject : " + result[6];
-                    Console.WriteLine(output);
+                    TeachingStaff item = (TeachingStaff)items;
+                    output = "EmpId : " + item.EmpId + " Name : " + item.Name + " Phone : " + item.Phone +
+                                   " Email : " + item.Email + " Dob : " + item.Dob + " Designation : " + item.Subject;
+                    Console.WriteLine(output + "\n");
                 }
 
             }
@@ -133,7 +133,7 @@ namespace OperationLibrary
         {
 
             string name = "", output = "";
-            List<object[]> finalResult = new List<object[]>();
+            List<Staff> finalResult = new List<Staff>();
             object[] result = new object[7];
             Console.WriteLine("Enter Details to Search :");
 
@@ -143,24 +143,25 @@ namespace OperationLibrary
             // JsonFileOperation jfile = new JsonFileOperation();
             // jfile.RetrieveFromFile<TeachingStaff>(name);
 
-            // XmlFileOperation xfile = new XmlFileOperation();
+            // XmlFileOperation xfile = new XmlFileOperation();`
             // xfile.RetrieveFromFile<TeachingStaff>(name);
-            try
-            {
-                DatabaseOperation db = new DatabaseOperation();
-                finalResult = db.SearchStaff(name, (int)SType.TeachingStaff);
 
-                foreach (var item in finalResult)
-                {
-                    result = (object[])item;
-                    output = "EmpId : " + result[0] + " Name : " + result[1] + " Phone : " + result[2] +
-                                  " Email : " + result[3] + " Dob : " + result[4] + " Age : " + result[5] + " Subject : " + result[6];
-                    Console.WriteLine(output);
-                }
-            }
-            catch (Exception)
+            DatabaseOperation db = new DatabaseOperation();
+            finalResult = db.SearchStaff(name, (int)SType.TeachingStaff);
+            if (finalResult.Count > 0)
             {
-                Console.WriteLine("\nStaff Not Found!!");
+                foreach (var items in finalResult)
+                {
+                    TeachingStaff item = (TeachingStaff)items;
+                    output = "EmpId : " + item.EmpId + " Name : " + item.Name + " Phone : " + item.Phone +
+                                   " Email : " + item.Email + " Dob : " + item.Dob + " Designation : " + item.Subject;
+                    Console.WriteLine(output + "\n");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("\n List is empty \n");
             }
 
 
@@ -290,7 +291,7 @@ namespace OperationLibrary
         }
         public void EditStaff()
         {
-            object[] result = new object[6];
+
             string id;
             RetrieveAllStaff();
             Console.WriteLine("Enter details of staff to be edited:");
@@ -301,13 +302,8 @@ namespace OperationLibrary
             try
             {
                 DatabaseOperation db = new DatabaseOperation();
-                result = db.GetSingleStaff(id, (int)SType.TeachingStaff);
-                teaching.EmpId = result[0].ToString();
-                teaching.Name = result[1].ToString();
-                teaching.Phone = result[2].ToString();
-                teaching.Email = result[3].ToString();
-                teaching.Dob = (DateTime)result[4];
-                teaching.Subject = result[5].ToString();
+                teaching = (TeachingStaff)db.GetSingleStaff(id, (int)SType.TeachingStaff);
+
                 // JsonFileOperation jfile = new JsonFileOperation();
                 // teaching = (TeachingStaff)jfile.GetObj<TeachingStaff>(id, teaching);
                 // XmlFileOperation xfile = new XmlFileOperation();
@@ -342,7 +338,7 @@ namespace OperationLibrary
         public void DeleteStaff()
         {
             string id;
-            object[] result = new object[6];
+            TeachingStaff result = new TeachingStaff();
             RetrieveAllStaff();
             Console.WriteLine("\nEnter Details to Delete :");
 
@@ -353,11 +349,11 @@ namespace OperationLibrary
             // XmlFileOperation xfile = new XmlFileOperation();
             // xfile.DeleteFromFile<TeachingStaff>(id);
             DatabaseOperation dbr = new DatabaseOperation();
-            result = dbr.GetSingleStaff(id, (int)SType.TeachingStaff);
-            if (result[0] != null)
+            result = (TeachingStaff)dbr.GetSingleStaff(id, (int)SType.TeachingStaff);
+            if (result != null)
             {
                 DatabaseOperation db = new DatabaseOperation();
-                db.DeleteFromDb((int)SType.TeachingStaff, id);
+                db.DeleteStaff((int)SType.TeachingStaff, id);
                 Console.WriteLine("\nDeletion Successfull");
             }
             else
