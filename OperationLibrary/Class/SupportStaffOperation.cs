@@ -76,8 +76,7 @@ namespace OperationLibrary
                     jfile.AddToFile<SupportStaff>(support);
                     XmlFileOperation xfile = new XmlFileOperation();
                     xfile.AddToFile<SupportStaff>(support);
-                    DatabaseOperation createtb = new DatabaseOperation();
-                    createtb.CreateTable();
+
                     DatabaseOperation db = new DatabaseOperation();
                     db.AddBulkData(support.EmpId, support.Name, support.Phone, support.Email, support.Dob, (int)support.StaffType, support.Department);
                     //Console.WriteLine("\nValues added are :\n");

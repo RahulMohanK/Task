@@ -87,8 +87,8 @@ namespace OperationLibrary
                     jfile.AddToFile<AdministrativeStaff>(admin);
                     XmlFileOperation xfile = new XmlFileOperation();
                     xfile.AddToFile<AdministrativeStaff>(admin);
-                    DatabaseOperation createtb = new DatabaseOperation();
-                    createtb.CreateTable();
+                    // DatabaseOperation createtb = new DatabaseOperation();
+                    // createtb.CreateTable();
                     DatabaseOperation db = new DatabaseOperation();
                     db.AddBulkData(admin.EmpId, admin.Name, admin.Phone, admin.Email, admin.Dob, (int)admin.StaffType, admin.Designation);
 

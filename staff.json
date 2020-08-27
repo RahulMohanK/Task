@@ -1,5 +1,9 @@
 {
-  "AdministrativeStaff": [],
+  "AdministrativeStaff": [
+    "{\"Designation\":\"Clerk\",\"StaffType\":0,\"EmpId\":\"admin0078\",\"Name\":\"asd\",\"Phone\":\"+91-78945612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asdf.com\"}",
+    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"EmpId\":\"admin00789\",\"Name\":\"asd\",\"Phone\":\"+91-78945\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asdf.com\"}",
+    "{\"Designation\":\"Office Assistant\",\"StaffType\":0,\"EmpId\":\"admin888\",\"Name\":\"asd\",\"Phone\":\"+91-789\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@qwe.com\"}"
+  ],
   "TeachingStaff": [],
   "SupportStaff": []
 }

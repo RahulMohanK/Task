@@ -76,8 +76,7 @@ namespace OperationLibrary
                     // jfile.AddToFile<TeachingStaff>(teaching);
                     // XmlFileOperation xfile = new XmlFileOperation();
                     // xfile.AddToFile<TeachingStaff>(teaching);
-                    DatabaseOperation createtb = new DatabaseOperation();
-                    createtb.CreateTable();
+
                     DatabaseOperation db = new DatabaseOperation();
                     db.AddBulkData(teaching.EmpId, teaching.Name, teaching.Phone, teaching.Email, teaching.Dob, (int)teaching.StaffType, teaching.Subject);
 

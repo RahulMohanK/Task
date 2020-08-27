@@ -19,10 +19,6 @@ namespace DbOperationLibrary
             connectionString = ConfigurationManager.AppSettings["connectionstring"];
             connection = new SqlConnection(connectionString);
             connection.Open();
-
-        }
-        public void CreateTable()
-        {
             try
             {
                 dataTable.Columns.Add("EmpId", typeof(string));

@@ -1,4 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Staff>
-  
+  <AdministrativeStaff EmpId="admin0078">
+    <StaffType>AdministrativeStaff</StaffType>
+    <Name>asd</Name>
+    <Phone>+91-78945612</Phone>
+    <Dob>1999-02-22T00:00:00</Dob>
+    <Email>asd@asdf.com</Email>
+    <Designation>Clerk</Designation>
+  </AdministrativeStaff>
+  <AdministrativeStaff EmpId="admin00789">
+    <StaffType>AdministrativeStaff</StaffType>
+    <Name>asd</Name>
+    <Phone>+91-78945</Phone>
+    <Dob>1999-02-22T00:00:00</Dob>
+    <Email>asd@asdf.com</Email>
+    <Designation>Office Assistant</Designation>
+  </AdministrativeStaff>
+  <AdministrativeStaff EmpId="admin888">
+    <StaffType>AdministrativeStaff</StaffType>
+    <Name>asd</Name>
+    <Phone>+91-789</Phone>
+    <Dob>1999-02-22T00:00:00</Dob>
+    <Email>asd@qwe.com</Email>
+    <Designation>Office Assistant</Designation>
+  </AdministrativeStaff>
 </Staff>
