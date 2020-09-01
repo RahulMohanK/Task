@@ -48,4 +48,12 @@
     <Email>asd@asdfg.com</Email>
     <Designation>Clerk</Designation>
   </AdministrativeStaff>
+  <SupportStaff EmpId="suppo01">
+    <StaffType>SupportStaff</StaffType>
+    <Name>asdf</Name>
+    <Phone>+91-7895612</Phone>
+    <Dob>1999-02-22T00:00:00</Dob>
+    <Email>asdf@asdf.com</Email>
+    <Department>EEE</Department>
+  </SupportStaff>
 </Staff>

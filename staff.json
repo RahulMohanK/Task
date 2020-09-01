@@ -8,5 +8,7 @@
     "{\"Designation\":\"Clerk\",\"StaffType\":0,\"EmpId\":\"admin03\",\"Name\":\"asdf\",\"Phone\":\"+91-78945\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asd@asdfg.com\"}"
   ],
   "TeachingStaff": [],
-  "SupportStaff": []
+  "SupportStaff": [
+    "{\"Department\":\"EEE\",\"StaffType\":2,\"EmpId\":\"suppo01\",\"Name\":\"asdf\",\"Phone\":\"+91-7895612\",\"Dob\":\"1999-02-22T00:00:00\",\"Email\":\"asdf@asdf.com\"}"
+  ]
 }
