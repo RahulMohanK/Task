@@ -18,7 +18,9 @@ namespace DbOperationLibrary
 
         public DatabaseOperation()
         {
-            connectionString = ConfigurationManager.AppSettings["connectionstring"];
+            connectionString = "Server=DESKTOP-ROBHQ7Q;Database=School Database;Trusted_Connection=True";
+            //ConfigurationManager.AppSettings["connectionstring"];
+            Console.WriteLine("Db operation " + connectionString);
             connection = new SqlConnection(connectionString);
             connection.Open();
             try
@@ -143,6 +145,40 @@ namespace DbOperationLibrary
             return null;
 
         }
+        public List<Staff> Retrive()
+        {
+            List<Staff> finalResult = new List<Staff>();
+            try
+            {
+
+                SqlCommand sqlCommand;
+                SqlDataReader sqlDataReader;
+                sqlCommand = new SqlCommand("Proc_Staff_retireve", connection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+
+                sqlDataReader = sqlCommand.ExecuteReader();
+
+                if (sqlDataReader.HasRows)
+                {
+
+                    finalResult = Populate(sqlDataReader, 0);
+
+                    return finalResult;
+                }
+
+                sqlDataReader.Close();
+                sqlCommand.Dispose();
+                connection.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Sql connection :" + e);
+            }
+            return null;
+
+        }
+
 
         public void DeleteStaff(int StaffType, String EmpId)
         {
@@ -252,7 +288,7 @@ namespace DbOperationLibrary
             List<Staff> staffList = new List<Staff>();
             while (sqlDataReader.Read())
             {
-                if (StaffType == 0)
+                if ((int)sqlDataReader.GetValue(9) == 0)
                 {
                     AdministrativeStaff administrative = new AdministrativeStaff();
                     administrative.EmpId = sqlDataReader.GetValue(0).ToString();
@@ -264,7 +300,7 @@ namespace DbOperationLibrary
                     administrative.Designation = sqlDataReader.GetValue(5).ToString();
                     staffList.Add(administrative);
                 }
-                else if (StaffType == 1)
+                else if ((int)sqlDataReader.GetValue(9) == 1)
                 {
                     TeachingStaff teaching = new TeachingStaff();
                     teaching.EmpId = sqlDataReader.GetValue(0).ToString();
@@ -277,7 +313,7 @@ namespace DbOperationLibrary
                     staffList.Add(teaching);
 
                 }
-                else if (StaffType == 2)
+                else if ((int)sqlDataReader.GetValue(9) == 2)
                 {
                     SupportStaff support = new SupportStaff();
                     support.EmpId = sqlDataReader.GetValue(0).ToString();
