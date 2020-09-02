@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StaffApi.Models
 {
@@ -20,10 +21,25 @@ namespace StaffApi.Models
         }
 
         public int Id { get; set; }
+
+
+        [RegularExpression("^[a-z0-9]+$", ErrorMessage = "Enter valid Employee Id")]
         public string EmpId { get; set; }
+
+        [Required(ErrorMessage = "Name must not be null")]
+        [DataType(DataType.Text)]
+        [RegularExpression("^[a-zA-Z. ]+$", ErrorMessage = "Name should not contain special symbols")]
         public string Name { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string Phone { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [DataType(DataType.DateTime, ErrorMessage = " DateFormat Not Correct")]
         public DateTime? Dob { get; set; }
         public int StaffType { get; set; }
         public DateTime CreatedDate { get; set; }
