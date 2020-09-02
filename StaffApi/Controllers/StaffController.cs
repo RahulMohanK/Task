@@ -80,17 +80,24 @@ namespace StaffApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Staff>> PostStaff(Staff staff)
         {
-            if ((staff.StaffType == (int)Staff.SType.AdministrativeStaff && staff.AdministrativeStaff.Count == 1)
-                || (staff.StaffType == (int)Staff.SType.TeachingStaff && staff.TeachingStaff.Count == 1)
-                || (staff.StaffType == (int)Staff.SType.SupportStaff && staff.SupportingStaff.Count == 1))
+            try
             {
-                context.Staff.Add(staff);
+                if ((staff.StaffType == (int)Staff.SType.AdministrativeStaff && staff.AdministrativeStaff.Count == 1)
+                    || (staff.StaffType == (int)Staff.SType.TeachingStaff && staff.TeachingStaff.Count == 1)
+                    || (staff.StaffType == (int)Staff.SType.SupportStaff && staff.SupportingStaff.Count == 1))
+                {
+                    context.Staff.Add(staff);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+                await context.SaveChangesAsync();
             }
-            else
+            catch (Exception)
             {
                 return BadRequest();
             }
-            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetStaffs", new { id = staff.Id }, staff);
         }
