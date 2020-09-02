@@ -103,7 +103,7 @@ namespace StaffApi.Controllers
         }
 
         [HttpDelete("{empId}")]
-        public async Task<ActionResult<Staff>> DeleteStaff(string empId)
+        public ActionResult<Staff> DeleteStaff(string empId)
         {
             var staff = context.Staff.FirstOrDefault(e => e.EmpId == empId);
             DatabaseOperation databaseOperation = new DatabaseOperation();
@@ -195,8 +195,6 @@ namespace StaffApi.Controllers
         {
             return context.Staff.Any(e => e.EmpId == empId);
         }
-
-
 
 
     }
