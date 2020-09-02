@@ -12,6 +12,12 @@ namespace StaffApi.Models
             TeachingStaff = new HashSet<TeachingStaff>();
 
         }
+        public enum SType
+        {
+            AdministrativeStaff,
+            TeachingStaff,
+            SupportStaff
+        }
 
         public int Id { get; set; }
         public string EmpId { get; set; }

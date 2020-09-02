@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StaffApi.Models;
-using DbOperationLibrary;
 using System.Data;
 using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.SqlServer;
+
 namespace StaffApi.Controllers
 {
     [Route("[controller]")]
@@ -26,15 +27,15 @@ namespace StaffApi.Controllers
         [HttpGet]
         public IEnumerable<Staff> GetStaffs()
         {
-            List<Staff> finalResult = new List<Staff>();
+            List<Staff> finalResult = new List<StaffApi.Models.Staff>();
             foreach (var item in context.Staff.ToList())
             {
                 var result = item;
-                if (result.StaffType == 0)
+                if (result.StaffType == (int)Staff.SType.AdministrativeStaff)
                 {
                     result.AdministrativeStaff.Add(context.AdministrativeStaff.FirstOrDefault(e => e.StaffId == result.Id));
                 }
-                else if (result.StaffType == 1)
+                else if (result.StaffType == (int)Staff.SType.TeachingStaff)
                 {
                     result.TeachingStaff.Add(context.TeachingStaff.FirstOrDefault(e => e.StaffId == result.Id));
                 }
@@ -56,11 +57,11 @@ namespace StaffApi.Controllers
             {
                 return NotFound();
             }
-            if (result.StaffType == 0)
+            if (result.StaffType == (int)Staff.SType.AdministrativeStaff)
             {
                 result.AdministrativeStaff.Add(context.AdministrativeStaff.FirstOrDefault(e => e.StaffId == result.Id));
             }
-            else if (result.StaffType == 1)
+            else if (result.StaffType == (int)Staff.SType.TeachingStaff)
             {
                 result.TeachingStaff.Add(context.TeachingStaff.FirstOrDefault(e => e.StaffId == result.Id));
             }
@@ -83,13 +84,13 @@ namespace StaffApi.Controllers
             staff.Dob = dstaff.Dob;
             staff.StaffType = dstaff.StaffType;
             context.Staff.Add(staff);
-            if (dstaff.StaffType == 0)
+            if (dstaff.StaffType == (int)Staff.SType.AdministrativeStaff)
             {
                 AdministrativeStaff admin = new AdministrativeStaff();
                 admin.Designation = dstaff.Value;
                 staff.AdministrativeStaff.Add(admin);
             }
-            else if (dstaff.StaffType == 1)
+            else if (dstaff.StaffType == (int)Staff.SType.TeachingStaff)
             {
                 TeachingStaff teaching = new TeachingStaff();
                 teaching.Subject = dstaff.Value;
@@ -113,12 +114,12 @@ namespace StaffApi.Controllers
             {
                 return NotFound();
             }
-            if (staff.StaffType == 0)
+            if (staff.StaffType == (int)Staff.SType.AdministrativeStaff)
             {
                 var admin = context.AdministrativeStaff.FirstOrDefault(e => e.StaffId == staff.Id);
                 context.AdministrativeStaff.Remove(admin);
             }
-            else if (staff.StaffType == 1)
+            else if (staff.StaffType == (int)Staff.SType.TeachingStaff)
             {
                 var teaching = context.TeachingStaff.FirstOrDefault(e => e.StaffId == staff.Id);
                 context.TeachingStaff.Remove(teaching);
@@ -134,7 +135,80 @@ namespace StaffApi.Controllers
             return staff;
         }
 
+        [HttpPut("{empId}")]
+        public async Task<ActionResult<Staff>> PutStaff(string empId, DummyStaff dstaff)
+        {
 
+            if (empId != dstaff.EmpId)
+            {
+                return BadRequest();
+            }
+            if (!StaffExists(empId))
+            {
+                return NotFound();
+            }
+
+            var result = context.Staff.FirstOrDefault(e => e.EmpId == dstaff.EmpId);
+            Staff staff = new Staff();
+            staff.EmpId = result.EmpId;
+            staff.Name = result.Name;
+            staff.Phone = result.Phone;
+            staff.Email = result.Email;
+            staff.StaffType = result.StaffType;
+            staff.Dob = result.Dob;
+            staff.CreatedDate = result.CreatedDate;
+            staff.UpdatedDate = result.UpdatedDate;
+
+            var deleteStaff = context.Staff.FirstOrDefault(e => e.EmpId == empId);
+            if (deleteStaff.StaffType == (int)Staff.SType.AdministrativeStaff)
+            {
+                var admin = context.AdministrativeStaff.FirstOrDefault(e => e.StaffId == deleteStaff.Id);
+                context.AdministrativeStaff.Remove(admin);
+            }
+            else if (deleteStaff.StaffType == (int)Staff.SType.TeachingStaff)
+            {
+                var teaching = context.TeachingStaff.FirstOrDefault(e => e.StaffId == deleteStaff.Id);
+                context.TeachingStaff.Remove(teaching);
+            }
+            else
+            {
+                var support = context.SupportingStaff.FirstOrDefault(e => e.StaffId == deleteStaff.Id);
+                context.SupportingStaff.Remove(support);
+            }
+            context.Staff.Remove(deleteStaff);
+            await context.SaveChangesAsync();
+            staff.Name = dstaff.Name;
+            staff.Phone = dstaff.Phone;
+            staff.Email = dstaff.Email;
+            staff.Dob = dstaff.Dob;
+            staff.UpdatedDate = Convert.ToDateTime(DateTime.Now);
+            context.Staff.Add(staff);
+            if (dstaff.StaffType == (int)Staff.SType.AdministrativeStaff)
+            {
+                AdministrativeStaff admin = new AdministrativeStaff();
+                admin.Designation = dstaff.Value;
+                staff.AdministrativeStaff.Add(admin);
+            }
+            else if (dstaff.StaffType == (int)Staff.SType.TeachingStaff)
+            {
+                TeachingStaff teaching = new TeachingStaff();
+                teaching.Subject = dstaff.Value;
+                staff.TeachingStaff.Add(teaching);
+            }
+            else
+            {
+                SupportingStaff support = new SupportingStaff();
+                support.Department = dstaff.Value;
+                staff.SupportingStaff.Add(support);
+            }
+            await context.SaveChangesAsync();
+            return staff;
+        }
+
+        private bool StaffExists(string empId)
+        {
+            return context.Staff.Any(e => e.EmpId == empId);
+        }
 
 
 
