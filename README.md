@@ -77,7 +77,7 @@ DELETE  : Delete resource
 
 
 
-## GET STAFF
+## GET SINGLE STAFF
 
 **URL** : `/Staff/{empID}`
 
