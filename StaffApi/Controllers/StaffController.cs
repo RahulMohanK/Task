@@ -26,28 +26,46 @@ namespace StaffApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Staff> GetStaffs()
+        public ActionResult<IEnumerable<Staff>> GetStaffs(string type)
         {
-
+            Console.WriteLine("string " + type);
             List<Staff> finalResult = new List<Staff>();
-            // DatabaseOperation databaseOperation = new DatabaseOperation();
-            // finalResult = databaseOperation.Retrive();
+            int tempType;
+            if (type.Equals("admin"))
+            {
+                tempType = (int)Staff.SType.AdministrativeStaff;
+            }
+            else if (type.Equals("teaching"))
+            {
+                tempType = (int)Staff.SType.TeachingStaff;
+            }
+            else if (type.Equals("support"))
+            {
+                tempType = (int)Staff.SType.SupportStaff;
+            }
+            else
+            {
+                return NotFound();
+            }
             foreach (var item in context.Staff.ToList())
             {
                 var result = item;
-                if (result.StaffType == (int)Staff.SType.AdministrativeStaff)
+                if (result.StaffType == tempType)
                 {
-                    result.AdministrativeStaff.Add(context.AdministrativeStaff.FirstOrDefault(e => e.StaffId == result.Id));
+                    if (result.StaffType == (int)Staff.SType.AdministrativeStaff)
+                    {
+                        result.AdministrativeStaff.Add(context.AdministrativeStaff.FirstOrDefault(e => e.StaffId == result.Id));
+                    }
+                    else if (result.StaffType == (int)Staff.SType.TeachingStaff)
+                    {
+                        result.TeachingStaff.Add(context.TeachingStaff.FirstOrDefault(e => e.StaffId == result.Id));
+                    }
+                    else
+                    {
+                        result.SupportingStaff.Add(context.SupportingStaff.FirstOrDefault(e => e.StaffId == result.Id));
+                    }
+                    finalResult.Add(result);
                 }
-                else if (result.StaffType == (int)Staff.SType.TeachingStaff)
-                {
-                    result.TeachingStaff.Add(context.TeachingStaff.FirstOrDefault(e => e.StaffId == result.Id));
-                }
-                else
-                {
-                    result.SupportingStaff.Add(context.SupportingStaff.FirstOrDefault(e => e.StaffId == result.Id));
-                }
-                finalResult.Add(result);
             }
             return finalResult;
         }
