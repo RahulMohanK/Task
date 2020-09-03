@@ -61,23 +61,25 @@ namespace StaffApi.Models
             TeachingStaff = new HashSet<TeachingStaff>();
 
         }
-
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "EmpId cannot be null")]
         [RegularExpression("^[a-z0-9]+$", ErrorMessage = "Enter valid Employee Id")]
         public string EmpId { get; set; }
 
-
+        [DataType(DataType.Text)]
+        [RegularExpression("^[a-zA-Z. ]+$", ErrorMessage = "Name should not contain special symbols")]
         public string Name { get; set; }
 
+        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string Phone { get; set; }
 
-
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
 
-
+        [DataType(DataType.DateTime, ErrorMessage = " DateFormat Not Correct")]
         public DateTime? Dob { get; set; }
 
         [Required(ErrorMessage = "Stafftype cannot be null")]
