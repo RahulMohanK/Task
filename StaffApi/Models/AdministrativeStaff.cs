@@ -13,4 +13,5 @@ namespace StaffApi.Models
         public string Designation { get; set; }
         public virtual Staff Staff { get; set; }
     }
+
 }

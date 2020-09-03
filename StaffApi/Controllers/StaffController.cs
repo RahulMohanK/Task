@@ -10,6 +10,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using DbOperationLibrary;
+using System.Net.Http;
+
 
 namespace StaffApi.Controllers
 {
@@ -28,7 +30,7 @@ namespace StaffApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Staff>> GetStaffs(string type)
         {
-            Console.WriteLine("string " + type);
+            // Console.WriteLine("string " + type);
             List<Staff> finalResult = new List<Staff>();
             int tempType;
             if (type.Equals("admin"))
@@ -110,12 +112,20 @@ namespace StaffApi.Controllers
                 {
                     return BadRequest();
                 }
+
                 await context.SaveChangesAsync();
+
             }
-            catch (Exception)
+            catch (ArgumentNullException)
             {
-                return BadRequest();
+                return StatusCode(500, new { title = "An error occured while processing your request.", status = 500, message = "System.ArgumentNullException: Value cannot be null" });
             }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            {
+                return StatusCode(500, new { title = "An error occured while processing your request.", status = 500, message = "Employee Id Already exist" });
+            }
+
+
 
             return CreatedAtAction("GetStaffs", new { id = staff.Id }, staff);
         }
@@ -135,7 +145,7 @@ namespace StaffApi.Controllers
         }
 
         [HttpPut("{empId}")]
-        public ActionResult<Staff> PutStaff(string empId, Staff dstaff)
+        public ActionResult<UpdateModelStaff> PutStaff(string empId, UpdateModelStaff dstaff)
         {
 
             if (empId != dstaff.EmpId)
@@ -146,30 +156,39 @@ namespace StaffApi.Controllers
             {
                 return NotFound();
             }
+
             string value;
             DatabaseOperation databaseOperation = new DatabaseOperation();
-            var result = context.Staff.FirstOrDefault(e => e.EmpId == dstaff.EmpId);
-            Staff staff = new Staff();
-            staff.EmpId = result.EmpId;
-            staff.Name = result.Name;
-            staff.Phone = result.Phone;
-            staff.Email = result.Email;
-            staff.StaffType = result.StaffType;
-            staff.Dob = result.Dob;
-            if (result.StaffType == (int)Staff.SType.AdministrativeStaff)
+            UpdateModelStaff staff = new UpdateModelStaff();
+            try
             {
-                var admin = context.AdministrativeStaff.FirstOrDefault(e => e.StaffId == result.Id);
-                value = admin.Designation;
+                var result = context.Staff.FirstOrDefault(e => (e.EmpId == dstaff.EmpId && e.StaffType == dstaff.StaffType));
+
+                staff.EmpId = result.EmpId;
+                staff.Name = result.Name;
+                staff.Phone = result.Phone;
+                staff.Email = result.Email;
+                staff.StaffType = result.StaffType;
+                staff.Dob = result.Dob;
+                if (result.StaffType == (int)Staff.SType.AdministrativeStaff)
+                {
+                    var admin = context.AdministrativeStaff.FirstOrDefault(e => e.StaffId == result.Id);
+                    value = admin.Designation;
+                }
+                else if (result.StaffType == (int)Staff.SType.TeachingStaff)
+                {
+                    var teaching = context.TeachingStaff.FirstOrDefault(e => e.StaffId == result.Id);
+                    value = teaching.Subject;
+                }
+                else
+                {
+                    var support = context.SupportingStaff.FirstOrDefault(e => e.StaffId == result.Id);
+                    value = support.Department;
+                }
             }
-            else if (result.StaffType == (int)Staff.SType.TeachingStaff)
+            catch (NullReferenceException)
             {
-                var teaching = context.TeachingStaff.FirstOrDefault(e => e.StaffId == result.Id);
-                value = teaching.Subject;
-            }
-            else
-            {
-                var support = context.SupportingStaff.FirstOrDefault(e => e.StaffId == result.Id);
-                value = support.Department;
+                return StatusCode(500, new { title = "An error occured while processing your request.", status = 500, message = "StaffType cannot be null" });
             }
 
             if (!String.IsNullOrEmpty(dstaff.Name))
@@ -188,20 +207,28 @@ namespace StaffApi.Controllers
             {
                 staff.Dob = dstaff.Dob;
             }
-            if (staff.StaffType == (int)Staff.SType.AdministrativeStaff && dstaff.AdministrativeStaff.Count == 1)
+            try
             {
-                value = dstaff.AdministrativeStaff.ElementAt(0).Designation;
+                if (staff.StaffType == (int)Staff.SType.AdministrativeStaff && dstaff.AdministrativeStaff.Count == 1)
+                {
+                    value = dstaff.AdministrativeStaff.ElementAt(0).Designation;
 
+                }
+                if (staff.StaffType == (int)Staff.SType.TeachingStaff && dstaff.TeachingStaff.Count == 1)
+                {
+                    value = dstaff.TeachingStaff.ElementAt(0).Subject;
+
+                }
+                if (staff.StaffType == (int)Staff.SType.SupportStaff && dstaff.SupportingStaff.Count == 1)
+                {
+                    value = dstaff.SupportingStaff.ElementAt(0).Department;
+                    Console.WriteLine("department" + value);
+
+                }
             }
-            if (dstaff.StaffType == (int)Staff.SType.TeachingStaff && dstaff.TeachingStaff.Count == 1)
+            catch (NullReferenceException)
             {
-                value = dstaff.TeachingStaff.ElementAt(0).Subject;
-
-            }
-            if (dstaff.StaffType == (int)Staff.SType.SupportStaff && dstaff.SupportingStaff.Count == 1)
-            {
-                value = dstaff.SupportingStaff.ElementAt(0).Department;
-
+                return StatusCode(500, new { title = "An error occured while processing your request.", status = 500, message = "Null values not acceptable" });
             }
 
             databaseOperation.UpdateStaff(empId, staff.Name, staff.Phone, staff.Email, Convert.ToDateTime(staff.Dob), staff.StaffType, value);
@@ -213,8 +240,6 @@ namespace StaffApi.Controllers
         {
             return context.Staff.Any(e => e.EmpId == empId);
         }
-
-
     }
 
 }

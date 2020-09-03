@@ -20,7 +20,7 @@ namespace DbOperationLibrary
         {
             connectionString = "Server=DESKTOP-ROBHQ7Q;Database=School Database;Trusted_Connection=True";
             //ConfigurationManager.AppSettings["connectionstring"];
-            Console.WriteLine("Db operation " + connectionString);
+            // Console.WriteLine("Db operation " + connectionString);
             connection = new SqlConnection(connectionString);
             connection.Open();
             try
