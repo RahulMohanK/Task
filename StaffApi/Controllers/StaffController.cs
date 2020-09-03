@@ -108,6 +108,10 @@ namespace StaffApi.Controllers
                 {
                     context.Staff.Add(staff);
                 }
+                else if (staff.AdministrativeStaff.Count == 0 || staff.TeachingStaff.Count == 0 || staff.SupportingStaff.Count == 0)
+                {
+                    return StatusCode(500, new { title = "An error occured while processing your request.", status = 500, message = "List cannot be null" });
+                }
                 else
                 {
                     return BadRequest();
